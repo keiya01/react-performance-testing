@@ -8,7 +8,7 @@ test('should get 1 from renderCount.current.* in initial render', () => {
     return <Text />;
   };
 
-  const { renderCount } = perf();
+  const { renderCount } = perf(React);
 
   render(<Component />);
 
@@ -32,7 +32,7 @@ test('should get 2 from renderCount.current.Text when state is updated', () => {
     return <Text />;
   };
 
-  const { renderCount } = perf();
+  const { renderCount } = perf(React);
 
   render(<Component />);
 
