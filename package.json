@@ -29,5 +29,9 @@
     "react": "^16.13.1",
     "ts-jest": "^26.1.4",
     "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "@types/react-dom": "^16.9.8",
+    "react-dom": "^16.13.1"
   }
 }
