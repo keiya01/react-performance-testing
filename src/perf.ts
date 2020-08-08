@@ -1,29 +1,32 @@
-import React from 'react';
 import { PerfTools } from './types';
-import { createPatchedComponent } from './createPatchedComponent';
+import { getPatchedComponent } from './getPatchedComponent';
+import { getDisplayName } from './getDisplayName';
+import { isClassComponent } from './isClassComponent';
 
-export const perf = () => {
+const shouldObserve = (
+  component: any,
+): component is React.ComponentClass | React.FunctionComponent =>
+  isClassComponent(component) || typeof component === 'function';
+
+export const perf = (React: any) => {
   const renderCount: { current: Record<string, any> } = { current: {} };
 
   const origCreateElement = React.createElement;
   const origCreateFactory = React.createFactory;
   const origCloneElement = React.cloneElement;
 
-  const componentsMap = new WeakMap();
-
   // @ts-ignore
   React.createElement = (type: React.ElementType, ...rest: any) => {
-    if (!type || typeof type === 'string') {
+    if (!shouldObserve(type)) {
       return origCreateElement.apply(React, [type, ...rest]);
     }
 
-    if (componentsMap.has(type)) {
-      return componentsMap.get(type);
-    }
+    const PatchedComponent = getPatchedComponent(type, { renderCount });
 
-    const PatchedComponent = createPatchedComponent(type, { renderCount });
-
-    componentsMap.set(type, PatchedComponent);
+    try {
+      // @ts-ignore
+      PatchedComponent.displayName = getDisplayName(type);
+    } catch (e) {}
 
     return origCreateElement.apply(React, [PatchedComponent, ...rest]);
   };
