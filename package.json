@@ -10,6 +10,10 @@
     "build": "tsc",
     "lint": "eslint '**/*.{ts,tsx}'"
   },
+  "peerDependencies": {
+    "@testing-library/react": "*",
+    "react": "*"
+  },
   "devDependencies": {
     "@testing-library/react": "^10.4.8",
     "@types/jest": "^26.0.9",
