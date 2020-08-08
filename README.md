@@ -20,7 +20,8 @@ You can test react performance by using this lib. If you want to check **number 
   - [ ] initial render count
   - [ ] re-render count
   - [ ] measuring render time
-- [ ] Support Fragment
+- [ ] support Fragment
+- [ ] support auto clear
 
 ## Example
 
@@ -68,7 +69,7 @@ test('should two render when state is updated', () => {
 //     );
 //   };
 
-//   const { renderTime } = perf();
+//   const { renderTime } = perf(React);
 
 //   render(<Counter />);
 
