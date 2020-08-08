@@ -41,10 +41,13 @@ test('should two render when state is updated', () => {
       </div>
     );
   };
+  const Component = () => {
+    return <Counter />;
+  };
 
-  const { renderCount } = perf();
+  const { renderCount } = perf(React);
 
-  render(<Counter />);
+  render(<Component />);
 
   fireEvent.click(screen.getByRole('button', { name: /count/i }));
 
