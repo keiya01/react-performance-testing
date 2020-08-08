@@ -1,47 +1,6 @@
 import React from 'react';
-
-interface PerfTools {
-  renderCount: {
-    current: Record<string, number>;
-  };
-}
-
-const isClassComponent = (
-  Component: React.ComponentClass | React.FunctionComponent,
-): Component is React.ComponentClass =>
-  Component.prototype && !!Component.prototype.isReactComponent;
-
-const getDisplayName = (type: any): any =>
-  type.displayName ||
-  type.name ||
-  (type.type && getDisplayName(type.type)) ||
-  (type.render && getDisplayName(type.render)) ||
-  (typeof type === 'string' ? type : undefined);
-
-const createFunctionComponent = (
-  type: React.FunctionComponent,
-  { renderCount }: PerfTools,
-) => {
-  const FunctionComponent = type as (...args: any[]) => React.ReactElement;
-  const PatchedComponent = (...args: any) => {
-    const counter = renderCount.current;
-    const count = counter[getDisplayName(type)];
-    renderCount.current[getDisplayName(type)] = count ? count + 1 : 1;
-    return FunctionComponent(...args);
-  };
-  return PatchedComponent;
-};
-
-const getPatchedComponent = (
-  type: React.ComponentClass | React.FunctionComponent,
-  tools: PerfTools,
-) => {
-  if (isClassComponent(type)) {
-    return type;
-  }
-
-  return createFunctionComponent(type, tools);
-};
+import { PerfTools } from './types';
+import { createPatchedComponent } from './createPatchedComponent';
 
 export const perf = () => {
   const renderCount: { current: Record<string, any> } = { current: {} };
@@ -62,7 +21,7 @@ export const perf = () => {
       return componentsMap.get(type);
     }
 
-    const PatchedComponent = getPatchedComponent(type, { renderCount });
+    const PatchedComponent = createPatchedComponent(type, { renderCount });
 
     componentsMap.set(type, PatchedComponent);
 
