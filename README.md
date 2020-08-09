@@ -13,14 +13,13 @@ You can test react performance by using this lib. If you want to check **number 
   - [x] re-render count
   - [ ] measuring render time
 - [ ] Memo Component
-  - [ ] initial render count
-  - [ ] re-render count
+  - [x] initial render count
+  - [x] re-render count
   - [ ] measuring render time
 - [ ] ForwardRef Component
   - [ ] initial render count
   - [ ] re-render count
   - [ ] measuring render time
-- [ ] support Fragment
 - [ ] support auto clear
 
 ## Example
@@ -78,3 +77,7 @@ test('should two render when state is updated', () => {
 //   expect(renderTime.current.Counter).toBeLessThan(0.16);
 // });
 ```
+
+## Notice
+
+- If you use **memorized component**, you should set display name
