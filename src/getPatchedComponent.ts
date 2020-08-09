@@ -1,6 +1,9 @@
 import { PerfTools } from './types';
 import { getDisplayName } from './getDisplayName';
-import { isClassComponent } from './isClassComponent';
+import { isClassComponent } from './utils/isClassComponent';
+import { isMemoComponent } from './utils/isMemoComponent';
+import { ReactSymbol } from './utils/symbols';
+import { isForwardRefComponent } from './utils/isForwardRefComponent';
 
 const updateRenderCount = (
   renderCount: PerfTools['renderCount'],
@@ -11,7 +14,6 @@ const updateRenderCount = (
   renderCount.current[getDisplayName(type)] = count ? count + 1 : 1;
 };
 
-// TODO: extend type with React.Component
 export interface PatchedClassComponent {}
 
 const createClassComponent = (
@@ -59,10 +61,59 @@ const createFunctionComponent = (
   return PatchedFunctionComponent;
 };
 
-export const getPatchedComponent = (
-  type: React.ComponentClass | React.FunctionComponent,
+const createMemoComponent = (
+  type: React.MemoExoticComponent<any> & { compare: any },
   tools: PerfTools,
+  React: any,
 ): any => {
+  const { type: InnerMemoComponent } = type;
+
+  const isInnerForwardRefComponent = isForwardRefComponent(InnerMemoComponent);
+
+  const WrappedFunctionalComponent = isInnerForwardRefComponent
+    ? InnerMemoComponent.render
+    : InnerMemoComponent;
+
+  const PatchedInnerComponent = isClassComponent(InnerMemoComponent)
+    ? createClassComponent(WrappedFunctionalComponent, tools)
+    : isMemoComponent(InnerMemoComponent)
+    ? createMemoComponent(WrappedFunctionalComponent, tools, React)
+    : createFunctionComponent(WrappedFunctionalComponent, tools);
+
+  try {
+    // @ts-ignore
+    PatchedInnerComponent.displayName = getDisplayName(
+      WrappedFunctionalComponent,
+    );
+  } catch (e) {}
+
+  const PatchedMemoComponent = React.memo(
+    isInnerForwardRefComponent
+      ? React.forwardRef(PatchedInnerComponent)
+      : PatchedInnerComponent,
+    type.compare,
+  );
+
+  return PatchedMemoComponent;
+};
+
+const createPatchedComponent = (
+  type: React.ReactType & { $$typeof: ReactSymbol } & (
+      | React.ComponentClass
+      | React.FunctionComponent
+    ),
+  tools: PerfTools,
+  React: any,
+): any => {
+  if (isMemoComponent(type)) {
+    return createMemoComponent(type, tools, React);
+  }
+
+  if (isForwardRefComponent(type)) {
+    // TODO: support forwardRefComponent
+    return type;
+  }
+
   if (isClassComponent(type)) {
     return createClassComponent(type, tools);
   }
@@ -72,4 +123,25 @@ export const getPatchedComponent = (
   }
 
   return type;
+};
+
+export const getPatchedComponent = (
+  componentsMap: WeakMap<any, any>,
+  type: React.ReactType & { $$typeof: ReactSymbol } & (
+      | React.ComponentClass
+      | React.FunctionComponent
+    ),
+  tools: PerfTools,
+  React: any,
+) => {
+  const PatchedComponent = createPatchedComponent(type, tools, React);
+
+  try {
+    // @ts-ignore
+    PatchedComponent.displayName = getDisplayName(type);
+  } catch (e) {}
+
+  componentsMap.set(type, PatchedComponent);
+
+  return PatchedComponent;
 };
