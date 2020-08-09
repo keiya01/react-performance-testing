@@ -17,7 +17,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-object-literal-type-assertion': 'off',
     '@typescript-eslint/no-empty-interface': 'warn',
-    'react/display-name': 'warn',
+    'react/display-name': 'off',
     'react/prop-types': 'off',
     'no-console': ['warn', { allow: ['warn', 'error'] }],
   },
