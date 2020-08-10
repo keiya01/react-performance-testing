@@ -63,7 +63,9 @@ const createFunctionComponent = (
 };
 
 const createMemoComponent = (
-  type: React.MemoExoticComponent<any> & { compare: any },
+  type: React.MemoExoticComponent<any> & {
+    compare: (state: any, props: any) => boolean;
+  },
   tools: PerfTools,
   React: any,
 ): any => {
@@ -98,6 +100,42 @@ const createMemoComponent = (
   return PatchedMemoComponent;
 };
 
+const createForwardRefComponent = (
+  type: React.ForwardRefExoticComponent<any> & {
+    render: React.ForwardRefRenderFunction<any>;
+  },
+  tools: PerfTools,
+  React: any,
+): any => {
+  const { render: InnerForwardRefComponent } = type;
+
+  const isInnerMemoComponent = isMemoComponent(InnerForwardRefComponent as any);
+
+  const WrappedFunctionalComponent = isInnerMemoComponent
+    ? (InnerForwardRefComponent as any).type
+    : InnerForwardRefComponent;
+
+  const PatchedInnerComponent = createFunctionComponent(
+    WrappedFunctionalComponent,
+    tools,
+  );
+
+  try {
+    // @ts-ignore
+    PatchedInnerComponent.displayName = getDisplayName(
+      WrappedFunctionalComponent,
+    );
+  } catch (e) {}
+
+  const PatchedForwardRefComponent = React.forwardRef(
+    isInnerMemoComponent
+      ? React.memo(PatchedInnerComponent, WrappedFunctionalComponent.compare)
+      : PatchedInnerComponent,
+  );
+
+  return PatchedForwardRefComponent;
+};
+
 const createPatchedComponent = (
   type: React.ElementType<React.ComponentClass | React.FunctionComponent> & {
     $$typeof: ReactSymbol;
@@ -110,8 +148,7 @@ const createPatchedComponent = (
   }
 
   if (isForwardRefComponent(type)) {
-    // TODO: support forwardRefComponent
-    return type;
+    return createForwardRefComponent(type, tools, React);
   }
 
   if (isClassComponent(type)) {
