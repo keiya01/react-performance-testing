@@ -2,7 +2,7 @@
 
 You can test react performance by using this lib. If you want to check **number of rendering** or **rendering time** in test environment, this lib is make sense. You can check react performance.
 
-## TODO
+## Features
 
 - [ ] Function Component
   - [x] initial render count
