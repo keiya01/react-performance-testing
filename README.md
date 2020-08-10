@@ -17,8 +17,8 @@ You can test react performance by using this lib. If you want to check **number 
   - [x] re-render count
   - [ ] measuring render time
 - [ ] ForwardRef Component
-  - [ ] initial render count
-  - [ ] re-render count
+  - [x] initial render count
+  - [x] re-render count
   - [ ] measuring render time
 - [ ] support auto clear
 
