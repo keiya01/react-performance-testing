@@ -19,8 +19,10 @@ test('should get 1 from renderCount.current.* in initial render', () => {
 
   render(<Component />);
 
-  expect(renderCount.current.Component).toBe(1);
-  expect(renderCount.current.Text).toBe(1);
+  expect(renderCount.current).toEqual({
+    Text: 1,
+    Component: 1,
+  });
 });
 
 test('should get 2 from renderCount.current.Text when state is updated', () => {
@@ -62,7 +64,11 @@ test('should get 2 from renderCount.current.Text when state is updated', () => {
   fireEvent.click(screen.getByRole('button', { name: /count/i }));
 
   expect(screen.queryByText('2')).toBeDefined();
-  expect(renderCount.current.Text).toBe(2);
+
+  expect(renderCount.current).toEqual({
+    Text: 2,
+    Component: 1,
+  });
 });
 
 test('should get 1 from renderCount.current.* in initial render with memo()', () => {
@@ -82,8 +88,10 @@ test('should get 1 from renderCount.current.* in initial render with memo()', ()
 
   render(<MemorizedComponent />);
 
-  expect(renderCount.current.MemorizedComponent).toBe(1);
-  expect(renderCount.current.Text).toBe(1);
+  expect(renderCount.current).toEqual({
+    Text: 1,
+    MemorizedComponent: 1,
+  });
 });
 
 test('should get 2 from renderCount.current.Text when state is updated with memo()', () => {
@@ -132,6 +140,49 @@ test('should get 2 from renderCount.current.Text when state is updated with memo
   fireEvent.click(screen.getByRole('button', { name: /count/i }));
 
   expect(screen.queryByText('2')).toBeDefined();
-  expect(renderCount.current.Text).toBe(2);
-  expect(renderCount.current.MemorizedText).toBe(1);
+  expect(renderCount.current).toEqual({
+    MemorizedText: 1,
+    Text: 2,
+    Component: 1,
+  });
+});
+
+test('should initialize memo component is wrapped with forwardRef()', () => {
+  const ForwardRefComponent = React.forwardRef(function ForwardRefComponent() {
+    return <p>forwardRef</p>;
+  });
+  class MemorizedComponent extends React.PureComponent {
+    render() {
+      return <ForwardRefComponent />;
+    }
+  }
+
+  const { renderCount } = perf(React);
+
+  render(<MemorizedComponent />);
+
+  expect(renderCount.current).toEqual({
+    MemorizedComponent: 1,
+    ForwardRefComponent: 1,
+  });
+});
+
+test('should initialize forwardRef component is wrapped with memo()', () => {
+  class MemorizedComponent extends React.PureComponent {
+    render() {
+      return <p>memo</p>;
+    }
+  }
+  const ForwardRefComponent = React.forwardRef(function ForwardRefComponent() {
+    return <MemorizedComponent />;
+  });
+
+  const { renderCount } = perf(React);
+
+  render(<ForwardRefComponent />);
+
+  expect(renderCount.current).toEqual({
+    MemorizedComponent: 1,
+    ForwardRefComponent: 1,
+  });
 });
