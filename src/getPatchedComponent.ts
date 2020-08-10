@@ -4,10 +4,11 @@ import { isClassComponent } from './utils/isClassComponent';
 import { isMemoComponent } from './utils/isMemoComponent';
 import { ReactSymbol } from './utils/symbols';
 import { isForwardRefComponent } from './utils/isForwardRefComponent';
+import { isFunctionComponent } from './utils/isFunctionComponent';
 
 const updateRenderCount = (
   renderCount: PerfTools['renderCount'],
-  type: React.ReactType,
+  type: React.ElementType,
 ) => {
   const counter = renderCount.current;
   const count = counter[getDisplayName(type)];
@@ -98,10 +99,9 @@ const createMemoComponent = (
 };
 
 const createPatchedComponent = (
-  type: React.ReactType & { $$typeof: ReactSymbol } & (
-      | React.ComponentClass
-      | React.FunctionComponent
-    ),
+  type: React.ElementType<React.ComponentClass | React.FunctionComponent> & {
+    $$typeof: ReactSymbol;
+  },
   tools: PerfTools,
   React: any,
 ): any => {
@@ -118,7 +118,7 @@ const createPatchedComponent = (
     return createClassComponent(type, tools);
   }
 
-  if (typeof type === 'function') {
+  if (isFunctionComponent(type)) {
     return createFunctionComponent(type, tools);
   }
 
@@ -127,10 +127,9 @@ const createPatchedComponent = (
 
 export const getPatchedComponent = (
   componentsMap: WeakMap<any, any>,
-  type: React.ReactType & { $$typeof: ReactSymbol } & (
-      | React.ComponentClass
-      | React.FunctionComponent
-    ),
+  type: React.ElementType<React.ComponentClass | React.FunctionComponent> & {
+    $$typeof: ReactSymbol;
+  },
   tools: PerfTools,
   React: any,
 ) => {

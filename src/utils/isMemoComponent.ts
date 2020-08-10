@@ -1,6 +1,9 @@
 import { ReactSymbol, REACT_MEMO_TYPE } from './symbols';
 
 export const isMemoComponent = (
-  Component: React.ReactType & { $$typeof: ReactSymbol },
-): Component is React.MemoExoticComponent<any> & { compare: any } =>
-  Component.$$typeof === REACT_MEMO_TYPE;
+  Component: React.ElementType<
+    React.ComponentClass | React.FunctionComponent
+  > & { $$typeof: ReactSymbol },
+): Component is React.MemoExoticComponent<any> & {
+  compare: (state: any, props: any) => boolean;
+} => Component.$$typeof === REACT_MEMO_TYPE;

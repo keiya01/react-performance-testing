@@ -5,10 +5,9 @@ import { ReactSymbol } from './symbols';
 
 export const shouldTrack = (
   component: any,
-): component is React.ReactType & { $$typeof: ReactSymbol } & (
-    | React.ComponentClass
-    | React.FunctionComponent
-  ) =>
+): component is React.ElementType<
+  React.ComponentClass | React.FunctionComponent
+> & { $$typeof: ReactSymbol } =>
   isClassComponent(component) ||
   isMemoComponent(component) ||
   isForwardRefComponent(component) ||
