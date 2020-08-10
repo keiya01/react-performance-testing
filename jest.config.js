@@ -3,7 +3,7 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
-  transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+'],
+  transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
   moduleFileExtensions: ['ts', 'tsx', 'js'],
   testMatch: ['**/*.test.ts?(x)'],
 };
