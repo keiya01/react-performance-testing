@@ -12,3 +12,4 @@ if (!process.env.RPT_SKIP_AUTO_CLEANUP) {
 }
 
 export * from './perf';
+export * from './types';
