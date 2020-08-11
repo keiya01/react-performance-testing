@@ -66,9 +66,18 @@ export const perf = (React: any) => {
 };
 
 export const cleanup = () => {
+  if (!origReact) {
+    return;
+  }
+
   Object.assign(origReact, {
     createElement: origCreateElement,
     createFactory: origCreateFactory,
     cloneElement: origCloneElement,
   });
+
+  origReact = null;
+  origCreateElement = null;
+  origCreateFactory = null;
+  origCloneElement = null;
 };
