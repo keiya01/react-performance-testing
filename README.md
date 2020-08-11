@@ -1,3 +1,7 @@
+![npm](https://img.shields.io/npm/v/react-performance-testing?style=flat-square)
+[![Coverage Status](https://img.shields.io/coveralls/github/keiya01/react-performance-testing/master?style=flat-square)](https://coveralls.io/github/keiya01/react-performance-testing?branch=master)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 # react-performance-testing (Experimental)
 
 You can test react performance by using this lib. If you want to check **number of rendering** or **rendering time** in test environment, this lib is make sense. You can check react performance.
