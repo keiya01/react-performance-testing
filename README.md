@@ -120,6 +120,9 @@ test('should two render when state is updated with it have multiple same compone
 
 ## API
 
+If you use API with large component, component's performance might be **down** because we monkey patches React.
+Therefore you should use API with **component that has one feature** like `List`, `Modal` etc.
+
 ### perf
 
 `perf` method observe your component. So you can get `renderCount` to count number of re-render.  
@@ -137,7 +140,7 @@ render(<Component/>);
 console.log(renderCount.current.Component.value);
 ```
 
-**Note**: we need to pass `React` because we monkey patch React to observe your component.  
+we need to pass `React` because we monkey patch React to observe your component.  
 **Note**: You need to set display name. If you have anonymous component, we can not set property to `renderCount` correctly.
 
 ### cleanup
