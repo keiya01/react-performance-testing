@@ -148,20 +148,31 @@ const createForwardRefComponent = (
 ): any => {
   const { render: InnerForwardRefComponent } = type;
 
+  const isInnerMemoComponent = isMemoComponent(InnerForwardRefComponent as any);
+
+  const WrappedFunctionalComponent = isInnerMemoComponent
+    ? (InnerForwardRefComponent as any).type
+    : InnerForwardRefComponent;
+
   const PatchedInnerComponent = createFunctionComponent(
-    InnerForwardRefComponent,
+    WrappedFunctionalComponent,
     tools,
     React,
   );
 
+  // TODO: write test about catch case
   try {
     // @ts-ignore
     PatchedInnerComponent.displayName = getDisplayName(
-      InnerForwardRefComponent,
+      WrappedFunctionalComponent,
     );
   } catch (e) {}
 
-  const PatchedForwardRefComponent = React.forwardRef(PatchedInnerComponent);
+  const PatchedForwardRefComponent = React.forwardRef(
+    isInnerMemoComponent
+      ? React.memo(PatchedInnerComponent, WrappedFunctionalComponent.compare)
+      : PatchedInnerComponent,
+  );
 
   return PatchedForwardRefComponent;
 };
