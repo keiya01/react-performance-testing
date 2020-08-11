@@ -17,7 +17,7 @@ export const perf = (React: any) => {
   origCreateFactory = React.createFactory;
   origCloneElement = React.cloneElement;
 
-  // memorize MemoComponent
+  // store memorized Component
   const componentsMap = new WeakMap();
 
   // @ts-ignore
@@ -67,6 +67,9 @@ export const perf = (React: any) => {
 
 export const cleanup = () => {
   if (!origReact) {
+    console.warn(
+      'cleanup method need to be invoked after perf method is invoked',
+    );
     return;
   }
 
