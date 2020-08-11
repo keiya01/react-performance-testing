@@ -27,7 +27,8 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "lint": "eslint '**/*.{ts,tsx}'"
+    "lint": "eslint '**/*.{ts,tsx}'",
+    "prepublish": "npm run lint && npm test && npm build"
   },
   "devDependencies": {
     "@testing-library/react": "^10.4.8",
