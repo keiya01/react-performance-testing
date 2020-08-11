@@ -141,6 +141,7 @@ console.log(renderCount.current.Component.value);
 ```
 
 **Note**: we need to pass `React` because we monkey patch React to observe your component.
+**Note**: You need to set display name. If you have anonymous component, we can not set property to `renderCount` correctly.
 
 ### cleanup
 
