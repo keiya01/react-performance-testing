@@ -1,10 +1,29 @@
 {
   "name": "react-performance-testing",
   "version": "0.0.1",
-  "main": "./src/index.ts",
-  "repository": "https://github.com/keiya01/react-performance-testing/",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keiya01/react-performance-testing/"
+  },
+  "bugs": {
+    "url": "https://github.com/keiya01/react-performance-testing/issues"
+  },
+  "homepage": "https://github.com/keiya01/react-performance-testing#readme",
   "author": "keiya01",
   "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "react",
+    "ui",
+    "unit",
+    "test",
+    "testing",
+    "performance"
+  ],
   "scripts": {
     "test": "jest",
     "build": "tsc",
