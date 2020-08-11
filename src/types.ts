@@ -1,5 +1,9 @@
+export interface RenderCountField {
+  value: number;
+}
+
 export interface PerfTools {
   renderCount: {
-    current: Record<string, number>;
+    current: Record<string, RenderCountField | RenderCountField[]>;
   };
 }
