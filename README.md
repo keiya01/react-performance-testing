@@ -4,9 +4,6 @@ You can test react performance by using this lib. If you want to check **number 
 
 ## Table of Contents
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
 - [Installation](#installation)
 - [Examples](#examples)
 - [API](#api)
@@ -125,7 +122,7 @@ test('should two render when state is updated with it have multiple same compone
 
 ### perf
 
-`perf` method observe your component. So you can get `renderCount` to count number of re-render.
+`perf` method observe your component. So you can get `renderCount` to count number of re-render.  
 **Note**: If you want to measure render time, please just wait. This feature is coming soon.
 
 #### renderCount
@@ -140,12 +137,12 @@ render(<Component/>);
 console.log(renderCount.current.Component.value);
 ```
 
-**Note**: we need to pass `React` because we monkey patch React to observe your component.
+**Note**: we need to pass `React` because we monkey patch React to observe your component.  
 **Note**: You need to set display name. If you have anonymous component, we can not set property to `renderCount` correctly.
 
 ### cleanup
 
-`cleanup` method is executed automatically in `afterEach()` if you use `Jest`, `Mocha` and `Jasmine`. You need to cleanup your component by using `cleanup`.
+`cleanup` method is executed automatically in `afterEach()` if you use `Jest`, `Mocha` and `Jasmine`. You need to cleanup your component by using `cleanup`.  
 If your testing lib has `afterEach()`, you need to invoke `cleanup()` manually.
 
 ## LICENSE
