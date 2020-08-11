@@ -145,7 +145,7 @@ we need to pass `React` because we monkey patch React to observe your component.
 
 ### cleanup
 
-`cleanup` method is executed automatically in `afterEach()` if you use `Jest`, `Mocha` and `Jasmine`. You need to cleanup your component by using `cleanup`.  
+`cleanup` method is executed automatically in `afterEach()` if you are using `Jest`, `Mocha` and `Jasmine`. You need to cleanup your component by using `cleanup`.  
 If your testing lib has `afterEach()`, you need to invoke `cleanup()` manually.
 
 ## LICENSE
