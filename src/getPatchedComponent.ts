@@ -30,7 +30,7 @@ const updateRenderCount = (
 ) => {
   const displayName = getDisplayName(type);
   if (!displayName) {
-    console.warn(
+    return console.warn(
       "You have anonymous component. If your component don't have display name, we can not set property to renderCount.current",
     );
   }
@@ -198,8 +198,6 @@ const createPatchedComponent = (
   if (isFunctionComponent(type)) {
     return createFunctionComponent(type, tools, React);
   }
-
-  return type;
 };
 
 export const getPatchedComponent = (
