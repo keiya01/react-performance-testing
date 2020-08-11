@@ -93,8 +93,8 @@ describe('FunctionComponent', () => {
     const Component = () => {
       return (
         <>
-          <Text />
-          <Text testid="button" />
+          <Text testid="button1" />
+          <Text testid="button2" />
           <Text />
         </>
       );
@@ -104,12 +104,13 @@ describe('FunctionComponent', () => {
 
     render(<Component />);
 
-    fireEvent.click(screen.getByTestId('button'));
+    fireEvent.click(screen.getByTestId('button1'));
+    fireEvent.click(screen.getByTestId('button2'));
 
     expect(screen.queryByText('2')).toBeDefined();
     expect(renderCount.current).toEqual({
-      NestedText: [{ value: 1 }, { value: 2 }, { value: 1 }],
-      Text: [{ value: 1 }, { value: 2 }, { value: 1 }],
+      NestedText: [{ value: 2 }, { value: 2 }, { value: 1 }],
+      Text: [{ value: 2 }, { value: 2 }, { value: 1 }],
       Component: { value: 1 },
     });
   });
@@ -362,8 +363,8 @@ describe('ClassComponent', () => {
       render() {
         return (
           <>
-            <Text />
-            <Text testid="button" />
+            <Text testid="button1" />
+            <Text testid="button2" />
             <Text />
           </>
         );
@@ -374,12 +375,13 @@ describe('ClassComponent', () => {
 
     render(<Component />);
 
-    fireEvent.click(screen.getByTestId('button'));
+    fireEvent.click(screen.getByTestId('button1'));
+    fireEvent.click(screen.getByTestId('button2'));
 
     expect(screen.queryByText('2')).toBeDefined();
     expect(renderCount.current).toEqual({
-      NestedText: [{ value: 1 }, { value: 2 }, { value: 1 }],
-      Text: [{ value: 1 }, { value: 2 }, { value: 1 }],
+      NestedText: [{ value: 2 }, { value: 2 }, { value: 1 }],
+      Text: [{ value: 2 }, { value: 2 }, { value: 1 }],
       Component: { value: 1 },
     });
   });
@@ -503,4 +505,42 @@ describe('ClassComponent', () => {
       ForwardRefComponent: { value: 1 },
     });
   });
+
+  it('should get 1 from renderCount.current.* in initial render when render method is arrow function', () => {
+    class Text extends React.Component {
+      render() {
+        return <p>Test</p>;
+      }
+    }
+
+    class Component extends React.Component {
+      render = () => {
+        return <Text />;
+      };
+    }
+
+    const { renderCount } = perf(React);
+
+    render(<Component />);
+
+    expect(renderCount.current).toEqual({
+      Text: { value: 1 },
+      Component: { value: 1 },
+    });
+  });
+});
+
+test('should invoke console.warn when it has anonymous component', () => {
+  jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+  const Component = React.memo(() => <p>test</p>);
+
+  perf(React);
+
+  render(<Component />);
+
+  expect(console.warn).toBeCalledTimes(1);
+
+  // @ts-ignore
+  console.warn.mockRestore();
 });
