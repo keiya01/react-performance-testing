@@ -1,7 +1,8 @@
 {
   "name": "react-performance-testing",
   "version": "0.0.1",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
@@ -26,9 +27,9 @@
   ],
   "scripts": {
     "test": "jest",
-    "build": "tsc",
-    "lint": "eslint '**/*.{ts,tsx}'",
-    "prepublish": "npm run lint && npm test && npm build"
+    "build": "rollup -c rollup.config.js",
+    "type": "tsc --noEmit",
+    "lint": "eslint '**/*.{ts,tsx}'"
   },
   "devDependencies": {
     "@testing-library/react": "^10.4.8",
@@ -45,6 +46,8 @@
     "prettier": "^2.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "rollup": "^2.23.1",
+    "rollup-plugin-typescript2": "^0.27.2",
     "ts-jest": "^26.1.4",
     "typescript": "^3.9.7"
   }
