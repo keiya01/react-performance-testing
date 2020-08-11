@@ -2,12 +2,20 @@ import { PerfTools } from './types';
 import { getPatchedComponent } from './getPatchedComponent';
 import { shouldTrack } from './utils/shouldTrack';
 
-export const perf = (React: any) => {
-  const renderCount: { current: Record<string, any> } = { current: {} };
+let origCreateElement: any = null;
+let origCreateFactory: any = null;
+let origCloneElement: any = null;
+let origReact: any = null;
 
-  const origCreateElement = React.createElement;
-  const origCreateFactory = React.createFactory;
-  const origCloneElement = React.cloneElement;
+export const perf = (React: any) => {
+  const renderCount: PerfTools['renderCount'] = {
+    current: {},
+  };
+
+  origReact = React;
+  origCreateElement = React.createElement;
+  origCreateFactory = React.createFactory;
+  origCloneElement = React.cloneElement;
 
   // memorize MemoComponent
   const componentsMap = new WeakMap();
@@ -55,4 +63,12 @@ export const perf = (React: any) => {
   Object.assign(React.cloneElement, origCloneElement);
 
   return { renderCount } as PerfTools;
+};
+
+export const cleanup = () => {
+  Object.assign(origReact, {
+    createElement: origCreateElement,
+    createFactory: origCreateFactory,
+    cloneElement: origCloneElement,
+  });
 };
