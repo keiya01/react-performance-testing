@@ -541,6 +541,24 @@ describe('ClassComponent', () => {
   });
 });
 
+/**
+ * Wrapping memo() in forwardRef() is not supported by React 16.9.
+ * But we are supporting previous version.
+ */
+test('should throw error when component is wrapping memo() in forwardRef()', () => {
+  jest.spyOn(console, 'error').mockImplementation(() => {});
+
+  const ForwardRefComponent = React.forwardRef(React.memo(() => <p>memo</p>));
+
+  const { renderCount } = perf(React);
+
+  expect(() => render(<ForwardRefComponent />)).toThrow();
+  expect(renderCount.current).toEqual({});
+
+  // @ts-ignore
+  console.error.mockRestore();
+});
+
 test('should invoke console.warn when it has anonymous component', () => {
   jest.spyOn(console, 'warn').mockImplementation(() => {});
 
