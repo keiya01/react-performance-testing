@@ -148,14 +148,8 @@ const createForwardRefComponent = (
 ): any => {
   const { render: InnerForwardRefComponent } = type;
 
-  const isInnerMemoComponent = isMemoComponent(InnerForwardRefComponent as any);
-
-  const WrappedFunctionalComponent = isInnerMemoComponent
-    ? (InnerForwardRefComponent as any).type
-    : InnerForwardRefComponent;
-
   const PatchedInnerComponent = createFunctionComponent(
-    WrappedFunctionalComponent,
+    InnerForwardRefComponent,
     tools,
     React,
   );
@@ -163,15 +157,11 @@ const createForwardRefComponent = (
   try {
     // @ts-ignore
     PatchedInnerComponent.displayName = getDisplayName(
-      WrappedFunctionalComponent,
+      InnerForwardRefComponent,
     );
   } catch (e) {}
 
-  const PatchedForwardRefComponent = React.forwardRef(
-    isInnerMemoComponent
-      ? React.memo(PatchedInnerComponent, WrappedFunctionalComponent.compare)
-      : PatchedInnerComponent,
-  );
+  const PatchedForwardRefComponent = React.forwardRef(PatchedInnerComponent);
 
   return PatchedForwardRefComponent;
 };
@@ -195,6 +185,8 @@ const createPatchedComponent = (
     return createClassComponent(type, tools);
   }
 
+  // This is because this is checking type
+  /* istanbul ignore else */
   if (isFunctionComponent(type)) {
     return createFunctionComponent(type, tools, React);
   }

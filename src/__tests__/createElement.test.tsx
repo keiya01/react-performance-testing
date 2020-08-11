@@ -165,42 +165,35 @@ describe('FunctionComponent', () => {
     });
   });
 
-  it('should initialize memo component is wrapped with forwardRef()', () => {
-    const MemoComponent = React.memo(function MemoComponent() {
-      return <p>forwardRef</p>;
-    });
-    const ForwardRefComponent = React.forwardRef(
-      function ForwardRefComponent() {
-        return <MemoComponent />;
-      },
+  it('should initialize memo component is wrapped with memo()', () => {
+    const MemoComponent = React.memo(
+      React.memo(function ForwardRefComponent() {
+        return <p>memo</p>;
+      }),
     );
 
     const { renderCount } = perf(React);
 
-    render(<ForwardRefComponent />);
+    // @ts-ignore
+    render(<MemoComponent />);
 
     expect(renderCount.current).toEqual({
-      MemoComponent: { value: 1 },
       ForwardRefComponent: { value: 1 },
     });
   });
 
   it('should initialize forwardRef component is wrapped with memo()', () => {
-    const ForwardRefComponent = React.forwardRef(
-      function ForwardRefComponent() {
+    const MemoComponent = React.memo(
+      React.forwardRef(function ForwardRefComponent() {
         return <p>memo</p>;
-      },
+      }),
     );
-    const MemoComponent = React.memo(function MemoComponent() {
-      return <ForwardRefComponent />;
-    });
 
     const { renderCount } = perf(React);
 
     render(<MemoComponent />);
 
     expect(renderCount.current).toEqual({
-      MemoComponent: { value: 1 },
       ForwardRefComponent: { value: 1 },
     });
   });
@@ -462,7 +455,25 @@ describe('ClassComponent', () => {
     });
   });
 
-  it('should initialize memo component is wrapped with forwardRef()', () => {
+  it('should initialize component is wrapper with memo()', () => {
+    class Component extends React.Component {
+      render() {
+        return <p>Test</p>;
+      }
+    }
+
+    const MemorizedComponent = React.memo(Component);
+
+    const { renderCount } = perf(React);
+
+    render(<MemorizedComponent />);
+
+    expect(renderCount.current).toEqual({
+      Component: { value: 1 },
+    });
+  });
+
+  it('should initialize PureComponent is wrapped with forwardRef()', () => {
     const ForwardRefComponent = React.forwardRef(
       function ForwardRefComponent() {
         return <p>forwardRef</p>;
@@ -484,7 +495,7 @@ describe('ClassComponent', () => {
     });
   });
 
-  it('should initialize forwardRef component is wrapped with memo()', () => {
+  it('should initialize forwardRef component is wrapped with PureComponent', () => {
     class MemorizedComponent extends React.PureComponent {
       render() {
         return <p>memo</p>;
