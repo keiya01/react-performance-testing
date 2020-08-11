@@ -1,6 +1,5 @@
 ![npm](https://img.shields.io/npm/v/react-performance-testing)
 [![codecov](https://codecov.io/gh/keiya01/react-performance-testing/branch/test-github-actions/graph/badge.svg)](https://codecov.io/gh/keiya01/react-performance-testing)
-
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 # react-performance-testing (Experimental)
