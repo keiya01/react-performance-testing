@@ -1,10 +1,10 @@
 import React from 'react';
-import { perf } from '../perf';
+import { perf } from '../index';
 import { render, fireEvent, screen } from '@testing-library/react';
 
 describe('FunctionComponent', () => {
-  it('should get 1 from renderCount.current.* in initial render', () => {
-    const Text = () => <p>Test</p>;
+  it('should get 1 from renderCount.current.* in initial render with flat structure', () => {
+    const Text = () => <p>test</p>;
     const Component = () => {
       return <Text />;
     };
@@ -14,12 +14,37 @@ describe('FunctionComponent', () => {
     render(<Component />);
 
     expect(renderCount.current).toEqual({
-      Text: 1,
-      Component: 1,
+      Text: { value: 1 },
+      Component: { value: 1 },
     });
   });
 
-  it('should get 2 from renderCount.current.Text when state is updated', () => {
+  it('should get 1 from renderCount.current.* in initial render with nested structure', () => {
+    const NestedText = () => <p>test</p>;
+    const Text = () => <NestedText />;
+    const Component = () => {
+      return (
+        <>
+          <Text />
+          <Text />
+          <Text />
+          <NestedText />
+        </>
+      );
+    };
+
+    const { renderCount } = perf(React);
+
+    render(<Component />);
+
+    expect(renderCount.current).toEqual({
+      NestedText: [{ value: 1 }, { value: 1 }, { value: 1 }, { value: 1 }],
+      Text: [{ value: 1 }, { value: 1 }, { value: 1 }],
+      Component: { value: 1 },
+    });
+  });
+
+  it('should get 2 from renderCount.current.Text when state is updated with flat structure', () => {
     const Text = () => {
       const [count, setCount] = React.useState(0);
       return (
@@ -43,8 +68,49 @@ describe('FunctionComponent', () => {
 
     expect(screen.queryByText('2')).toBeDefined();
     expect(renderCount.current).toEqual({
-      Text: 2,
-      Component: 1,
+      Text: { value: 2 },
+      Component: { value: 1 },
+    });
+  });
+
+  it('should get 2 from renderCount.current.Text when state is updated with nested structure', () => {
+    const NestedText = ({ count }: { count: number }) => <p>{count}</p>;
+    const Text = ({ testid }: { testid?: string }) => {
+      const [count, setCount] = React.useState(0);
+      return (
+        <div>
+          <NestedText count={count} />
+          <button
+            data-testid={testid}
+            type="button"
+            onClick={() => setCount((c) => c + 1)}
+          >
+            count
+          </button>
+        </div>
+      );
+    };
+    const Component = () => {
+      return (
+        <>
+          <Text />
+          <Text testid="button" />
+          <Text />
+        </>
+      );
+    };
+
+    const { renderCount } = perf(React);
+
+    render(<Component />);
+
+    fireEvent.click(screen.getByTestId('button'));
+
+    expect(screen.queryByText('2')).toBeDefined();
+    expect(renderCount.current).toEqual({
+      NestedText: [{ value: 1 }, { value: 2 }, { value: 1 }],
+      Text: [{ value: 1 }, { value: 2 }, { value: 1 }],
+      Component: { value: 1 },
     });
   });
 
@@ -59,8 +125,8 @@ describe('FunctionComponent', () => {
     render(<Component />);
 
     expect(renderCount.current).toEqual({
-      MemorizedComponent: 1,
-      Text: 1,
+      MemorizedComponent: { value: 1 },
+      Text: { value: 1 },
     });
   });
 
@@ -92,9 +158,9 @@ describe('FunctionComponent', () => {
 
     expect(screen.queryByText('2')).toBeDefined();
     expect(renderCount.current).toEqual({
-      MemorizedText: 1,
-      Text: 2,
-      Component: 1,
+      MemorizedText: { value: 1 },
+      Text: { value: 2 },
+      Component: { value: 1 },
     });
   });
 
@@ -113,8 +179,8 @@ describe('FunctionComponent', () => {
     render(<ForwardRefComponent />);
 
     expect(renderCount.current).toEqual({
-      MemoComponent: 1,
-      ForwardRefComponent: 1,
+      MemoComponent: { value: 1 },
+      ForwardRefComponent: { value: 1 },
     });
   });
 
@@ -133,14 +199,14 @@ describe('FunctionComponent', () => {
     render(<MemoComponent />);
 
     expect(renderCount.current).toEqual({
-      MemoComponent: 1,
-      ForwardRefComponent: 1,
+      MemoComponent: { value: 1 },
+      ForwardRefComponent: { value: 1 },
     });
   });
 });
 
 describe('ClassComponent', () => {
-  it('should get 1 from renderCount.current.* in initial render', () => {
+  it('should get 1 from renderCount.current.* in initial render with flat structure', () => {
     class Text extends React.Component {
       render() {
         return <p>Test</p>;
@@ -158,12 +224,49 @@ describe('ClassComponent', () => {
     render(<Component />);
 
     expect(renderCount.current).toEqual({
-      Text: 1,
-      Component: 1,
+      Text: { value: 1 },
+      Component: { value: 1 },
     });
   });
 
-  it('should get 2 from renderCount.current.Text when state is updated', () => {
+  it('should get 1 from renderCount.current.* in initial render with nested structure', () => {
+    class NestedText extends React.Component {
+      render() {
+        return <p>Test</p>;
+      }
+    }
+
+    class Text extends React.Component {
+      render() {
+        return <NestedText />;
+      }
+    }
+
+    class Component extends React.Component {
+      render() {
+        return (
+          <>
+            <NestedText />
+            <Text />
+            <Text />
+            <Text />
+          </>
+        );
+      }
+    }
+
+    const { renderCount } = perf(React);
+
+    render(<Component />);
+
+    expect(renderCount.current).toEqual({
+      NestedText: [{ value: 1 }, { value: 1 }, { value: 1 }, { value: 1 }],
+      Text: [{ value: 1 }, { value: 1 }, { value: 1 }],
+      Component: { value: 1 },
+    });
+  });
+
+  it('should get 2 from renderCount.current.Text when state is updated with flat structure', () => {
     class Text extends React.Component<any, { count: number }> {
       constructor(props: any) {
         super(props);
@@ -204,8 +307,80 @@ describe('ClassComponent', () => {
     expect(screen.queryByText('2')).toBeDefined();
 
     expect(renderCount.current).toEqual({
-      Text: 2,
-      Component: 1,
+      Text: { value: 2 },
+      Component: { value: 1 },
+    });
+  });
+
+  it('should get 2 from renderCount.current.Text when state is updated with nested structure', () => {
+    interface NestedTextProps {
+      count: number;
+    }
+    class NestedText extends React.Component<NestedTextProps> {
+      constructor(props: NestedTextProps) {
+        super(props);
+      }
+
+      render() {
+        return <p>{this.props.count}</p>;
+      }
+    }
+
+    interface TextProps {
+      testid?: string;
+    }
+    class Text extends React.Component<TextProps, { count: number }> {
+      constructor(props: TextProps) {
+        super(props);
+
+        this.state = {
+          count: 0,
+        };
+      }
+
+      updateCount = () => {
+        this.setState((prev) => ({ ...prev, count: prev.count + 1 }));
+      };
+
+      render() {
+        return (
+          <div>
+            <NestedText count={this.state.count} />
+            <button
+              data-testid={this.props.testid}
+              type="button"
+              onClick={this.updateCount}
+            >
+              count
+            </button>
+          </div>
+        );
+      }
+    }
+
+    class Component extends React.Component {
+      render() {
+        return (
+          <>
+            <Text />
+            <Text testid="button" />
+            <Text />
+          </>
+        );
+      }
+    }
+
+    const { renderCount } = perf(React);
+
+    render(<Component />);
+
+    fireEvent.click(screen.getByTestId('button'));
+
+    expect(screen.queryByText('2')).toBeDefined();
+    expect(renderCount.current).toEqual({
+      NestedText: [{ value: 1 }, { value: 2 }, { value: 1 }],
+      Text: [{ value: 1 }, { value: 2 }, { value: 1 }],
+      Component: { value: 1 },
     });
   });
 
@@ -227,8 +402,8 @@ describe('ClassComponent', () => {
     render(<MemorizedComponent />);
 
     expect(renderCount.current).toEqual({
-      Text: 1,
-      MemorizedComponent: 1,
+      Text: { value: 1 },
+      MemorizedComponent: { value: 1 },
     });
   });
 
@@ -279,9 +454,9 @@ describe('ClassComponent', () => {
 
     expect(screen.queryByText('2')).toBeDefined();
     expect(renderCount.current).toEqual({
-      MemorizedText: 1,
-      Text: 2,
-      Component: 1,
+      MemorizedText: { value: 1 },
+      Text: { value: 2 },
+      Component: { value: 1 },
     });
   });
 
@@ -302,8 +477,8 @@ describe('ClassComponent', () => {
     render(<MemorizedComponent />);
 
     expect(renderCount.current).toEqual({
-      MemorizedComponent: 1,
-      ForwardRefComponent: 1,
+      MemorizedComponent: { value: 1 },
+      ForwardRefComponent: { value: 1 },
     });
   });
 
@@ -324,8 +499,8 @@ describe('ClassComponent', () => {
     render(<ForwardRefComponent />);
 
     expect(renderCount.current).toEqual({
-      MemorizedComponent: 1,
-      ForwardRefComponent: 1,
+      MemorizedComponent: { value: 1 },
+      ForwardRefComponent: { value: 1 },
     });
   });
 });
