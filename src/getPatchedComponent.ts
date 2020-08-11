@@ -6,13 +6,49 @@ import { ReactSymbol } from './utils/symbols';
 import { isForwardRefComponent } from './utils/isForwardRefComponent';
 import { isFunctionComponent } from './utils/isFunctionComponent';
 
+const setArray = (
+  type: React.ElementType<React.ComponentClass | React.FunctionComponent>,
+  renderCount: PerfTools['renderCount'],
+) => {
+  const displayName = getDisplayName(type);
+  const obj = renderCount.current[displayName];
+  let currentIndex = -1;
+  if (obj) {
+    renderCount.current[displayName] = Array.isArray(obj)
+      ? [...obj, { value: 0 }]
+      : [{ ...obj }, { value: 0 }];
+
+    currentIndex = Array.isArray(obj) ? obj.length : 1;
+  }
+  return currentIndex;
+};
+
 const updateRenderCount = (
   renderCount: PerfTools['renderCount'],
   type: React.ElementType,
+  index: number,
 ) => {
-  const counter = renderCount.current;
-  const count = counter[getDisplayName(type)];
-  renderCount.current[getDisplayName(type)] = count ? count + 1 : 1;
+  const displayName = getDisplayName(type);
+  if (!displayName) {
+    console.warn(
+      "You have anonymous component. If your component don't have display name, we can not set property to renderCount.current",
+    );
+  }
+
+  const obj = renderCount.current;
+  const field = obj[displayName];
+
+  if (Array.isArray(field)) {
+    const formattedIndex = index === -1 ? 0 : index;
+    field[formattedIndex].value += 1;
+    return;
+  }
+
+  if (field) {
+    field.value += 1;
+  } else {
+    obj[displayName] = { value: 1 };
+  }
 };
 
 export interface PatchedClassComponent {}
@@ -29,6 +65,7 @@ const createClassComponent = (
       super(props, context);
 
       const origRender = super.render || this.render;
+      this.currentIndex = setArray(type, renderCount);
 
       // this probably means render is an arrow function or this.render.bind(this) was called on the original class
       // https://github.com/welldone-software/why-did-you-render/blob/master/src/patches/patchClassComponent.js#L16
@@ -42,7 +79,7 @@ const createClassComponent = (
     }
 
     render() {
-      updateRenderCount(renderCount, type);
+      updateRenderCount(renderCount, type, this.currentIndex);
       return super.render ? super.render() : null;
     }
   }
@@ -53,10 +90,12 @@ const createClassComponent = (
 const createFunctionComponent = (
   type: React.FunctionComponent,
   { renderCount }: PerfTools,
+  React: any,
 ) => {
   const FunctionComponent = type as (...args: any[]) => React.ReactElement;
   const PatchedFunctionComponent = (...args: any) => {
-    updateRenderCount(renderCount, type);
+    const currentIndex = React.useMemo(() => setArray(type, renderCount), []);
+    updateRenderCount(renderCount, type, currentIndex);
     return FunctionComponent(...args);
   };
   return PatchedFunctionComponent;
@@ -81,7 +120,7 @@ const createMemoComponent = (
     ? createClassComponent(WrappedFunctionalComponent, tools)
     : isMemoComponent(InnerMemoComponent)
     ? createMemoComponent(WrappedFunctionalComponent, tools, React)
-    : createFunctionComponent(WrappedFunctionalComponent, tools);
+    : createFunctionComponent(WrappedFunctionalComponent, tools, React);
 
   try {
     // @ts-ignore
@@ -118,6 +157,7 @@ const createForwardRefComponent = (
   const PatchedInnerComponent = createFunctionComponent(
     WrappedFunctionalComponent,
     tools,
+    React,
   );
 
   try {
@@ -156,7 +196,7 @@ const createPatchedComponent = (
   }
 
   if (isFunctionComponent(type)) {
-    return createFunctionComponent(type, tools);
+    return createFunctionComponent(type, tools, React);
   }
 
   return type;
