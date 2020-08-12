@@ -8,15 +8,16 @@ import { isFunctionComponent } from './utils/isFunctionComponent';
 
 const setArray = (
   type: React.ElementType<React.ComponentClass | React.FunctionComponent>,
-  renderCount: PerfTools['renderCount'],
+  state: PerfTools['renderCount'] | PerfTools['renderTime'],
+  initialValue: any,
 ) => {
   const displayName = getDisplayName(type);
-  const obj = renderCount.current[displayName];
+  const obj = state.current[displayName];
   let currentIndex = -1;
   if (obj) {
-    renderCount.current[displayName] = Array.isArray(obj)
-      ? [...obj, { value: 0 }]
-      : [{ ...obj }, { value: 0 }];
+    state.current[displayName] = Array.isArray(obj)
+      ? [...obj, initialValue]
+      : [{ ...obj }, initialValue];
 
     currentIndex = Array.isArray(obj) ? obj.length : 1;
   }
@@ -25,16 +26,12 @@ const setArray = (
 
 const updateRenderCount = (
   renderCount: PerfTools['renderCount'],
-  type: React.ElementType,
   index: number,
+  displayName: string,
 ) => {
-  const displayName = getDisplayName(type);
   if (!displayName) {
-    return console.warn(
-      "You have anonymous component. If your component don't have display name, we can not set property to renderCount.current",
-    );
+    return;
   }
-
   const obj = renderCount.current;
   const field = obj[displayName];
 
@@ -51,13 +48,57 @@ const updateRenderCount = (
   }
 };
 
+const startMeasureRenderTime = (
+  renderTime: PerfTools['renderTime'],
+  index: number,
+  displayName?: string,
+) => {
+  if (!displayName) {
+    return () => {};
+  }
+  const startTime = performance.now();
+
+  const obj = renderTime.current;
+
+  if (!obj[displayName]) {
+    obj[displayName] = { mount: null as any, updates: [] };
+  }
+
+  return () => {
+    const duration = performance.now() - startTime;
+
+    const field = obj[displayName];
+
+    if (Array.isArray(field)) {
+      const formattedIndex = index === -1 ? 0 : index;
+      const fieldValues = field[formattedIndex];
+      field[formattedIndex] = {
+        mount: fieldValues.mount || duration,
+        updates: fieldValues.mount ? [...fieldValues.updates, duration] : [],
+      };
+      return;
+    }
+
+    obj[displayName] = {
+      mount: field.mount || duration,
+      updates: field.mount ? [...field.updates, duration] : [],
+    };
+  };
+};
+
 export interface PatchedClassComponent {}
 
 const createClassComponent = (
   type: React.ComponentClass,
-  { renderCount }: PerfTools,
-): PatchedClassComponent => {
+  { renderCount, renderTime }: PerfTools,
+) => {
   const ClassComponent = type as new (...args: any) => any;
+  const displayName = getDisplayName(type);
+  if (!displayName) {
+    console.warn(
+      "You have anonymous component. If your component don't have display name, we can not set property to renderCount.current",
+    );
+  }
 
   class _PatchedClassComponent extends ClassComponent
     implements PatchedClassComponent {
@@ -65,7 +106,12 @@ const createClassComponent = (
       super(props, context);
 
       const origRender = super.render || this.render;
-      this.currentIndex = setArray(type, renderCount);
+
+      setArray(type, renderTime, {
+        mount: null,
+        updates: [],
+      });
+      this.currentIndex = setArray(type, renderCount, { value: 0 });
 
       // this probably means render is an arrow function or this.render.bind(this) was called on the original class
       // https://github.com/welldone-software/why-did-you-render/blob/master/src/patches/patchClassComponent.js#L16
@@ -78,8 +124,23 @@ const createClassComponent = (
       }
     }
 
+    componentDidMount() {
+      this.endMeasureRenderTime();
+    }
+
+    componentDidUpdate() {
+      this.endMeasureRenderTime();
+    }
+
     render() {
-      updateRenderCount(renderCount, type, this.currentIndex);
+      updateRenderCount(renderCount, this.currentIndex, displayName);
+
+      this.endMeasureRenderTime = startMeasureRenderTime(
+        renderTime,
+        this.currentIndex,
+        displayName,
+      );
+
       return super.render ? super.render() : null;
     }
   }
@@ -89,15 +150,38 @@ const createClassComponent = (
 
 const createFunctionComponent = (
   type: React.FunctionComponent,
-  { renderCount }: PerfTools,
+  { renderCount, renderTime }: PerfTools,
   React: any,
 ) => {
   const FunctionComponent = type as (...args: any[]) => React.ReactElement;
+  const displayName = getDisplayName(type);
+  if (!displayName) {
+    console.warn(
+      "You have anonymous component. If your component don't have display name, we can not set property to renderCount.current",
+    );
+  }
+
   const PatchedFunctionComponent = (...args: any) => {
-    const currentIndex = React.useMemo(() => setArray(type, renderCount), []);
-    updateRenderCount(renderCount, type, currentIndex);
+    const currentIndex = React.useMemo(() => {
+      setArray(type, renderTime, { mount: null, updates: [] });
+      return setArray(type, renderCount, { value: 0 });
+    }, []);
+
+    updateRenderCount(renderCount, currentIndex, displayName);
+
+    const endMeasureRenderTime = startMeasureRenderTime(
+      renderTime,
+      currentIndex,
+      displayName,
+    );
+
+    React.useEffect(() => {
+      endMeasureRenderTime();
+    });
+
     return FunctionComponent(...args);
   };
+
   return PatchedFunctionComponent;
 };
 
@@ -122,10 +206,12 @@ const createMemoComponent = (
     ? createMemoComponent(WrappedFunctionalComponent, tools, React)
     : createFunctionComponent(WrappedFunctionalComponent, tools, React);
 
-  // @ts-ignore
-  PatchedInnerComponent.displayName = getDisplayName(
-    WrappedFunctionalComponent,
-  );
+  try {
+    // @ts-ignore
+    PatchedInnerComponent.displayName = getDisplayName(
+      WrappedFunctionalComponent,
+    );
+  } catch (e) {}
 
   const PatchedMemoComponent = React.memo(
     isInnerForwardRefComponent
@@ -158,10 +244,12 @@ const createForwardRefComponent = (
     React,
   );
 
-  // @ts-ignore
-  PatchedInnerComponent.displayName = getDisplayName(
-    WrappedFunctionalComponent,
-  );
+  try {
+    // @ts-ignore
+    PatchedInnerComponent.displayName = getDisplayName(
+      WrappedFunctionalComponent,
+    );
+  } catch (e) {}
 
   const PatchedForwardRefComponent = React.forwardRef(
     isInnerMemoComponent
@@ -208,8 +296,10 @@ export const getPatchedComponent = (
 ) => {
   const PatchedComponent = createPatchedComponent(type, tools, React);
 
-  // @ts-ignore
-  PatchedComponent.displayName = getDisplayName(type);
+  try {
+    // @ts-ignore
+    PatchedComponent.displayName = getDisplayName(type);
+  } catch (e) {}
 
   componentsMap.set(type, PatchedComponent);
 

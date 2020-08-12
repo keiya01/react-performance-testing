@@ -11,6 +11,9 @@ export const perf = (React: any) => {
   const renderCount: PerfTools['renderCount'] = {
     current: {},
   };
+  const renderTime: PerfTools['renderTime'] = {
+    current: {},
+  };
 
   origReact = React;
   origCreateElement = React.createElement;
@@ -34,7 +37,7 @@ export const perf = (React: any) => {
       PatchedComponent = getPatchedComponent(
         componentsMap,
         type,
-        { renderCount },
+        { renderCount, renderTime },
         React,
       );
     }
@@ -62,7 +65,8 @@ export const perf = (React: any) => {
 
   Object.assign(React.cloneElement, origCloneElement);
 
-  return { renderCount } as PerfTools;
+  // TODO: use Proxy API to improve runtime
+  return { renderCount, renderTime } as PerfTools;
 };
 
 export const cleanup = () => {
