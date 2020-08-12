@@ -81,11 +81,11 @@ test('should two render when state is updated with it have multiple same compone
   };
   const Component = () => {
     return (
-      <>
+      <div>
         <Counter />
         <Counter testid="button" />
         <Counter />
-      </>
+      </div>
     );
   };
 
