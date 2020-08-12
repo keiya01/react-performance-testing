@@ -1,5 +1,5 @@
 ![npm](https://img.shields.io/npm/v/react-performance-testing)
-[![codecov](https://codecov.io/gh/keiya01/react-performance-testing/branch/test-github-actions/graph/badge.svg)](https://codecov.io/gh/keiya01/react-performance-testing)
+[![codecov](https://codecov.io/gh/keiya01/react-performance-testing/branch/master/graph/badge.svg)](https://codecov.io/gh/keiya01/react-performance-testing)
 ![GitHub Workflow Status](https://github.com/keiya01/react-performance-testing/workflows/test/badge.svg)
 ![GitHub Workflow Status](https://github.com/keiya01/react-performance-testing/workflows/build/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
