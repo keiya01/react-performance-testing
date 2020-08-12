@@ -122,12 +122,10 @@ const createMemoComponent = (
     ? createMemoComponent(WrappedFunctionalComponent, tools, React)
     : createFunctionComponent(WrappedFunctionalComponent, tools, React);
 
-  try {
-    // @ts-ignore
-    PatchedInnerComponent.displayName = getDisplayName(
-      WrappedFunctionalComponent,
-    );
-  } catch (e) {}
+  // @ts-ignore
+  PatchedInnerComponent.displayName = getDisplayName(
+    WrappedFunctionalComponent,
+  );
 
   const PatchedMemoComponent = React.memo(
     isInnerForwardRefComponent
@@ -160,13 +158,10 @@ const createForwardRefComponent = (
     React,
   );
 
-  // TODO: write test about catch case
-  try {
-    // @ts-ignore
-    PatchedInnerComponent.displayName = getDisplayName(
-      WrappedFunctionalComponent,
-    );
-  } catch (e) {}
+  // @ts-ignore
+  PatchedInnerComponent.displayName = getDisplayName(
+    WrappedFunctionalComponent,
+  );
 
   const PatchedForwardRefComponent = React.forwardRef(
     isInnerMemoComponent
@@ -213,10 +208,8 @@ export const getPatchedComponent = (
 ) => {
   const PatchedComponent = createPatchedComponent(type, tools, React);
 
-  try {
-    // @ts-ignore
-    PatchedComponent.displayName = getDisplayName(type);
-  } catch (e) {}
+  // @ts-ignore
+  PatchedComponent.displayName = getDisplayName(type);
 
   componentsMap.set(type, PatchedComponent);
 
