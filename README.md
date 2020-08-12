@@ -6,7 +6,7 @@
 
 # react-performance-testing (Experimental)
 
-You can test react performance by using this lib. If you want to check **number of rendering** or **rendering time** in test environment, this lib is make sense. You can check react performance.
+You can test React runtime performance by using this lib. If you want to check **number of rendering** or **rendering time** in test environment, this lib is make sense.
 
 ## Table of Contents
 
