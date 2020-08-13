@@ -6,12 +6,16 @@
 
 # react-performance-testing
 
-You can test React runtime performance by using this lib. If you want to check **number of rendering** or **rendering time** in test environment, this lib is make sense.
+You can test React runtime performance by using this lib. If you want to check **the number of renders**, or **render time** in a test environment, this lib makes sense.
 
 ## Table of Contents
 
+- [The problem](#the-problem)
+- [The solution](#the-solution)
 - [Installation](#installation)
 - [Examples](#examples)
+  - [count renders](#count-renders)
+  - [measure render time](#measure-render-time)
 - [API](#api)
   - [perf](#perf)
     - [renderCount](#renderCount)
@@ -19,6 +23,14 @@ You can test React runtime performance by using this lib. If you want to check *
   - [cleanup](#cleanup)
   - [typescript](#typescript)
 - [LICENSE](#license)
+
+## The problem
+
+If you are developing high performance features, you may want to write tests about the number of renders or render time. We have to check with devtools or light house manually, but we could not test these cases automatically. Additionally, we cannot predict re-renders without getting nervous. The `react-performance-testing` provide a solution for these cases.
+
+## The solution
+
+The `react-performance-testing` provide simple and easy way as a solution for the above problem. It provides some features by monkey patched `React`. We can count the number of renders and measure renders time as well, so we can test by using these values.
 
 ## Installation
 
@@ -36,12 +48,10 @@ yarn add --dev react-performance-testing
 
 ## Example
 
-```jsx
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { perf } from 'react-performance-testing';
+### count renders
 
-test('should two render when state is updated', () => {
+```jsx
+test('should two renders when state is updated', () => {
   const Counter = () => {
     const [count, setCount] = React.useState(0);
     return (
@@ -66,7 +76,7 @@ test('should two render when state is updated', () => {
   expect(renderCount.current.Counter.value).toBe(2);
 });
 
-test('should two render when state is updated with it have multiple same component', () => {
+test('should two renders when state is updated with it have multiple same component', () => {
   const Counter = ({ testid }) => {
     const [count, setCount] = React.useState(0);
     return (
@@ -102,8 +112,12 @@ test('should two render when state is updated with it have multiple same compone
   expect(renderCount.current.Counter[1].value).toBe(2);
   expect(renderCount.current.Counter[2].value).toBe(1);
 });
+```
 
-test('should rendering time be less than 16ms', () => {
+### measure render time
+
+```jsx
+test('should render time be less than 16ms', () => {
   const Counter = () => {
     const [count, setCount] = React.useState(0);
     return (
@@ -168,12 +182,12 @@ test('should measure re-render time when state is updated with it have multiple 
 
 ## API
 
-If you use API with large component, component's performance might be **down** because we monkey patches React.
-Therefore you should use API with **component that has one feature** like `List`, `Modal` etc.
+If you use the API with large component, component's performance might be **down** because we monkey patches React.
+Therefore, you should use API with **components that has one feature** like `List`, `Modal` etc.
 
 ### perf
 
-`perf` method observe your component. So you can get `renderCount` to count number of re-render.
+`perf` method observe your component. So you can get `renderCount` to count the number of renders and `renderTime` to measure render time.
 
 ```js
 const { renderCount, renderTime } = perf(React);
@@ -183,7 +197,7 @@ const { renderCount, renderTime } = perf(React);
 
 #### renderCount
 
-`renderCount` has number of re-render in some component. You can get number of re-render like bellow.
+`renderCount` has number of re-render in some component. You can get the number of renders like bellow.
 
 ```jsx
 const Component = () => <p>test</p>;
@@ -201,11 +215,11 @@ console.log(renderCount.current.Component.value); // output: 1
   - `ComponentName: string | Array`
     - `value: number`
 
-**Note**: If you have some same component, these component combine to `array`
+**Note**: If you have some same component, these components combine to `array`
 
 #### renderTime
 
-`renderTime` has rendering time in some component. You can get rendering time like bellow.
+`renderTime` has rendering time in some component. You can get render time like bellow.
 
 ```jsx
 const Component = () => <p>test</p>;
@@ -225,8 +239,8 @@ console.log(renderTime.current.Component.updates); // output: []
     - `mount: number` ... This property has first render time
     - `updates: Array<number>` ... This property has the second and the subsequent render time(second render is the index of `0`)
 
-**Note**: If you have some same component, these component combine to `array`  
-**Note**: Each times are displayed with `ms`
+**Note**: If you have some same component, these components combine to `array`  
+**Note**: Each time are displayed with `ms`
 
 ### cleanup
 
@@ -255,7 +269,7 @@ const { renderCount, renderTime } = perf <{ Text: unknown[], Component: unknown 
 renderCount.current // Editor will suggest `Text[]` and `Component`
 ```
 
-You can pass `{ComponentName: unknown or unknown[]}` type to the type argument. If you passed to the type argument then editor will suggest the correct type dependent on passed type.
+You can pass `{ComponentName: unknown or unknown[]}` type for the type argument. If you passed to the type argument, then the editor will suggest the correct type dependent on passed type.
 
 ## LICENSE
 
