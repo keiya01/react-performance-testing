@@ -4,7 +4,7 @@
 ![GitHub Workflow Status](https://github.com/keiya01/react-performance-testing/workflows/build/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# react-performance-testing (Experimental)
+# react-performance-testing
 
 You can test React runtime performance by using this lib. If you want to check **number of rendering** or **rendering time** in test environment, this lib is make sense.
 
