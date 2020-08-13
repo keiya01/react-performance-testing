@@ -255,7 +255,7 @@ const { renderCount, renderTime } = perf <{ Text: unknown[], Component: unknown 
 renderCount.current // Editor will suggest `Text[]` and `Component`
 ```
 
-You can pass `{ComponentName: unknown or unknown[]}` type to the type argument. If you passed to the type argument then Editor will suggest passed type.
+You can pass `{ComponentName: unknown or unknown[]}` type to the type argument. If you passed to the type argument then editor will suggest the correct type dependent on passed type.
 
 ## LICENSE
 
