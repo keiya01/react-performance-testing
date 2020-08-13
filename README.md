@@ -5,7 +5,7 @@
 ![GitHub Workflow Status](https://github.com/keiya01/react-performance-testing/workflows/test/badge.svg)
 ![GitHub Workflow Status](https://github.com/keiya01/react-performance-testing/workflows/build/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-  
+
 You can test React runtime performance by using this lib. If you want to check **the number of renders**, or **render time** in a test environment, this lib makes sense.
 
 ## Table of Contents
@@ -22,6 +22,8 @@ You can test React runtime performance by using this lib. If you want to check *
     - [renderTime](#renderTime)
   - [cleanup](#cleanup)
   - [typescript](#typescript)
+- [Tips](#tips)
+  - [Hooks](#hooks)
 - [LICENSE](#license)
 
 ## The problem
@@ -193,7 +195,7 @@ Therefore, you should use API with **components that has one feature** like `Lis
 const { renderCount, renderTime } = perf(React);
 ```
 
-**Note**: we need to pass `React` because we monkey patch React to observe your component.
+Note that You need to invoke `perf` method before `render` method is invoked. Additionally, You need to pass `React` to `perf` method. This is because we are monkey patching `React`.
 
 #### renderCount
 
@@ -230,7 +232,7 @@ console.log(renderTime.current.Component.mount); // output: ...ms
 console.log(renderTime.current.Component.updates); // output: []
 ```
 
-**Note**: You need to set display name. If you have anonymous component, we can not set property to `renderCount` correctly.
+**Note**: You need to set display name. If you have anonymous component, we can not set property to `renderTime` correctly.
 
 ##### Properties
 
@@ -270,6 +272,43 @@ renderCount.current // Editor will suggest `Text[]` and `Component`
 ```
 
 You can pass `{ComponentName: unknown or unknown[]}` type for the type argument. If you passed to the type argument, then the editor will suggest the correct type dependent on passed type.
+
+## Tips
+
+### Anonymous Component
+
+If you are using anonymous component, this lib doesn't work correctly. To make this lib work correctly, you need to set the display name as bellows.
+
+```js
+React.memo(function MemoComponent {
+  return <p>test</p>;
+});
+
+// or
+
+const MemoComponent = () => <p>test</p>;
+React.memo(MemoComponent);
+```
+
+Setting a display name will get benefits not only this lib, but also when [you debug in React](https://reactjs.org/docs/react-component.html#displayname).
+
+### Hooks
+
+If you are using `@testing-library/react-hooks`, you can check the number of renders with `perf` method as bellows.
+
+```js
+const { renderCount } = perf(React);
+const { result } = renderHook(() => {
+  /**
+   * use some hooks
+   */
+});
+
+// You can get value from the TestHook component
+console.log(renderCount.current.TestHook.value);
+```
+
+This is because `renderHook` method is wrapping callback with the `TestHook` component.
 
 ## LICENSE
 
