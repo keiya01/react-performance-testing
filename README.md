@@ -13,7 +13,7 @@ You can test React runtime performance by using this lib. If you want to check *
 - [The problem](#the-problem)
 - [The solution](#the-solution)
 - [Installation](#installation)
-- [Examples](#examples)
+- [Example](#example)
   - [count renders](#count-renders)
   - [measure render time](#measure-render-time)
 - [API](#api)
