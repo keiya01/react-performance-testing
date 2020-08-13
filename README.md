@@ -26,7 +26,7 @@ You can test React runtime performance by using this lib. If you want to check *
 
 ## The problem
 
-If you are developing high performance features, you may want to write tests about the number of renders or render time. We have to check with devtools or light house manually, but we could not test these cases automatically. Additionally, we cannot predict re-renders without getting nervous. The `react-performance-testing` provide a solution for these cases.
+If you are developing high performance features, you would like to write tests about the number of renders or render time. We have to check with devtools or light house manually, but we could not test these cases automatically. Additionally, we cannot predict re-renders without getting nervous. The `react-performance-testing` provide a solution for these cases.
 
 ## The solution
 
