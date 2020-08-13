@@ -14,6 +14,8 @@ You can test React runtime performance by using this lib. If you want to check *
 - [Examples](#examples)
 - [API](#api)
   - [perf](#perf)
+    - [renderCount](#renderCount)
+    - [renderTime](#renderTime)
   - [cleanup](#cleanup)
 - [LICENSE](#license)
 
@@ -173,6 +175,12 @@ Therefore you should use API with **component that has one feature** like `List`
 `perf` method observe your component. So you can get `renderCount` to count number of re-render.  
 **Note**: If you want to measure render time, please just wait. This feature is coming soon.
 
+```js
+const { renderCount, renderTime } = perf(React);
+```
+
+**Note**: we need to pass `React` because we monkey patch React to observe your component.
+
 #### renderCount
 
 `renderCount` has number of re-render in some component. You can get number of re-render like bellow.
@@ -185,11 +193,15 @@ render(<Component />);
 console.log(renderCount.current.Component.value); // output: 1
 ```
 
-we need to pass `React` because we monkey patch React to observe your component.  
 **Note**: You need to set display name. If you have anonymous component, we can not set property to `renderCount` correctly.
 
-- `renderCount.current`: `{ value: number } | { value: number }[]`
-  - If you have some same component, these component combine to array
+##### Properties
+
+- `renderCount.current`
+  - `ComponentName: string | Array`
+    - `value: number`
+
+**Note**: If you have some same component, these component combine to `array`
 
 #### renderTime
 
@@ -204,8 +216,17 @@ console.log(renderTime.current.Component.mount); // output: ...ms
 console.log(renderTime.current.Component.updates); // output: []
 ```
 
-- `renderCount.current`: `{ mount: number, updates: number[] } | { mount: number, updates: number[] }[]`
-  - If you have some same component, these component combine to array
+**Note**: You need to set display name. If you have anonymous component, we can not set property to `renderCount` correctly.
+
+##### Properties
+
+- `renderCount.current`
+  - `ComponentName: string | Array`
+    - `mount: number` ... This property has first render time
+    - `updates: Array<number>` ... This property has the second and the subsequent render time(second render is the index of `0`)
+
+**Note**: If you have some same component, these component combine to `array`  
+**Note**: Each times are displayed with `ms`
 
 ### cleanup
 
