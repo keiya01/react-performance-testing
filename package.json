@@ -4,6 +4,10 @@
   "main": "dist/index.cjs.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "description": "You can test React runtime performance by using this lib. If you want to check the number of renders, or render time in a test environment, this lib makes sense.",
   "repository": {
     "type": "git",
     "url": "https://github.com/keiya01/react-performance-testing/"
@@ -13,10 +17,6 @@
   },
   "homepage": "https://github.com/keiya01/react-performance-testing#readme",
   "author": "keiya01",
-  "license": "MIT",
-  "files": [
-    "dist"
-  ],
   "keywords": [
     "react",
     "ui",
@@ -25,6 +25,7 @@
     "testing",
     "performance"
   ],
+  "license": "MIT",
   "scripts": {
     "test": "jest",
     "build": "rollup -c rollup.config.js",
