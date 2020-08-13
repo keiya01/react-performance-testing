@@ -23,6 +23,7 @@ You can test React runtime performance by using this lib. If you want to check *
   - [cleanup](#cleanup)
   - [typescript](#typescript)
 - [Tips](#tips)
+  - [Anonymous Component](#anonymous-component)
   - [Hooks](#hooks)
 - [LICENSE](#license)
 
