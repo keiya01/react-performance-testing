@@ -1,11 +1,11 @@
+# react-performance-testing
+
 ![npm](https://img.shields.io/npm/v/react-performance-testing)
 [![codecov](https://codecov.io/gh/keiya01/react-performance-testing/branch/master/graph/badge.svg)](https://codecov.io/gh/keiya01/react-performance-testing)
 ![GitHub Workflow Status](https://github.com/keiya01/react-performance-testing/workflows/test/badge.svg)
 ![GitHub Workflow Status](https://github.com/keiya01/react-performance-testing/workflows/build/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-# react-performance-testing
-
+  
 You can test React runtime performance by using this lib. If you want to check **the number of renders**, or **render time** in a test environment, this lib makes sense.
 
 ## Table of Contents
