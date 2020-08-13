@@ -7,12 +7,22 @@ export interface RenderTimeField {
   updates: number[];
 }
 
-export interface PerfTools {
+export type DefaultPerfToolsField = Record<string, any>;
+
+export type PerfToolsMutation<T, U> = {
+  [K in keyof T]?: T[K] extends unknown[]
+    ? U[]
+    : U extends unknown
+    ? U
+    : U | U[];
+};
+
+export interface PerfTools<T = DefaultPerfToolsField> {
   renderCount: {
-    current: Record<string, RenderCountField | RenderCountField[]>;
+    current: PerfToolsMutation<T, RenderCountField>;
   };
   renderTime: {
-    current: Record<string, RenderTimeField | RenderTimeField[]>;
+    current: PerfToolsMutation<T, RenderTimeField>;
   };
 }
 
