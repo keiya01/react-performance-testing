@@ -15,3 +15,10 @@ export interface PerfTools {
     current: Record<string, RenderTimeField | RenderTimeField[]>;
   };
 }
+
+export interface PerfState {
+  hasRenderCount: boolean;
+  hasRenderTime: boolean;
+  renderCount?: boolean;
+  renderTime?: boolean;
+}

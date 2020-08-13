@@ -1,4 +1,4 @@
-import { PerfTools } from './types';
+import { PerfTools, PerfState } from './types';
 import { getDisplayName } from './getDisplayName';
 import { isClassComponent } from './utils/isClassComponent';
 import { isMemoComponent } from './utils/isMemoComponent';
@@ -56,13 +56,14 @@ const startMeasureRenderTime = (
   if (!displayName) {
     return () => {};
   }
-  const startTime = performance.now();
 
   const obj = renderTime.current;
 
   if (!obj[displayName]) {
     obj[displayName] = { mount: null as any, updates: [] };
   }
+
+  const startTime = performance.now();
 
   return () => {
     const duration = performance.now() - startTime;
@@ -91,6 +92,7 @@ export interface PatchedClassComponent {}
 const createClassComponent = (
   type: React.ComponentClass,
   { renderCount, renderTime }: PerfTools,
+  { hasRenderCount, hasRenderTime }: PerfState,
 ) => {
   const ClassComponent = type as new (...args: any) => any;
   const displayName = getDisplayName(type);
@@ -107,11 +109,16 @@ const createClassComponent = (
 
       const origRender = super.render || this.render;
 
-      setArray(type, renderTime, {
-        mount: null,
-        updates: [],
-      });
-      this.currentIndex = setArray(type, renderCount, { value: 0 });
+      if (hasRenderTime) {
+        this.currentIndex = setArray(type, renderTime, {
+          mount: null,
+          updates: [],
+        });
+      }
+
+      if (hasRenderCount) {
+        this.currentIndex = setArray(type, renderCount, { value: 0 });
+      }
 
       // this probably means render is an arrow function or this.render.bind(this) was called on the original class
       // https://github.com/welldone-software/why-did-you-render/blob/master/src/patches/patchClassComponent.js#L16
@@ -125,21 +132,29 @@ const createClassComponent = (
     }
 
     componentDidMount() {
-      this.endMeasureRenderTime();
+      if (this.endMeasureRenderTime) {
+        this.endMeasureRenderTime();
+      }
     }
 
     componentDidUpdate() {
-      this.endMeasureRenderTime();
+      if (this.endMeasureRenderTime) {
+        this.endMeasureRenderTime();
+      }
     }
 
     render() {
-      updateRenderCount(renderCount, this.currentIndex, displayName);
+      if (hasRenderCount) {
+        updateRenderCount(renderCount, this.currentIndex, displayName);
+      }
 
-      this.endMeasureRenderTime = startMeasureRenderTime(
-        renderTime,
-        this.currentIndex,
-        displayName,
-      );
+      if (hasRenderTime) {
+        this.endMeasureRenderTime = startMeasureRenderTime(
+          renderTime,
+          this.currentIndex,
+          displayName,
+        );
+      }
 
       return super.render ? super.render() : null;
     }
@@ -151,6 +166,7 @@ const createClassComponent = (
 const createFunctionComponent = (
   type: React.FunctionComponent,
   { renderCount, renderTime }: PerfTools,
+  { hasRenderCount, hasRenderTime }: PerfState,
   React: any,
 ) => {
   const FunctionComponent = type as (...args: any[]) => React.ReactElement;
@@ -163,21 +179,37 @@ const createFunctionComponent = (
 
   const PatchedFunctionComponent = (...args: any) => {
     const currentIndex = React.useMemo(() => {
-      setArray(type, renderTime, { mount: null, updates: [] });
-      return setArray(type, renderCount, { value: 0 });
+      let index = -1;
+
+      if (hasRenderTime) {
+        index = setArray(type, renderTime, { mount: null, updates: [] });
+      }
+
+      if (hasRenderCount) {
+        index = setArray(type, renderCount, { value: 0 });
+      }
+
+      return index;
     }, []);
+    const endMeasureRenderTime = React.useRef(null);
 
-    updateRenderCount(renderCount, currentIndex, displayName);
+    if (hasRenderCount) {
+      updateRenderCount(renderCount, currentIndex, displayName);
+    }
 
-    const endMeasureRenderTime = startMeasureRenderTime(
-      renderTime,
-      currentIndex,
-      displayName,
-    );
-
-    React.useEffect(() => {
-      endMeasureRenderTime();
+    React.useLayoutEffect(() => {
+      if (endMeasureRenderTime.current) {
+        endMeasureRenderTime.current();
+      }
     });
+
+    if (hasRenderTime) {
+      endMeasureRenderTime.current = startMeasureRenderTime(
+        renderTime,
+        currentIndex,
+        displayName,
+      );
+    }
 
     return FunctionComponent(...args);
   };
@@ -190,6 +222,7 @@ const createMemoComponent = (
     compare: (state: any, props: any) => boolean;
   },
   tools: PerfTools,
+  perfState: PerfState,
   React: any,
 ): any => {
   const { type: InnerMemoComponent } = type;
@@ -201,10 +234,15 @@ const createMemoComponent = (
     : InnerMemoComponent;
 
   const PatchedInnerComponent = isClassComponent(InnerMemoComponent)
-    ? createClassComponent(WrappedFunctionalComponent, tools)
+    ? createClassComponent(WrappedFunctionalComponent, tools, perfState)
     : isMemoComponent(InnerMemoComponent)
-    ? createMemoComponent(WrappedFunctionalComponent, tools, React)
-    : createFunctionComponent(WrappedFunctionalComponent, tools, React);
+    ? createMemoComponent(WrappedFunctionalComponent, tools, perfState, React)
+    : createFunctionComponent(
+        WrappedFunctionalComponent,
+        tools,
+        perfState,
+        React,
+      );
 
   try {
     // @ts-ignore
@@ -228,6 +266,7 @@ const createForwardRefComponent = (
     render: React.ForwardRefRenderFunction<any>;
   },
   tools: PerfTools,
+  perfState: PerfState,
   React: any,
 ): any => {
   const { render: InnerForwardRefComponent } = type;
@@ -241,6 +280,7 @@ const createForwardRefComponent = (
   const PatchedInnerComponent = createFunctionComponent(
     WrappedFunctionalComponent,
     tools,
+    perfState,
     React,
   );
 
@@ -265,24 +305,25 @@ const createPatchedComponent = (
     $$typeof: ReactSymbol;
   },
   tools: PerfTools,
+  perfState: PerfState,
   React: any,
 ): any => {
   if (isMemoComponent(type)) {
-    return createMemoComponent(type, tools, React);
+    return createMemoComponent(type, tools, perfState, React);
   }
 
   if (isForwardRefComponent(type)) {
-    return createForwardRefComponent(type, tools, React);
+    return createForwardRefComponent(type, tools, perfState, React);
   }
 
   if (isClassComponent(type)) {
-    return createClassComponent(type, tools);
+    return createClassComponent(type, tools, perfState);
   }
 
   // This is because this is checking type
   /* istanbul ignore else */
   if (isFunctionComponent(type)) {
-    return createFunctionComponent(type, tools, React);
+    return createFunctionComponent(type, tools, perfState, React);
   }
 };
 
@@ -292,9 +333,15 @@ export const getPatchedComponent = (
     $$typeof: ReactSymbol;
   },
   tools: PerfTools,
+  perfState: PerfState,
   React: any,
 ) => {
-  const PatchedComponent = createPatchedComponent(type, tools, React);
+  const PatchedComponent = createPatchedComponent(
+    type,
+    tools,
+    perfState,
+    React,
+  );
 
   try {
     // @ts-ignore

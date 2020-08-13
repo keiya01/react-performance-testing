@@ -1,4 +1,4 @@
-import { PerfTools } from './types';
+import { PerfTools, PerfState } from './types';
 import { getPatchedComponent } from './getPatchedComponent';
 import { shouldTrack } from './utils/shouldTrack';
 
@@ -14,6 +14,24 @@ export const perf = (React: any) => {
   const renderTime: PerfTools['renderTime'] = {
     current: {},
   };
+
+  const perfState: PerfState = {
+    hasRenderCount: !Proxy,
+    hasRenderTime: !Proxy,
+  };
+
+  Object.defineProperties(perfState, {
+    renderCount: {
+      set(val: boolean) {
+        this.hasRenderCount = val;
+      },
+    },
+    renderTime: {
+      set(val: boolean) {
+        this.hasRenderTime = val;
+      },
+    },
+  });
 
   origReact = React;
   origCreateElement = React.createElement;
@@ -38,6 +56,7 @@ export const perf = (React: any) => {
         componentsMap,
         type,
         { renderCount, renderTime },
+        perfState,
         React,
       );
     }
@@ -65,15 +84,20 @@ export const perf = (React: any) => {
 
   Object.assign(React.cloneElement, origCloneElement);
 
-  // TODO: use Proxy API to improve runtime
-  return { renderCount, renderTime } as PerfTools;
+  const tools: PerfTools = { renderCount, renderTime };
+
+  return window.Proxy
+    ? new Proxy<PerfTools>(tools, {
+        get: (target, prop: keyof PerfTools) => {
+          perfState[prop] = true;
+          return target[prop];
+        },
+      })
+    : tools;
 };
 
 export const cleanup = () => {
   if (!origReact) {
-    console.warn(
-      'cleanup method need to be invoked after perf method is invoked',
-    );
     return;
   }
 
