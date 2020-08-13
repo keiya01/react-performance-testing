@@ -123,7 +123,7 @@ test('should rendering time be less than 16ms', () => {
 
   // 16ms is meaning it is 60fps
   expect(renderTime.current.Counter.mount).toBeLessThan(16);
-  // renderTime.current.Counter.updates[0] is first render
+  // renderTime.current.Counter.updates[0] is second render
   expect(renderTime.current.Counter.updates[0]).toBeLessThan(16);
 });
 
@@ -172,8 +172,7 @@ Therefore you should use API with **component that has one feature** like `List`
 
 ### perf
 
-`perf` method observe your component. So you can get `renderCount` to count number of re-render.  
-**Note**: If you want to measure render time, please just wait. This feature is coming soon.
+`perf` method observe your component. So you can get `renderCount` to count number of re-render.
 
 ```js
 const { renderCount, renderTime } = perf(React);
