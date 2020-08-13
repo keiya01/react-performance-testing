@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { perf } from '../index';
-// import { everyIsFloat } from './testUtils/everyIsFloat';
 
 describe('FunctionComponent', () => {
   it('should initialize Component with flat structure', () => {
@@ -129,13 +128,18 @@ describe('ClassComponent', () => {
       }
     }
 
-    const { renderCount } = perf(React);
+    const { renderCount, renderTime } = perf(React);
 
     render(<Component />);
 
     expect(renderCount.current).toEqual({
       Text: { value: 1 },
       Component: { value: 1 },
+    });
+
+    expect(renderTime.current).toEqual({
+      Text: { mount: expect.any(Number), updates: [] },
+      Component: { mount: expect.any(Number), updates: [] },
     });
   });
 
@@ -165,7 +169,7 @@ describe('ClassComponent', () => {
       }
     }
 
-    const { renderCount } = perf(React);
+    const { renderCount, renderTime } = perf(React);
 
     render(<Component />);
 
@@ -173,6 +177,21 @@ describe('ClassComponent', () => {
       NestedText: [{ value: 1 }, { value: 1 }, { value: 1 }, { value: 1 }],
       Text: [{ value: 1 }, { value: 1 }, { value: 1 }],
       Component: { value: 1 },
+    });
+
+    expect(renderTime.current).toEqual({
+      NestedText: [
+        { mount: expect.any(Number), updates: [] },
+        { mount: expect.any(Number), updates: [] },
+        { mount: expect.any(Number), updates: [] },
+        { mount: expect.any(Number), updates: [] },
+      ],
+      Text: [
+        { mount: expect.any(Number), updates: [] },
+        { mount: expect.any(Number), updates: [] },
+        { mount: expect.any(Number), updates: [] },
+      ],
+      Component: { mount: expect.any(Number), updates: [] },
     });
   });
 
@@ -311,7 +330,9 @@ test('should invoke console.warn when it has anonymous function component', () =
 
   const Component = React.memo(() => <p>test</p>);
 
-  perf(React);
+  const tools = perf(React);
+  tools.renderCount;
+  tools.renderTime;
 
   render(<Component />);
 
@@ -332,7 +353,9 @@ test('should invoke console.warn when it has anonymous class component', () => {
     },
   );
 
-  perf(React);
+  const tools = perf(React);
+  tools.renderCount;
+  tools.renderTime;
 
   render(<Component />);
 
@@ -340,4 +363,37 @@ test('should invoke console.warn when it has anonymous class component', () => {
 
   // @ts-ignore
   console.warn.mockRestore();
+});
+
+test('should not set value when property is not defined', () => {
+  jest.spyOn(window, 'Proxy').mockImplementation((target) => target);
+
+  const Component = () => <p>test</p>;
+
+  const { renderCount, renderTime } = perf(React);
+
+  render(<Component />);
+
+  expect(renderCount.current).toEqual({});
+  expect(renderTime.current).toEqual({});
+});
+
+test('should work correctly when Proxy is undefined', () => {
+  const proxy = window.Proxy;
+
+  // @ts-ignore
+  window.Proxy = undefined;
+
+  const Component = () => <p>test</p>;
+
+  const { renderCount, renderTime } = perf(React);
+
+  render(<Component />);
+
+  expect(renderCount.current).toEqual({ Component: { value: 1 } });
+  expect(renderTime.current).toEqual({
+    Component: { mount: expect.any(Number), updates: [] },
+  });
+
+  window.Proxy = proxy;
 });
