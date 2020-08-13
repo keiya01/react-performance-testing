@@ -17,6 +17,7 @@ You can test React runtime performance by using this lib. If you want to check *
     - [renderCount](#renderCount)
     - [renderTime](#renderTime)
   - [cleanup](#cleanup)
+  - [typescript](#typescript)
 - [LICENSE](#license)
 
 ## Installation
@@ -231,6 +232,30 @@ console.log(renderTime.current.Component.updates); // output: []
 
 `cleanup` method is executed automatically in `afterEach()` if you are using `Jest`, `Mocha` and `Jasmine`. You need to cleanup your component by using `cleanup`.  
 If your testing lib has `afterEach()`, you need to invoke `cleanup()` manually.
+
+### TypeScript
+
+If you are using Typescript, you can get benefits from type inference as bellow.
+
+```tsx
+const Text = (): React.ReactElement => <p>test</p>;
+const Component = (): React.ReactElement => (
+  <div>
+    <Text />
+    <Text />
+  </div>
+);
+
+// If you didn't pass your type to the type argument
+const { renderCount, renderTime } = perf(React);
+renderCount.current // Editor will suggest `Text | Text[]` and `Component | Component[]`
+
+// If you passed your type to the type argument
+const { renderCount, renderTime } = perf <{ Text: unknown[], Component: unknown }> React;
+renderCount.current // Editor will suggest `Text[]` and `Component`
+```
+
+You can pass `{ComponentName: unknown or unknown[]}` type to the type argument. If you passed to the type argument then editor will suggest the correct type dependent on passed type.
 
 ## LICENSE
 

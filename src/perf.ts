@@ -1,4 +1,4 @@
-import { PerfTools, PerfState } from './types';
+import { PerfTools, PerfState, DefaultPerfToolsField } from './types';
 import { getPatchedComponent } from './getPatchedComponent';
 import { shouldTrack } from './utils/shouldTrack';
 
@@ -7,12 +7,10 @@ let origCreateFactory: any = null;
 let origCloneElement: any = null;
 let origReact: any = null;
 
-export const perf = (React: any) => {
-  const renderCount: PerfTools['renderCount'] = {
-    current: {},
-  };
-  const renderTime: PerfTools['renderTime'] = {
-    current: {},
+export const perf = <T = DefaultPerfToolsField>(React: any) => {
+  const tools: PerfTools<T> = {
+    renderCount: { current: {} },
+    renderTime: { current: {} },
   };
 
   const perfState: PerfState = {
@@ -55,7 +53,7 @@ export const perf = (React: any) => {
       PatchedComponent = getPatchedComponent(
         componentsMap,
         type,
-        { renderCount, renderTime },
+        tools,
         perfState,
         React,
       );
@@ -84,10 +82,8 @@ export const perf = (React: any) => {
 
   Object.assign(React.cloneElement, origCloneElement);
 
-  const tools: PerfTools = { renderCount, renderTime };
-
   return window.Proxy
-    ? new Proxy<PerfTools>(tools, {
+    ? new Proxy(tools, {
         get: (target, prop: keyof PerfTools) => {
           perfState[prop] = true;
           return target[prop];

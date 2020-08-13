@@ -68,7 +68,7 @@ const startMeasureRenderTime = (
   return () => {
     const duration = performance.now() - startTime;
 
-    const field = obj[displayName];
+    const field = obj[displayName]!;
 
     if (Array.isArray(field)) {
       const formattedIndex = index === -1 ? 0 : index;
