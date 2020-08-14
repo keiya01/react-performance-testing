@@ -1,12 +1,21 @@
 import typescript from 'rollup-plugin-typescript2';
 
-export default {
-  input: 'src/index.ts',
-  output: [
-    {
-      file: 'dist/index.cjs.js',
-      format: 'cjs',
-    },
-  ],
-  plugins: [typescript({ tsconfig: 'tsconfig.json' })],
-};
+const commonPlugins = [typescript({ tsconfig: 'tsconfig.json' })];
+
+const getCJS = (file) => ({
+  file,
+  format: 'cjs',
+});
+
+export default [
+  {
+    input: 'src/index.ts',
+    output: [getCJS('dist/index.cjs.js')],
+    plugins: commonPlugins,
+  },
+  {
+    input: 'src/native/index.ts',
+    output: [getCJS('dist/native/index.cjs.js')],
+    plugins: commonPlugins,
+  },
+];
