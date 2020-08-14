@@ -8,7 +8,7 @@
   "files": [
     "dist"
   ],
-  "description": "You can test React runtime performance by using this lib. If you want to check the number of renders, or render time in a test environment, this lib makes sense.",
+  "description": "You can test React(ReactNative) runtime performance by using this lib. If you want to check the number of renders, or render time in a test environment, this lib makes sense.",
   "repository": {
     "type": "git",
     "url": "https://github.com/keiya01/react-performance-testing/"
