@@ -25,14 +25,17 @@ export const perf = <T = DefaultPerfToolsField>(React: any) => {
 
   React.createElement = function (type: React.ElementType, ...rest: any) {
     if (
-      aliases.includes(getDisplayName(type)) ||
-      (typeof type !== 'string' && isForwardRefComponent(type as any))
+      typeof type !== 'string' &&
+      (aliases.includes(getDisplayName(type)) ||
+        isForwardRefComponent(type as any))
     ) {
       return origCreateElement.apply(React, [type, ...rest]);
     }
 
     return patchedCreateElement.apply(React, [type, ...rest]);
   };
+
+  Object.assign(React.createElement, patchedCreateElement);
 
   return tools;
 };
