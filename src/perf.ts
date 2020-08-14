@@ -82,7 +82,7 @@ export const perf = <T = DefaultPerfToolsField>(React: any) => {
 
   Object.assign(React.cloneElement, origCloneElement);
 
-  return window.Proxy
+  return Proxy
     ? new Proxy(tools, {
         get: (target, prop: keyof PerfTools) => {
           perfState[prop] = true;
