@@ -40,7 +40,7 @@ export const perf = <T = DefaultPerfToolsField>(React: any) => {
   const componentsMap = new WeakMap();
 
   // @ts-ignore
-  React.createElement = (type: React.ElementType, ...rest: any) => {
+  React.createElement = function (type: React.ElementType, ...rest: any) {
     if (!shouldTrack(type)) {
       return origCreateElement.apply(React, [type, ...rest]);
     }
@@ -82,7 +82,7 @@ export const perf = <T = DefaultPerfToolsField>(React: any) => {
 
   Object.assign(React.cloneElement, origCloneElement);
 
-  return window.Proxy
+  return Proxy
     ? new Proxy(tools, {
         get: (target, prop: keyof PerfTools) => {
           perfState[prop] = true;
