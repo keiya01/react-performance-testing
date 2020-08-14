@@ -40,7 +40,7 @@ export const perf = <T = DefaultPerfToolsField>(React: any) => {
   const componentsMap = new WeakMap();
 
   // @ts-ignore
-  React.createElement = (type: React.ElementType, ...rest: any) => {
+  React.createElement = function (type: React.ElementType, ...rest: any) {
     if (!shouldTrack(type)) {
       return origCreateElement.apply(React, [type, ...rest]);
     }
