@@ -23,6 +23,7 @@ You can test React runtime performance by using this lib. If you want to check *
   - [cleanup](#cleanup)
   - [typescript](#typescript)
 - [Tips](#tips)
+  - [Performance](#performance)
   - [Anonymous Component](#anonymous-component)
   - [Hooks](#hooks)
 - [LICENSE](#license)
@@ -275,6 +276,10 @@ renderCount.current // Editor will suggest `Text[]` and `Component`
 You can pass `{ComponentName: unknown or unknown[]}` type for the type argument. If you passed to the type argument, then the editor will suggest the correct type dependent on passed type.
 
 ## Tips
+
+### Performance
+
+This lib is using `Proxy` API to optimize testing speed. So you should use either `renderCount` or `renderTime` in a single test case. If you use both variables and you are testing large component, testing time will be a little slower.
 
 ### Anonymous Component
 
