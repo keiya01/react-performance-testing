@@ -7,15 +7,22 @@ const getCJS = (file) => ({
   format: 'cjs',
 });
 
+const getESM = (file) => ({
+  file,
+  format: 'esm',
+});
+
 export default [
   {
     input: 'src/index.ts',
-    output: [getCJS('dist/index.cjs.js')],
+    output: [getCJS('dist/index.cjs.js'), getESM('dist/index.esm.js')],
     plugins: commonPlugins,
   },
   {
     input: 'src/native/index.ts',
-    output: [getCJS('dist/native/index.cjs.js')],
+    output: [
+      getCJS('native/dist/index.cjs.js', getESM('native/dist/index.esm.js')),
+    ],
     plugins: commonPlugins,
   },
 ];

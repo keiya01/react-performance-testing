@@ -21,7 +21,8 @@ You can test React(ReactNative) runtime performance by using this lib. If you wa
     - [renderCount](#renderCount)
     - [renderTime](#renderTime)
   - [cleanup](#cleanup)
-  - [typescript](#typescript)
+  - [ReactNative](#reactnative)
+  - [TypeScript](#typescript)
 - [Tips](#tips)
   - [Performance](#performance)
   - [Anonymous Component](#anonymous-component)
@@ -250,6 +251,14 @@ console.log(renderTime.current.Component.updates); // output: []
 
 `cleanup` method is executed automatically in `afterEach()` if you are using `Jest`, `Mocha` and `Jasmine`. You need to cleanup your component by using `cleanup`.  
 If your testing lib has `afterEach()`, you need to invoke `cleanup()` manually.
+
+### ReactNative
+
+If you are using ReactNative, you need to import modules from `react-performance-testing/native`.
+
+```js
+import { perf } from 'react-performance-testing/native';
+```
 
 ### TypeScript
 
