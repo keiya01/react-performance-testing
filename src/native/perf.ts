@@ -13,7 +13,7 @@ export const perf = <T = DefaultPerfToolsField>(React: any) => {
     SwipeableListView SwitchAndroid SwitchIOS TabBarIOS Text TextInput ToastAndroid ToolbarAndroid
     Touchable TouchableHighlight TouchableNativeFeedback TouchableOpacity TouchableWithoutFeedback
     View ViewPagerAndroid WebView YellowBox YellowBoxContainer YellowBoxList FlatList SectionList 
-    VirtualizedList Pressable`
+    VirtualizedList Pressable RCTScrollView`
     .split(/\s+/m)
     .map((alias) => alias);
 
