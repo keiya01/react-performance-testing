@@ -1,0 +1,37 @@
+{
+  "name": "react-performance-testing",
+  "version": "1.1.1",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.js",
+  "react-native": "native/dist/index.cjs.js",
+  "types": "dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "native"
+  ],
+  "description": "You can test React(ReactNative) runtime performance by using this lib. If you want to check the number of renders, or render time in a test environment, this lib makes sense.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keiya01/react-performance-testing/"
+  },
+  "bugs": {
+    "url": "https://github.com/keiya01/react-performance-testing/issues"
+  },
+  "homepage": "https://github.com/keiya01/react-performance-testing#readme",
+  "author": "keiya01",
+  "keywords": [
+    "react",
+    "react-native",
+    "ui",
+    "unit",
+    "test",
+    "testing",
+    "performance"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "test": "jest",
+    "build": "rollup -c rollup.config.js"
+  }
+}
