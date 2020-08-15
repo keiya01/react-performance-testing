@@ -16,5 +16,10 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+      - name: Upgrade to most recent release in React's Next channel
+        # https://reactjs.org/blog/2019/10/22/react-release-channels.html#using-the-next-channel-for-integration-testing
+        run: yarn upgrade react@next react-dom@next -W -D
+      - name: React Versions
+        run: yarn why react && yarn why react-dom
       - name: Build
         run: yarn build
