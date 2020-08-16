@@ -31,11 +31,11 @@ You can test React(ReactNative) runtime performance by using this lib. If you wa
 
 ## The problem
 
-If you are developing high performance features, you would like to write tests about the number of renders or render time. We have to check with devtools or light house manually, but we could not test these cases automatically. Additionally, we cannot predict re-renders without getting nervous. The `react-performance-testing` provide a solution for these cases.
+If you are developing high-performance features, you would like to write tests about the number of renders or render time. We have to check with devtools or Lighthouse manually, but we could not test these cases automatically. Additionally, we cannot predict re-renders without getting nervous. The `react-performance-testing` provides a solution for these cases.
 
 ## The solution
 
-The `react-performance-testing` provide simple and easy way as a solution for the above problem. It provides some features by monkey patched `React`. We can count the number of renders and measure renders time as well, so we can test by using these values.
+The `react-performance-testing` provides a simple and easy way as a solution for the above problem. It provides some features by monkey patched `React`. We can count the number of renders and measure renders time as well, so we can test by using these values.
 
 ## Installation
 
@@ -187,22 +187,22 @@ test('should measure re-render time when state is updated with it have multiple 
 
 ## API
 
-If you use the API with large component, component's performance might be **down** because we monkey patches React.
-Therefore, you should use API with **components that has one feature** like `List`, `Modal` etc.
+If you use the API with a large component, the component's performance might be **worse** because we monkey patches React.
+Therefore, you should use API with **components that have one feature** like `List`, `Modal` etc.
 
 ### perf
 
-`perf` method observe your component. So you can get `renderCount` to count the number of renders and `renderTime` to measure render time.
+`perf` method observes your component. So you can get `renderCount` to count the number of renders and `renderTime` to measure render time.
 
 ```js
 const { renderCount, renderTime } = perf(React);
 ```
 
-Note that You need to invoke `perf` method before `render` method is invoked. Additionally, You need to pass `React` to `perf` method. This is because we are monkey patching `React`.
+Note that You need to invoke the `perf` method before the `render` method is invoked. Additionally, You need to pass `React` to the `perf` method. This is because we are monkey patching `React`.
 
 #### renderCount
 
-`renderCount` has number of re-render in some component. You can get the number of renders like bellow.
+`renderCount` has several re-render in some component. You can get the number of renders like bellow.
 
 ```jsx
 const Component = () => <p>test</p>;
@@ -212,7 +212,7 @@ render(<Component />);
 console.log(renderCount.current.Component.value); // output: 1
 ```
 
-**Note**: You need to set display name. If you have anonymous component, we can not set property to `renderCount` correctly.
+**Note**: You need to set a display name. If you have an anonymous component, we can not set a property to `renderCount` correctly.
 
 ##### Properties
 
@@ -235,21 +235,21 @@ console.log(renderTime.current.Component.mount); // output: ...ms
 console.log(renderTime.current.Component.updates); // output: []
 ```
 
-**Note**: You need to set display name. If you have anonymous component, we can not set property to `renderTime` correctly.
+**Note**: You need to set a display name. If you have an anonymous component, we can not set a property to `renderTime` correctly.
 
 ##### Properties
 
 - `renderCount.current`
   - `ComponentName: string | Array`
     - `mount: number` ... This property has first render time
-    - `updates: Array<number>` ... This property has the second and the subsequent render time(second render is the index of `0`)
+    - `updates: Array<number>` ... This property has the second and the subsequent render time(the second render is the index of `0`)
 
 **Note**: If you have some same component, these components combine to `array`  
 **Note**: Each time are displayed with `ms`
 
 ### cleanup
 
-`cleanup` method is executed automatically in `afterEach()` if you are using `Jest`, `Mocha` and `Jasmine`. You need to cleanup your component by using `cleanup`.  
+`cleanup` method is executed automatically in `afterEach()` if you are using `Jest`, `Mocha`, and `Jasmine`. You need to clean up your component by using `cleanup`.  
 If your testing lib has `afterEach()`, you need to invoke `cleanup()` manually.
 
 ### ReactNative
@@ -282,17 +282,17 @@ const { renderCount, renderTime } = perf <{ Text: unknown[], Component: unknown 
 renderCount.current // Editor will suggest `Text[]` and `Component`
 ```
 
-You can pass `{ComponentName: unknown or unknown[]}` type for the type argument. If you passed to the type argument, then the editor will suggest the correct type dependent on passed type.
+You can pass `{ComponentName: unknown or unknown[]}` type for the type argument. If you passed to the type argument, then the editor will suggest the correct type dependent on the passed type.
 
 ## Tips
 
 ### Performance
 
-This lib is using `Proxy` API to optimize testing speed. So you should use either `renderCount` or `renderTime` in a single test case. If you use both variables and you are testing large component, testing time will be a little slower.
+This lib is using `Proxy` API to optimize testing speed. So you should use either `renderCount` or `renderTime` in a single test case. If you use both variables and you are testing a large component, testing time will be a little slower.
 
 ### Anonymous Component
 
-If you are using anonymous component, this lib doesn't work correctly. To make this lib work correctly, you need to set the display name as bellows.
+If you are using an anonymous component, this lib doesn't work correctly. To make this lib work correctly, you need to set the display name as bellows.
 
 ```js
 React.memo(function MemoComponent {
@@ -305,11 +305,11 @@ const MemoComponent = () => <p>test</p>;
 React.memo(MemoComponent);
 ```
 
-Setting a display name will get benefits not only this lib, but also when [you debug in React](https://reactjs.org/docs/react-component.html#displayname).
+Setting a display name will get benefits not only this lib but also when [you debug in React](https://reactjs.org/docs/react-component.html#displayname).
 
 ### Hooks
 
-If you are using `@testing-library/react-hooks`, you can check the number of renders with `perf` method as bellows.
+If you are using `@testing-library/react-hooks`, you can check the number of renders with the `perf` method as bellows.
 
 ```js
 const { renderCount } = perf(React);
@@ -323,7 +323,7 @@ const { result } = renderHook(() => {
 console.log(renderCount.current.TestHook.value);
 ```
 
-This is because `renderHook` method is wrapping callback with the `TestHook` component.
+This is because the `renderHook` method is wrapping callback with the `TestHook` component.
 
 ## LICENSE
 
