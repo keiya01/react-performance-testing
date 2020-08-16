@@ -25,13 +25,8 @@ jobs:
         run: yarn lint
       - name: Type Check
         run: yarn type
-      # The reason why we are separating test command to test:react and test:jest are to measure correct coverage rate
-      - name: Unit Test - react-performance-testing
-        run: yarn test:react --coverage
-        env:
-          CI: true
-      - name: Unit Test - jest-performance-testing
-        run: yarn test:jest --coverage
+      - name: Unit Test
+        run: yarn test --coverage
         env:
           CI: true
       - uses: actions/upload-artifact@v2
