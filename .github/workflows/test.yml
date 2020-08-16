@@ -25,18 +25,24 @@ jobs:
         run: yarn lint
       - name: Type Check
         run: yarn type
+      - name: Clear Cache in Jest
+        run: yarn test:clearCache
+        env:
+          CI: true
       - name: Unit Test
         run: yarn test --coverage
         env:
           CI: true
       - uses: actions/upload-artifact@v2
         with:
-          name: coverage
-          path: coverage
+          name: packages
+          path: |
+            packages/react-performance-testing/coverage
+            packages/jest-performance-testing/coverage
       - uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage/coverage-final.json
+          files: ./packages/react-performance-testing/coverage/coverage-final.json,./packages/jest-performance-testing/coverage/coverage-final.json
           flags: unittest
           name: codecov-umbrella
           fail_ci_if_error: true

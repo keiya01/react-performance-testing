@@ -3,4 +3,3 @@ coverage
 dist
 .DS_Store
 *.txt
-native/dist
