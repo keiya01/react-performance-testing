@@ -9,4 +9,5 @@ module.exports = {
   },
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
   testMatch: ['**/*.test.ts?(x)'],
+  coverageDirectory: 'coverage/jest-coverage',
 };

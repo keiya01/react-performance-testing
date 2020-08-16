@@ -38,5 +38,6 @@ module.exports = {
     '!**/dist/**',
     '!**/__tests__/**',
   ],
+  coverageDirectory: 'coverage/react-coverage',
   projects: [web, native],
 };

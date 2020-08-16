@@ -32,11 +32,13 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: coverage
-          path: coverage
+          path: |
+            packages/react-performance-testing/coverage
+            packages/jest-performance-testing/coverage
       - uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage/coverage-final.json
+          files: ./coverage/react-coverage/coverage-final.json,./coverage/jest-coverage/coverage-final.json
           flags: unittest
           name: codecov-umbrella
           fail_ci_if_error: true
