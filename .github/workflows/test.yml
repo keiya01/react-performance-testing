@@ -25,6 +25,10 @@ jobs:
         run: yarn lint
       - name: Type Check
         run: yarn type
+      - name: Clear Cache in Jest
+        run: yarn test:clearCache
+        env:
+          CI: true
       - name: Unit Test
         run: yarn test --coverage
         env:
