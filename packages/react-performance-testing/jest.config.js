@@ -33,7 +33,8 @@ const native = {
 
 module.exports = {
   collectCoverageFrom: [
-    '<rootDir>/**/*.{ts,tsx}',
+    '<rootDir>/src/**/*.{ts,tsx}',
+    '!**/jest-performance-testing/**',
     '!**/node_modules/**',
     '!**/dist/**',
     '!**/__tests__/**',

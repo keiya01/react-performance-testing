@@ -10,7 +10,8 @@ module.exports = {
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
   testMatch: ['**/*.test.ts?(x)'],
   collectCoverageFrom: [
-    '<rootDir>/**/*.{ts,tsx}',
+    '<rootDir>/src/**/*.{ts,tsx}',
+    '!**/react-performance-testing/**',
     '!**/node_modules/**',
     '!**/dist/**',
     '!**/__tests__/**',
