@@ -31,14 +31,14 @@ jobs:
           CI: true
       - uses: actions/upload-artifact@v2
         with:
-          name: coverage
+          name: coverages
           path: |
             packages/react-performance-testing/coverage
             packages/jest-performance-testing/coverage
       - uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./react-performance-testing/coverage/coverage-final.json,./jest-performance-testing/coverage/coverage-final.json
+          files: ./coverages/react-performance-testing/coverage/coverage-final.json,./coverages/jest-performance-testing/coverage/coverage-final.json
           flags: unittest
           name: codecov-umbrella
           fail_ci_if_error: true
