@@ -16,6 +16,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "include": ["src"],
-  "exclude": ["src/**/*.test.ts", "src/**/*.test.tsx"]
+  "include": [
+    "packages/react-performance-testing/src",
+    "packages/jest-performance-testing/src"
+  ],
+  "exclude": ["**/*.test.ts", "**/*.test.tsx"]
 }
