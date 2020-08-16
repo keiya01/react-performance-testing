@@ -1,10 +1,5 @@
-const common = {
-  roots: ['<rootDir>/src'],
-  transform: {
-    '^.+\\.tsx?$': 'ts-jest',
-  },
-  moduleFileExtensions: ['ts', 'tsx', 'js'],
-};
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const common = require('../../scripts/jest/jest.common.config');
 
 const web = {
   ...common,
@@ -26,6 +21,7 @@ const native = {
   preset: 'react-native',
   globals: {
     'ts-jest': {
+      ...common.globals['ts-jest'],
       babelConfig: true,
     },
   },
