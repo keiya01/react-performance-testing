@@ -38,7 +38,7 @@ jobs:
       - uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage/react-coverage/coverage-final.json,./coverage/jest-coverage/coverage-final.json
+          files: ./react-performance-testing/coverage/coverage-final.json,./jest-performance-testing/coverage/coverage-final.json
           flags: unittest
           name: codecov-umbrella
           fail_ci_if_error: true
