@@ -33,7 +33,7 @@ const native = {
 
 module.exports = {
   collectCoverageFrom: [
-    '**/**/*.{ts,tsx}',
+    '<rootDir>/**/*.{ts,tsx}',
     '!**/node_modules/**',
     '!**/dist/**',
     '!**/__tests__/**',
