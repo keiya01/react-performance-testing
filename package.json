@@ -14,7 +14,7 @@
     "build:jest": "yarn workspace jest-performance-testing build",
     "type": "tsc --noEmit",
     "lint": "eslint '**/*.{ts,tsx}'",
-    "prepublish": "yarn type && yarn lint && lerna run prepublish"
+    "prepublishOnly": "yarn type && yarn lint && lerna run prepublish"
   },
   "devDependencies": {
     "@testing-library/react": "^10.4.8",

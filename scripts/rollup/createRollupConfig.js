@@ -1,7 +1,9 @@
 import typescript from 'rollup-plugin-typescript2';
 import path from 'path';
 
-const commonPlugins = [typescript({ tsconfig: 'tsconfig.json' })];
+const commonPlugins = [
+  typescript({ tsconfig: path.resolve(__dirname, 'tsconfig.json') }),
+];
 
 const formatter = {
   cjs: (file) => ({
