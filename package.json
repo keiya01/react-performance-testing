@@ -5,7 +5,7 @@
   ],
   "scripts": {
     "lerna": "lerna",
-    "test": "lerna run test -- -- --coverage",
+    "test": "lerna run test --parallel",
     "test:react": "yarn workspace react-performance-testing test",
     "test:jest": "yarn workspace jest-performance-testing test",
     "build": "lerna run build --parallel",
