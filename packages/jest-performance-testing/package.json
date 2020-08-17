@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/jest-performance-testing/src/index.d.ts",
   "sideEffects": false,
   "files": [
     "dist"
@@ -29,5 +29,8 @@
     "test": "jest",
     "build": "rollup -c rollup.config.js",
     "prepublish": "yarn test && yarn build"
+  },
+  "dependencies": {
+    "jest-matcher-utils": "^26.4.0"
   }
 }
