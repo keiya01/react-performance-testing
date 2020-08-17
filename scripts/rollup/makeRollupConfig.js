@@ -16,7 +16,7 @@ const formatter = {
   }),
 };
 
-export const makeRollupConfig = (entryPath, outputPath) => {
+export const makeRollupConfig = (entryPath, outputPath, external) => {
   const input = path.resolve(__dirname, entryPath);
 
   const output = Object.keys(formatter).map((extension) => {
@@ -36,5 +36,6 @@ export const makeRollupConfig = (entryPath, outputPath) => {
     input,
     output,
     plugins,
+    external,
   };
 };
