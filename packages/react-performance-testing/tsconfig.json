@@ -1,4 +1,5 @@
 {
   "extends": "../../tsconfig.json",
-  "outDir": "./dist"
+  "include": ["src/**/*"],
+  "outDir": "dist"
 }
