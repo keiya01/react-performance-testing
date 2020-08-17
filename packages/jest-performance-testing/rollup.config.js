@@ -1,10 +1,3 @@
-import { createRollupConfig } from '../../scripts/rollup/createRollupConfig';
+import { makeRollupConfig } from '../../scripts/rollup/makeRollupConfig';
 
-export default createRollupConfig(
-  { inputRoot: 'src', inputFile: 'index.ts' },
-  {
-    outputRoot: 'dist',
-    outputFileName: 'index',
-    extensions: ['cjs', 'esm'],
-  },
-);
+export default makeRollupConfig('src/index.ts', 'dist/index.js');
