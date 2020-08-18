@@ -14,6 +14,14 @@ export function toIncludeUpdates(
     };
   }
 
+  if (!field.updates) {
+    return {
+      pass: false,
+      message: () =>
+        'You need to pass Component property like `expect(renderTime.current.Component).toIncludeUpdates(...)`',
+    };
+  }
+
   const { updates } = field;
   const formattedExpected = Array.isArray(expected)
     ? expected
