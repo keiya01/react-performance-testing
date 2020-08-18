@@ -38,3 +38,64 @@ test('should throw error even if component is mounted when using `not` declarati
     /Specified component could be found/,
   );
 });
+
+test('should true when mount time is less than expected time', () => {
+  const Component = () => <div />;
+
+  const { renderTime } = perf<{ Component: unknown }>(React);
+
+  render(<Component />);
+
+  expect(renderTime.current.Component).toMount(16);
+});
+
+test('should throw error when mount time is greater than expected time', () => {
+  const Component = () => <div />;
+
+  const { renderTime } = perf<{ Component: unknown }>(React);
+
+  render(<Component />);
+
+  expect(() => expect(renderTime.current.Component).toMount(0)).toThrow(
+    /toMount/,
+  );
+});
+
+test('should true else if mount time is greater than expected time when using `not` declaration', () => {
+  const Component = () => <div />;
+
+  const { renderTime } = perf<{ Component: unknown }>(React);
+
+  render(<Component />);
+
+  expect(renderTime.current.Component).not.toMount(0);
+});
+
+test('should throw error even if mount time is less than expected time when using `not` declaration', () => {
+  const Component = () => <div />;
+
+  const { renderTime } = perf<{ Component: unknown }>(React);
+
+  render(<Component />);
+
+  expect(() => expect(renderTime.current.Component).not.toMount(16)).toThrow(
+    /not/,
+  );
+});
+
+test('should warn log when using renderCount and passing value to toMount', () => {
+  jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+  const Component = () => <div />;
+
+  const { renderCount } = perf<{ Component: unknown }>(React);
+
+  render(<Component />);
+
+  expect(renderCount.current.Component).toMount(16);
+
+  expect(console.warn).toBeCalledTimes(1);
+
+  // @ts-ignore
+  console.warn.mockRestore();
+});
