@@ -1,0 +1,56 @@
+import React from 'react';
+import { render } from '@testing-library/react';
+import { perf } from '../../../react-performance-testing/src/index';
+import '../index';
+
+test('should throw error when component is not mounted', () => {
+  const { renderCount } = perf<{ Component: unknown }>(React);
+
+  expect(() =>
+    expect(renderCount.current.Component).toBeRenderedTimes(),
+  ).toThrow(/Specified component could not be found/);
+});
+
+test('should true when expected value is equal', () => {
+  const Component = () => <div />;
+
+  const { renderCount } = perf(React);
+
+  render(<Component />);
+
+  expect(renderCount.current.Component).toBeRenderedTimes(1);
+});
+
+test('should throw error when expected value not is equal', () => {
+  const Component = () => <div />;
+
+  const { renderCount } = perf(React);
+
+  render(<Component />);
+
+  expect(() =>
+    expect(renderCount.current.Component).toBeRenderedTimes(2),
+  ).toThrow(/toBeRenderedTimes/);
+});
+
+test('should true even if expected value is not equal when using `not` declaration', () => {
+  const Component = () => <div />;
+
+  const { renderCount } = perf(React);
+
+  render(<Component />);
+
+  expect(renderCount.current.Component).not.toBeRenderedTimes(2);
+});
+
+test('should throw error even if expected value is equal when using `not` declaration', () => {
+  const Component = () => <div />;
+
+  const { renderCount } = perf(React);
+
+  render(<Component />);
+
+  expect(() =>
+    expect(renderCount.current.Component).not.toBeRenderedTimes(1),
+  ).toThrow(/not/);
+});
