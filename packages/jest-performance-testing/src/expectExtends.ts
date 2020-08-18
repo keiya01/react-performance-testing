@@ -4,8 +4,10 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace jest {
     interface Matchers<R> {
-      toIncludeUpdates(expected: number | number[]): R;
-      toMount(expected?: number): R;
+      toBeUpdatedWithin(expected: number | number[]): R;
+      toBeMounted(): R;
+      toBeMountedWithin(expected?: number): R;
+      toBeRenderedTimes(expected?: number): R;
     }
   }
 }
