@@ -7,11 +7,10 @@ import { isForwardRefComponent } from './utils/isForwardRefComponent';
 import { isFunctionComponent } from './utils/isFunctionComponent';
 
 const setArray = (
-  type: React.ElementType<React.ComponentClass | React.FunctionComponent>,
+  displayName: string,
   state: PerfTools['renderCount'] | PerfTools['renderTime'],
   initialValue: any,
 ) => {
-  const displayName = getDisplayName(type);
   const obj = state.current[displayName];
   let currentIndex = -1;
   if (obj) {
@@ -110,14 +109,14 @@ const createClassComponent = (
       const origRender = super.render || this.render;
 
       if (hasRenderTime) {
-        this.currentIndex = setArray(type, renderTime, {
+        this.currentIndex = setArray(displayName, renderTime, {
           mount: null,
           updates: [],
         });
       }
 
       if (hasRenderCount) {
-        this.currentIndex = setArray(type, renderCount, { value: 0 });
+        this.currentIndex = setArray(displayName, renderCount, { value: 0 });
       }
 
       // this probably means render is an arrow function or this.render.bind(this) was called on the original class
@@ -182,11 +181,11 @@ const createFunctionComponent = (
       let index = -1;
 
       if (hasRenderTime) {
-        index = setArray(type, renderTime, { mount: null, updates: [] });
+        index = setArray(displayName, renderTime, { mount: null, updates: [] });
       }
 
       if (hasRenderCount) {
-        index = setArray(type, renderCount, { value: 0 });
+        index = setArray(displayName, renderCount, { value: 0 });
       }
 
       return index;
