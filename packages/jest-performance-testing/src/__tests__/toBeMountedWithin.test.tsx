@@ -12,7 +12,7 @@ test('should throw error when component is not mounted', () => {
 });
 
 test('should true when mount time is less than expected time', () => {
-  const Component = () => <div />;
+  const Component = () => <div>test</div>;
 
   const { renderTime } = perf<{ Component: unknown }>(React);
 
@@ -22,7 +22,7 @@ test('should true when mount time is less than expected time', () => {
 });
 
 test('should throw error when mount time is greater than expected time', () => {
-  const Component = () => <div />;
+  const Component = () => <div>test</div>;
 
   const { renderTime } = perf<{ Component: unknown }>(React);
 
@@ -34,7 +34,7 @@ test('should throw error when mount time is greater than expected time', () => {
 });
 
 test('should true else if mount time is greater than expected time when using `not` declaration', () => {
-  const Component = () => <div />;
+  const Component = () => <div>test</div>;
 
   const { renderTime } = perf<{ Component: unknown }>(React);
 
@@ -44,7 +44,7 @@ test('should true else if mount time is greater than expected time when using `n
 });
 
 test('should throw error even if mount time is less than expected time when using `not` declaration', () => {
-  const Component = () => <div />;
+  const Component = () => <div>test</div>;
 
   const { renderTime } = perf<{ Component: unknown }>(React);
 
