@@ -3,10 +3,10 @@ import { RenderTimeField } from '../../react-performance-testing/src/types';
 
 export function toIncludeUpdates(
   this: jest.MatcherUtils,
-  field: RenderTimeField | undefined,
+  received: RenderTimeField | undefined,
   expected: number | number[],
 ) {
-  if (!field) {
+  if (!received) {
     return {
       pass: false,
       message: () =>
@@ -14,7 +14,7 @@ export function toIncludeUpdates(
     };
   }
 
-  if (!field.updates) {
+  if (!received.updates) {
     return {
       pass: false,
       message: () =>
@@ -22,7 +22,7 @@ export function toIncludeUpdates(
     };
   }
 
-  const { updates } = field;
+  const { updates } = received;
   const formattedExpected = Array.isArray(expected)
     ? expected
     : Array(updates.length).fill(expected);

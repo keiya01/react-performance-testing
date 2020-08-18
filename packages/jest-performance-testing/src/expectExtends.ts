@@ -5,6 +5,7 @@ declare global {
   namespace jest {
     interface Matchers<R> {
       toIncludeUpdates(expected: number | number[]): R;
+      toMount(): R;
     }
   }
 }
