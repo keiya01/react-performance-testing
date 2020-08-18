@@ -35,6 +35,38 @@ test('should be true when expected value is correct array', () => {
   ]);
 });
 
+test('should be true even if expected value is incorrect array when using `not` declaration', () => {
+  const Text = ({ count }: { count: number }): React.ReactElement => (
+    <p>{count}</p>
+  );
+  const Counter = () => {
+    const [count, setCount] = React.useState(0);
+    return (
+      <div>
+        <Text count={count} />
+        <button type="button" onClick={() => setCount((c) => c + 1)}>
+          count
+        </button>
+      </div>
+    );
+  };
+
+  const { renderTime } = perf<{ Text: unknown; Counter: unknown }>(React);
+
+  render(<Counter />);
+
+  const countButton = screen.getByRole('button', { name: /count/ });
+
+  fireEvent.click(countButton);
+
+  fireEvent.click(countButton);
+
+  expect(renderTime.current.Counter).not.toIncludeUpdates([
+    0, // first render
+    16, // second render
+  ]);
+});
+
 test('should throw error when expected value is incorrect array', () => {
   const Text = ({ count }: { count: number }): React.ReactElement => (
     <p>{count}</p>
