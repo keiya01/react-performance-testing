@@ -1,9 +1,12 @@
-import { RenderCountField } from '../../react-performance-testing/src/types';
+import {
+  RenderCountField,
+  RenderTimeField,
+} from '../../react-performance-testing/src/types';
 import { isNotMounted } from './errorMessage';
 
 export function toBeMounted(
   this: jest.MatcherUtils,
-  received: RenderCountField | undefined,
+  received: RenderCountField | RenderTimeField | undefined,
 ) {
   if (!received) {
     return isNotMounted();
