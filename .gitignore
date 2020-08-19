@@ -3,3 +3,4 @@ coverage
 dist
 .DS_Store
 *.txt
+packages/react-performance-testing/README.md
