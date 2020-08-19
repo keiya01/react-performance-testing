@@ -33,7 +33,8 @@
   "scripts": {
     "test": "jest",
     "build": "rollup -c rollup.config.js",
-    "prepublish": "yarn test && yarn build"
+    "cp:readme": "cp ../../README.md .",
+    "prepublish": "cp:readme && yarn test && yarn build"
   },
   "dependencies": {
     "@types/react-native": "^0.63.8",
