@@ -51,6 +51,8 @@ yarn:
 yarn add --dev react-performance-testing
 ```
 
+You can increase testing experience by using [jest-performance-testing](https://github.com/keiya01/react-performance-testing/tree/master/packages/jest-performance-testing).
+
 ## Example
 
 ### count renders
