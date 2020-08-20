@@ -5,6 +5,7 @@ import { isMemoComponent } from './utils/isMemoComponent';
 import { ReactSymbol } from './utils/symbols';
 import { isForwardRefComponent } from './utils/isForwardRefComponent';
 import { isFunctionComponent } from './utils/isFunctionComponent';
+import { pushTask } from './utils/pushTask';
 
 const setArray = (
   displayName: string,
@@ -31,20 +32,24 @@ const updateRenderCount = (
   if (!displayName) {
     return;
   }
+
   const obj = renderCount.current;
-  const field = obj[displayName];
-
-  if (Array.isArray(field)) {
-    const formattedIndex = index === -1 ? 0 : index;
-    field[formattedIndex].value += 1;
-    return;
+  if (!obj[displayName]) {
+    obj[displayName] = { value: 0 };
   }
 
-  if (field) {
-    field.value += 1;
-  } else {
-    obj[displayName] = { value: 1 };
-  }
+  pushTask(() => {
+    const obj = renderCount.current;
+    const field = obj[displayName];
+
+    if (Array.isArray(field)) {
+      const formattedIndex = index === -1 ? 0 : index;
+      field[formattedIndex].value += 1;
+      return;
+    }
+
+    field!.value += 1;
+  });
 };
 
 const startMeasureRenderTime = (
@@ -57,7 +62,6 @@ const startMeasureRenderTime = (
   }
 
   const obj = renderTime.current;
-
   if (!obj[displayName]) {
     obj[displayName] = { mount: null as any, updates: [] };
   }
@@ -67,22 +71,24 @@ const startMeasureRenderTime = (
   return () => {
     const duration = performance.now() - startTime;
 
-    const field = obj[displayName]!;
+    pushTask(() => {
+      const obj = renderTime.current;
+      const field = obj[displayName]!;
+      if (Array.isArray(field)) {
+        const formattedIndex = index === -1 ? 0 : index;
+        const fieldValues = field[formattedIndex];
+        field[formattedIndex] = {
+          mount: fieldValues.mount || duration,
+          updates: fieldValues.mount ? [...fieldValues.updates, duration] : [],
+        };
+        return;
+      }
 
-    if (Array.isArray(field)) {
-      const formattedIndex = index === -1 ? 0 : index;
-      const fieldValues = field[formattedIndex];
-      field[formattedIndex] = {
-        mount: fieldValues.mount || duration,
-        updates: fieldValues.mount ? [...fieldValues.updates, duration] : [],
+      obj[displayName] = {
+        mount: field.mount || duration,
+        updates: field.mount ? [...field.updates, duration] : [],
       };
-      return;
-    }
-
-    obj[displayName] = {
-      mount: field.mount || duration,
-      updates: field.mount ? [...field.updates, duration] : [],
-    };
+    });
   };
 };
 
