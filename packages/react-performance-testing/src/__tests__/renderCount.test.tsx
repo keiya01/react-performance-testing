@@ -25,7 +25,6 @@ describe('FunctionComponent', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /count/i }));
 
-    expect(screen.queryByText('2')).toBeDefined();
     await waitFor(() =>
       expect(renderCount.current).toEqual({
         Text: { value: 2 },
@@ -68,7 +67,6 @@ describe('FunctionComponent', () => {
     fireEvent.click(screen.getByTestId('button1'));
     fireEvent.click(screen.getByTestId('button2'));
 
-    expect(screen.queryByText('2')).toBeDefined();
     await waitFor(() =>
       expect(renderCount.current).toEqual({
         NestedText: [{ value: 2 }, { value: 2 }, { value: 1 }],
@@ -104,7 +102,6 @@ describe('FunctionComponent', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /count/i }));
 
-    expect(screen.queryByText('2')).toBeDefined();
     await waitFor(() =>
       expect(renderCount.current).toEqual({
         MemorizedText: { value: 1 },
@@ -153,8 +150,6 @@ describe('ClassComponent', () => {
     render(<Component />);
 
     fireEvent.click(screen.getByRole('button', { name: /count/i }));
-
-    expect(screen.queryByText('2')).toBeDefined();
 
     await waitFor(() =>
       expect(renderCount.current).toEqual({
@@ -229,7 +224,6 @@ describe('ClassComponent', () => {
     fireEvent.click(screen.getByTestId('button1'));
     fireEvent.click(screen.getByTestId('button2'));
 
-    expect(screen.queryByText('2')).toBeDefined();
     await waitFor(() =>
       expect(renderCount.current).toEqual({
         NestedText: [{ value: 2 }, { value: 2 }, { value: 1 }],
@@ -284,7 +278,6 @@ describe('ClassComponent', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /count/i }));
 
-    expect(screen.queryByText('2')).toBeDefined();
     await waitFor(() =>
       expect(renderCount.current).toEqual({
         MemorizedText: { value: 1 },
