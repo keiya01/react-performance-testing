@@ -26,7 +26,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "test": "jest",
+    "test": "jest --runInBand",
     "build": "rollup -c rollup.config.js",
     "prepublish": "yarn test && yarn build"
   },
