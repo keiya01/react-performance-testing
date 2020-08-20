@@ -32,11 +32,14 @@ yarn:
 yarn add --dev jest-performance-testing
 ```
 
+**Note**: If you are using TypeScript, we are recommending to import this lib in local file like `*.test.ts | *.spec.ts`. This is because, we have expanded [jest](https://github.com/facebook/jest) types, so global types are not recognized by some editors if you import this lib in setup file. If you want to import this lib in setup file, please see here [testing-library/jest-dom#123 (comment)](https://github.com/testing-library/jest-dom/issues/123#issuecomment-526518629).
+
 ## API
 
 ### toBeMounted
-`toBeMounted()`  
-  
+
+`toBeMounted()`
+
 This matcher is to check if component is mounted.
 
 ```js
@@ -50,8 +53,9 @@ expect(renderTime.current.Component).toBeMounted();
 ```
 
 ### toBeMountedWithin
-`toBeMountedWithin(mountedTime: number)`  
-  
+
+`toBeMountedWithin(mountedTime: number)`
+
 This matcher is to check if mounted time is less than expected time.
 
 ```js
@@ -59,8 +63,9 @@ expect(renderTime.current.Component).toBeMountedWithin(16); // ms
 ```
 
 ### toBeUpdatedWithin
-`toBeUpdatedWithin(updatedTime: number[])`  
-  
+
+`toBeUpdatedWithin(updatedTime: number[])`
+
 This matcher is to check if some updated time are less than expected time.
 
 ```js
@@ -75,12 +80,13 @@ If you have same render time, you can write as bellow.
 
 ```js
 // All items are 16ms
-expect(renderTime.current.Component).toBeUpdatedWithin(16); 
+expect(renderTime.current.Component).toBeUpdatedWithin(16);
 ```
 
 ### toBeRenderedTimes
-`toBeRenderedTimes(renderedTimes: number)`  
-  
+
+`toBeRenderedTimes(renderedTimes: number)`
+
 This matcher is to check if number of renders are equality.
 
 ```js
