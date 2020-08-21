@@ -310,7 +310,7 @@ You can pass `{ComponentName: unknown or unknown[]}` type for the type argument.
 
 ### Performance
 
-This lib is using `Proxy` API to optimize testing speed. So you should use either `renderCount` or `renderTime` in a single test case. If you use both variables and you are testing a large component, testing time will be a little slower.
+This lib is using `Proxy` API to optimize testing speed. So you should use either `renderCount` or `renderTime` in a single test case. If you use both variables or you are testing a large component, testing time will be a little slower.
 
 ### Anonymous Component
 
