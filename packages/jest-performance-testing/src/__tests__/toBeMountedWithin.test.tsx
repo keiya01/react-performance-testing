@@ -1,12 +1,12 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
-import { perf } from '../../../react-performance-testing/src/index';
+import { render } from '@testing-library/react';
+import { perf, wait } from '../../../react-performance-testing/src/index';
 import '../index';
 
 test('should throw error when component is not mounted', async () => {
   const { renderTime } = perf<{ Component: unknown }>(React);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(() =>
       expect(renderTime.current.Component).toBeMountedWithin(),
     ).toThrow(/Specified component could not be found/),
@@ -20,9 +20,7 @@ test('should true when mount time is less than expected time', async () => {
 
   render(<Component />);
 
-  await waitFor(() =>
-    expect(renderTime.current.Component).toBeMountedWithin(16),
-  );
+  await wait(() => expect(renderTime.current.Component).toBeMountedWithin(16));
 });
 
 test('should throw error when mount time is greater than expected time', async () => {
@@ -32,7 +30,7 @@ test('should throw error when mount time is greater than expected time', async (
 
   render(<Component />);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(() =>
       expect(renderTime.current.Component).toBeMountedWithin(0),
     ).toThrow(/toBeMountedWithin/),
@@ -46,7 +44,7 @@ test('should true else if mount time is greater than expected time when using `n
 
   render(<Component />);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(renderTime.current.Component).not.toBeMountedWithin(0),
   );
 });
@@ -58,7 +56,7 @@ test('should throw error even if mount time is less than expected time when usin
 
   render(<Component />);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(() =>
       expect(renderTime.current.Component).not.toBeMountedWithin(16),
     ).toThrow(/not/),

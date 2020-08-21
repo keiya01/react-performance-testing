@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
-import { perf } from '../../../react-performance-testing/src/index';
+import { render } from '@testing-library/react';
+import { perf, wait } from '../../../react-performance-testing/src/index';
 import '../index';
 
 test('should true when component is mounted', async () => {
@@ -10,13 +10,13 @@ test('should true when component is mounted', async () => {
 
   render(<Component />);
 
-  await waitFor(() => expect(renderCount.current.Component).toBeMounted());
+  await wait(() => expect(renderCount.current.Component).toBeMounted());
 });
 
 test('should throw error when component is not mounted', async () => {
   const { renderCount } = perf<{ Component: unknown }>(React);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(() => expect(renderCount.current.Component).toBeMounted()).toThrow(
       /Specified component could not be found/,
     ),
@@ -26,7 +26,7 @@ test('should throw error when component is not mounted', async () => {
 test('should true even if component is not mounted when using `not` declaration', async () => {
   const { renderCount } = perf<{ Component: unknown }>(React);
 
-  await waitFor(() => expect(renderCount.current.Component).not.toBeMounted());
+  await wait(() => expect(renderCount.current.Component).not.toBeMounted());
 });
 
 test('should throw error even if component is mounted when using `not` declaration', async () => {
@@ -36,7 +36,7 @@ test('should throw error even if component is mounted when using `not` declarati
 
   render(<Component />);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(() =>
       expect(renderCount.current.Component).not.toBeMounted(),
     ).toThrow(/Specified component could be found/),

@@ -1,12 +1,12 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
-import { perf } from '../../../react-performance-testing/src/index';
+import { render } from '@testing-library/react';
+import { perf, wait } from '../../../react-performance-testing/src/index';
 import '../index';
 
 test('should throw error when component is not mounted', async () => {
   const { renderCount } = perf<{ Component: unknown }>(React);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(() =>
       expect(renderCount.current.Component).toBeRenderedTimes(),
     ).toThrow(/Specified component could not be found/),
@@ -20,9 +20,7 @@ test('should true when expected value is equal', async () => {
 
   render(<Component />);
 
-  await waitFor(() =>
-    expect(renderCount.current.Component).toBeRenderedTimes(1),
-  );
+  await wait(() => expect(renderCount.current.Component).toBeRenderedTimes(1));
 });
 
 test('should throw error when expected value not is equal', async () => {
@@ -32,7 +30,7 @@ test('should throw error when expected value not is equal', async () => {
 
   render(<Component />);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(() =>
       expect(renderCount.current.Component).toBeRenderedTimes(2),
     ).toThrow(/toBeRenderedTimes/),
@@ -46,7 +44,7 @@ test('should true even if expected value is not equal when using `not` declarati
 
   render(<Component />);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(renderCount.current.Component).not.toBeRenderedTimes(2),
   );
 });
@@ -58,7 +56,7 @@ test('should throw error even if expected value is equal when using `not` declar
 
   render(<Component />);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(() =>
       expect(renderCount.current.Component).not.toBeRenderedTimes(1),
     ).toThrow(/not/),

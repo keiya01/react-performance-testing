@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
-import { perf } from '../index';
+import { render } from '@testing-library/react';
+import { perf, wait } from '../index';
 
 describe('FunctionComponent', () => {
   it('should initialize Component with flat structure', async () => {
@@ -13,14 +13,14 @@ describe('FunctionComponent', () => {
 
     render(<Component />);
 
-    await waitFor(() =>
+    await wait(() =>
       expect(renderCount.current).toEqual({
         Text: { value: 1 },
         Component: { value: 1 },
       }),
     );
 
-    await waitFor(() =>
+    await wait(() =>
       expect(renderTime.current).toEqual({
         Text: { mount: expect.any(Number), updates: [] },
         Component: { mount: expect.any(Number), updates: [] },
@@ -46,7 +46,7 @@ describe('FunctionComponent', () => {
 
     render(<Component />);
 
-    await waitFor(() =>
+    await wait(() =>
       expect(renderCount.current).toEqual({
         NestedText: [{ value: 1 }, { value: 1 }, { value: 1 }, { value: 1 }],
         Text: [{ value: 1 }, { value: 1 }, { value: 1 }],
@@ -54,7 +54,7 @@ describe('FunctionComponent', () => {
       }),
     );
 
-    await waitFor(() =>
+    await wait(() =>
       expect(renderTime.current).toEqual({
         NestedText: [
           { mount: expect.any(Number), updates: [] },
@@ -82,7 +82,7 @@ describe('FunctionComponent', () => {
 
     render(<Component />);
 
-    await waitFor(() =>
+    await wait(() =>
       expect(renderCount.current).toEqual({
         MemorizedComponent: { value: 1 },
         Text: { value: 1 },
@@ -102,7 +102,7 @@ describe('FunctionComponent', () => {
     // @ts-ignore
     render(<MemoComponent />);
 
-    await waitFor(() =>
+    await wait(() =>
       expect(renderCount.current).toEqual({
         ForwardRefComponent: { value: 1 },
       }),
@@ -120,7 +120,7 @@ describe('FunctionComponent', () => {
 
     render(<MemoComponent />);
 
-    await waitFor(() =>
+    await wait(() =>
       expect(renderCount.current).toEqual({
         ForwardRefComponent: { value: 1 },
       }),
@@ -146,14 +146,14 @@ describe('ClassComponent', () => {
 
     render(<Component />);
 
-    await waitFor(() =>
+    await wait(() =>
       expect(renderCount.current).toEqual({
         Text: { value: 1 },
         Component: { value: 1 },
       }),
     );
 
-    await waitFor(() =>
+    await wait(() =>
       expect(renderTime.current).toEqual({
         Text: { mount: expect.any(Number), updates: [] },
         Component: { mount: expect.any(Number), updates: [] },
@@ -191,7 +191,7 @@ describe('ClassComponent', () => {
 
     render(<Component />);
 
-    await waitFor(() =>
+    await wait(() =>
       expect(renderCount.current).toEqual({
         NestedText: [{ value: 1 }, { value: 1 }, { value: 1 }, { value: 1 }],
         Text: [{ value: 1 }, { value: 1 }, { value: 1 }],
@@ -199,7 +199,7 @@ describe('ClassComponent', () => {
       }),
     );
 
-    await waitFor(() =>
+    await wait(() =>
       expect(renderTime.current).toEqual({
         NestedText: [
           { mount: expect.any(Number), updates: [] },
@@ -234,7 +234,7 @@ describe('ClassComponent', () => {
 
     render(<MemorizedComponent />);
 
-    await waitFor(() =>
+    await wait(() =>
       expect(renderCount.current).toEqual({
         Text: { value: 1 },
         MemorizedComponent: { value: 1 },
@@ -255,7 +255,7 @@ describe('ClassComponent', () => {
 
     render(<MemorizedComponent />);
 
-    await waitFor(() =>
+    await wait(() =>
       expect(renderCount.current).toEqual({
         Component: { value: 1 },
       }),
@@ -278,7 +278,7 @@ describe('ClassComponent', () => {
 
     render(<MemorizedComponent />);
 
-    await waitFor(() =>
+    await wait(() =>
       expect(renderCount.current).toEqual({
         MemorizedComponent: { value: 1 },
         ForwardRefComponent: { value: 1 },
@@ -302,7 +302,7 @@ describe('ClassComponent', () => {
 
     render(<ForwardRefComponent />);
 
-    await waitFor(() =>
+    await wait(() =>
       expect(renderCount.current).toEqual({
         MemorizedComponent: { value: 1 },
         ForwardRefComponent: { value: 1 },
@@ -327,7 +327,7 @@ describe('ClassComponent', () => {
 
     render(<Component />);
 
-    await waitFor(() =>
+    await wait(() =>
       expect(renderCount.current).toEqual({
         Text: { value: 1 },
         Component: { value: 1 },
@@ -348,7 +348,7 @@ test('should throw error when component is wrapping memo() in forwardRef()', asy
 
   const { renderCount } = perf(React);
 
-  await waitFor(() => expect(renderCount.current).toEqual({}));
+  await wait(() => expect(renderCount.current).toEqual({}));
   expect(() => render(<ForwardRefComponent />)).toThrow();
 
   // @ts-ignore
@@ -368,7 +368,7 @@ test('should invoke console.warn when it has anonymous function component', asyn
 
   render(<Component />);
 
-  await waitFor(() => expect(console.warn).toBeCalledTimes(1));
+  await wait(() => expect(console.warn).toBeCalledTimes(1));
 
   // @ts-ignore
   console.warn.mockRestore();
@@ -391,7 +391,7 @@ test('should invoke console.warn when it has anonymous class component', async (
 
   render(<Component />);
 
-  await waitFor(() => expect(console.warn).toBeCalledTimes(1));
+  await wait(() => expect(console.warn).toBeCalledTimes(1));
 
   // @ts-ignore
   console.warn.mockRestore();
@@ -406,8 +406,8 @@ test('should not set value when property is not defined', async () => {
 
   render(<Component />);
 
-  await waitFor(() => expect(renderCount.current).toEqual({}));
-  await waitFor(() => expect(renderTime.current).toEqual({}));
+  await wait(() => expect(renderCount.current).toEqual({}));
+  await wait(() => expect(renderTime.current).toEqual({}));
 });
 
 test('should work correctly when Proxy is undefined', async () => {
@@ -422,10 +422,10 @@ test('should work correctly when Proxy is undefined', async () => {
 
   render(<Component />);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(renderCount.current).toEqual({ Component: { value: 1 } }),
   );
-  await waitFor(() =>
+  await wait(() =>
     expect(renderTime.current).toEqual({
       Component: { mount: expect.any(Number), updates: [] },
     }),

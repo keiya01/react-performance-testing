@@ -1,12 +1,12 @@
 import React from 'react';
-import { render, fireEvent, screen, waitFor } from '@testing-library/react';
-import { perf } from '../../../react-performance-testing/src';
+import { render, fireEvent, screen } from '@testing-library/react';
+import { perf, wait } from '../../../react-performance-testing/src';
 import '../index';
 
 test('should throw error when component is not mounted', async () => {
   const { renderCount } = perf<{ Component: unknown }>(React);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(() =>
       expect(renderCount.current.Component).toBeUpdatedWithin(0),
     ).toThrow(/Specified component could not be found/),
@@ -39,7 +39,7 @@ test('should be true when expected value is correct array', async () => {
 
   fireEvent.click(countButton);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(renderTime.current.Counter).toBeUpdatedWithin([
       16, // first render
       16, // second render
@@ -73,7 +73,7 @@ test('should be true even if expected value is incorrect array when using `not` 
 
   fireEvent.click(countButton);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(renderTime.current.Counter).not.toBeUpdatedWithin([
       0, // first render
       16, // second render
@@ -107,7 +107,7 @@ test('should throw error when expected value is incorrect array', async () => {
 
   fireEvent.click(countButton);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(() =>
       expect(renderTime.current.Counter).toBeUpdatedWithin([
         0, // incorrect
@@ -143,7 +143,7 @@ test('should be true when expected value is correct number', async () => {
 
   fireEvent.click(countButton);
 
-  await waitFor(() => expect(renderTime.current.Counter).toBeUpdatedWithin(16));
+  await wait(() => expect(renderTime.current.Counter).toBeUpdatedWithin(16));
 });
 
 test('should throw error when expected value is incorrect number', async () => {
@@ -172,7 +172,7 @@ test('should throw error when expected value is incorrect number', async () => {
 
   fireEvent.click(countButton);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(() =>
       expect(renderTime.current.Counter).toBeUpdatedWithin(0),
     ).toThrow(/\[0, 0\]/),
@@ -203,7 +203,7 @@ test('should throw error when updates property is passed', async () => {
 
   fireEvent.click(countButton);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(() =>
       expect(renderTime.current.Counter?.updates).toBeUpdatedWithin(0),
     ).toThrow(/You need to pass Component property/),

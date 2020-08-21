@@ -1,6 +1,6 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
-import { perf } from '../index';
+import { render } from '@testing-library/react';
+import { perf, wait } from '../index';
 
 test('should initialize clone element', async () => {
   const Text: React.FC = () => <p>test</p>;
@@ -18,7 +18,7 @@ test('should initialize clone element', async () => {
 
   render(<Component />);
 
-  await waitFor(() =>
+  await wait(() =>
     expect(renderCount.current).toEqual({
       Text: { value: 1 },
       Wrapper: { value: 1 },
