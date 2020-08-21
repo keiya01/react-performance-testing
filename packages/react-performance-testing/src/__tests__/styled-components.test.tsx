@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { render } from '@testing-library/react';
-import { perf } from '../index';
+import { perf, wait } from '../index';
 
-test('should initialize with styled-components', () => {
+test('should initialize with styled-components', async () => {
   const Component = React.memo(function Component() {
     return <p>test</p>;
   });
@@ -13,8 +13,10 @@ test('should initialize with styled-components', () => {
 
   render(<StyledComponent />);
 
-  expect(renderCount.current).toEqual({
-    Component: { value: 1 },
-    'Styled(Component)': { value: 1 },
-  });
+  await wait(() =>
+    expect(renderCount.current).toEqual({
+      Component: { value: 1 },
+      'Styled(Component)': { value: 1 },
+    }),
+  );
 });

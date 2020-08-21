@@ -1,8 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { perf } from '../index';
+import { perf, wait } from '../index';
 
-test('should initialize clone element', () => {
+test('should initialize clone element', async () => {
   const Text: React.FC = () => <p>test</p>;
   const Wrapper: React.FC = ({ children }) =>
     React.isValidElement(children) ? React.cloneElement(children) : null;
@@ -18,9 +18,11 @@ test('should initialize clone element', () => {
 
   render(<Component />);
 
-  expect(renderCount.current).toEqual({
-    Text: { value: 1 },
-    Wrapper: { value: 1 },
-    Component: { value: 1 },
-  });
+  await wait(() =>
+    expect(renderCount.current).toEqual({
+      Text: { value: 1 },
+      Wrapper: { value: 1 },
+      Component: { value: 1 },
+    }),
+  );
 });

@@ -20,6 +20,7 @@ You can test React(ReactNative) runtime performance by using this lib. If you wa
   - [perf](#perf)
     - [renderCount](#renderCount)
     - [renderTime](#renderTime)
+  - [wait](#wait)
   - [cleanup](#cleanup)
   - [ReactNative](#reactnative)
   - [TypeScript](#typescript)
@@ -58,7 +59,7 @@ You can increase testing experience by using [jest-performance-testing](https://
 ### count renders
 
 ```jsx
-test('should two renders when state is updated', () => {
+test('should two renders when state is updated', async () => {
   const Counter = () => {
     const [count, setCount] = React.useState(0);
     return (
@@ -80,10 +81,10 @@ test('should two renders when state is updated', () => {
 
   fireEvent.click(screen.getByRole('button', { name: /count/i }));
 
-  expect(renderCount.current.Counter.value).toBe(2);
+  await wait(() => expect(renderCount.current.Counter.value).toBe(2));
 });
 
-test('should two renders when state is updated with it have multiple same component', () => {
+test('should two renders when state is updated with it have multiple same component', async () => {
   const Counter = ({ testid }) => {
     const [count, setCount] = React.useState(0);
     return (
@@ -115,16 +116,18 @@ test('should two renders when state is updated with it have multiple same compon
 
   fireEvent.click(screen.getByTestId('button'));
 
-  expect(renderCount.current.Counter[0].value).toBe(1);
-  expect(renderCount.current.Counter[1].value).toBe(2);
-  expect(renderCount.current.Counter[2].value).toBe(1);
+  await wait(() => {
+    expect(renderCount.current.Counter[0].value).toBe(1);
+    expect(renderCount.current.Counter[1].value).toBe(2);
+    expect(renderCount.current.Counter[2].value).toBe(1);
+  });
 });
 ```
 
 ### measure render time
 
 ```jsx
-test('should render time be less than 16ms', () => {
+test('should render time be less than 16ms', async () => {
   const Counter = () => {
     const [count, setCount] = React.useState(0);
     return (
@@ -143,13 +146,15 @@ test('should render time be less than 16ms', () => {
 
   fireEvent.click(screen.getByRole('button', { name: /count/i }));
 
-  // 16ms is meaning it is 60fps
-  expect(renderTime.current.Counter.mount).toBeLessThan(16);
-  // renderTime.current.Counter.updates[0] is second render
-  expect(renderTime.current.Counter.updates[0]).toBeLessThan(16);
+  await wait(() => {
+    // 16ms is meaning it is 60fps
+    expect(renderTime.current.Counter.mount).toBeLessThan(16);
+    // renderTime.current.Counter.updates[0] is second render
+    expect(renderTime.current.Counter.updates[0]).toBeLessThan(16);
+  });
 });
 
-test('should measure re-render time when state is updated with it have multiple same component', () => {
+test('should measure re-render time when state is updated with it have multiple same component', async () => {
   const Counter = ({ testid }) => {
     const [count, setCount] = React.useState(0);
     return (
@@ -181,9 +186,11 @@ test('should measure re-render time when state is updated with it have multiple 
 
   fireEvent.click(screen.getByTestId('button'));
 
-  expect(renderTime.current.Counter[0].updates).toHaveLength(0);
-  expect(renderTime.current.Counter[1].updates[0]).toBeLessThan(16);
-  expect(renderTime.current.Counter[2].updates).toHaveLength(0);
+  await wait(() => {
+    expect(renderTime.current.Counter[0].updates).toHaveLength(0);
+    expect(renderTime.current.Counter[1].updates[0]).toBeLessThan(16);
+    expect(renderTime.current.Counter[2].updates).toHaveLength(0);
+  });
 });
 ```
 
@@ -202,6 +209,8 @@ const { renderCount, renderTime } = perf(React);
 
 Note that You need to invoke the `perf` method before the `render` method is invoked. Additionally, You need to pass `React` to the `perf` method. This is because we are monkey patching `React`.
 
+**Note**: You need to wrap returned value with [wait](#wait) method.
+
 #### renderCount
 
 `renderCount` has several re-render in some component. You can get the number of renders like bellow.
@@ -211,7 +220,7 @@ const Component = () => <p>test</p>;
 const { renderCount } = perf(React);
 // render is imported from react-testing-library
 render(<Component />);
-console.log(renderCount.current.Component.value); // output: 1
+wait(() => console.log(renderCount.current.Component.value)); // output: 1
 ```
 
 **Note**: You need to set a display name. If you have an anonymous component, we can not set a property to `renderCount` correctly.
@@ -233,8 +242,10 @@ const Component = () => <p>test</p>;
 const { renderTime } = perf(React);
 // render is imported from react-testing-library
 render(<Component />);
-console.log(renderTime.current.Component.mount); // output: ...ms
-console.log(renderTime.current.Component.updates); // output: []
+wait(() => {
+  console.log(renderTime.current.Component.mount); // output: ...ms
+  console.log(renderTime.current.Component.updates); // output: []
+});
 ```
 
 **Note**: You need to set a display name. If you have an anonymous component, we can not set a property to `renderTime` correctly.
@@ -248,6 +259,15 @@ console.log(renderTime.current.Component.updates); // output: []
 
 **Note**: If you have some same component, these components combine to `array`  
 **Note**: Each time are displayed with `ms`
+
+### wait
+
+`wait` method is feature to wait for `renderCount` or `renderTime` is assigned. You need to wrap all returned value from `perf()` because we are assigning `renderCount` and `renderTime` in asynchronous.  
+This is because, if we assign some value to `renderCount` or `renderTime` in synchronous, extra processing is included in rendering phase.
+
+```js
+wait(() => console.log(renderTime.current.Component));
+```
 
 ### cleanup
 
@@ -290,7 +310,7 @@ You can pass `{ComponentName: unknown or unknown[]}` type for the type argument.
 
 ### Performance
 
-This lib is using `Proxy` API to optimize testing speed. So you should use either `renderCount` or `renderTime` in a single test case. If you use both variables and you are testing a large component, testing time will be a little slower.
+This lib is using `Proxy` API to optimize testing speed. So you should use either `renderCount` or `renderTime` in a single test case. If you use both variables or you are testing a large component, testing time will be a little slower.
 
 ### Anonymous Component
 
@@ -322,7 +342,7 @@ const { result } = renderHook(() => {
 });
 
 // You can get value from the TestHook component
-console.log(renderCount.current.TestHook.value);
+wait(() => console.log(renderCount.current.TestHook.value));
 ```
 
 This is because the `renderHook` method is wrapping callback with the `TestHook` component.
