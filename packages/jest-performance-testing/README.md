@@ -1,4 +1,4 @@
-# jest-performance-testing(Experimental)
+# jest-performance-testing
 
 ![npm](https://img.shields.io/npm/v/react-performance-testing)
 [![codecov](https://codecov.io/gh/keiya01/react-performance-testing/branch/master/graph/badge.svg)](https://codecov.io/gh/keiya01/react-performance-testing)
