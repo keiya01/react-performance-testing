@@ -262,7 +262,7 @@ wait(() => {
 
 ### wait
 
-`wait` method is feature to wait for `renderCount` or `renderTime` is set. You need to wrap all `Matcher` is using `renderCount` or `renderTime` because we are assign `renderCount` and `renderTime` in asynchronous.  
+`wait` method is feature to wait for `renderCount` or `renderTime` is assigned. You need to wrap all returned value from `perf()` because we are assigning `renderCount` and `renderTime` in asynchronous.  
 This is because, if we assign some value to `renderCount` or `renderTime` in synchronous, extra processing is included in rendering phase.
 
 ```js
