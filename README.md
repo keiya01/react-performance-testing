@@ -235,7 +235,7 @@ wait(() => console.log(renderCount.current.Component.value)); // output: 1
 
 #### renderTime(Experimental)
 
-**Note**: This feature is experimental. `jest` cache some modules in test execution, so some test is meaningless except for first executed test.
+**Note**: This feature is experimental. `jest` cache some modules in test execution, so some test is meaningless except for first executed test. We want to test in same environment without caching modules.
 
 `renderTime` has rendering time in some component. You can get render time like bellow.
 
