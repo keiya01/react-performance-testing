@@ -19,7 +19,7 @@ You can test React(ReactNative) runtime performance by using this lib. If you wa
 - [API](#api)
   - [perf](#perf)
     - [renderCount](#renderCount)
-    - [renderTime](#renderTime)
+    - [renderTime](#renderTime(Experimental))
   - [wait](#wait)
   - [cleanup](#cleanup)
   - [ReactNative](#reactnative)
@@ -211,9 +211,7 @@ Note that You need to invoke the `perf` method before the `render` method is inv
 
 **Note**: You need to wrap returned value with [wait](#wait) method.
 
-#### renderCount(Experimental)
-
-**Note**: This feature is experimental. `jest` cache some modules in test execution, so some test is meaningless except for first executed test.
+#### renderCount
 
 `renderCount` has several re-render in some component. You can get the number of renders like bellow.
 
@@ -235,7 +233,9 @@ wait(() => console.log(renderCount.current.Component.value)); // output: 1
 
 **Note**: If you have some same component, these components combine to `array`
 
-#### renderTime
+#### renderTime(Experimental)
+
+**Note**: This feature is experimental. `jest` cache some modules in test execution, so some test is meaningless except for first executed test.
 
 `renderTime` has rendering time in some component. You can get render time like bellow.
 
