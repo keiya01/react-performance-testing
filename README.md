@@ -19,7 +19,7 @@ You can test React(ReactNative) runtime performance by using this lib. If you wa
 - [API](#api)
   - [perf](#perf)
     - [renderCount](#renderCount)
-    - [renderTime](#renderTime(Experimental))
+    - [renderTime](#rendertimeexperimental)
   - [wait](#wait)
   - [cleanup](#cleanup)
   - [ReactNative](#reactnative)
