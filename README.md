@@ -211,7 +211,9 @@ Note that You need to invoke the `perf` method before the `render` method is inv
 
 **Note**: You need to wrap returned value with [wait](#wait) method.
 
-#### renderCount
+#### renderCount(Experimental)
+
+**Note**: This feature is experimental. `jest` cache some modules in test execution, so some test is meaningless except for first executed test.
 
 `renderCount` has several re-render in some component. You can get the number of renders like bellow.
 
