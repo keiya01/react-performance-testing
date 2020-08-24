@@ -19,7 +19,7 @@ You can test React(ReactNative) runtime performance by using this lib. If you wa
 - [API](#api)
   - [perf](#perf)
     - [renderCount](#renderCount)
-    - [renderTime](#rendertimeexperimental)
+    - [renderTime(Experimental)](#rendertimeexperimental)
   - [wait](#wait)
   - [cleanup](#cleanup)
   - [ReactNative](#reactnative)
@@ -233,9 +233,9 @@ wait(() => console.log(renderCount.current.Component.value)); // output: 1
 
 **Note**: If you have some same component, these components combine to `array`
 
-#### renderTime
+#### renderTime(Experimental)
 
-`renderTime` has rendering time in some component. You can get render time like bellow.
+**This feature is experimental.** `renderTime` has rendering time in some component. You can get render time like bellow.
 
 ```jsx
 const Component = () => <p>test</p>;
@@ -248,11 +248,9 @@ wait(() => {
 });
 ```
 
-If you want to measure **mount** time, you need to test one by one. Because mount phase has some process like module resolution, setup in `jest`, etc ...  
-Therefore, you need to execute test like `jest --testNamePattern=...` or `jest src/something.test.js`.  
+If you want to measure render time, you need to test one by one. Because this feature has some process like module resolution, setup in `jest`, etc... So, you can not measure pure render time.
+Therefore You need to execute test like `jest --testNamePattern=...` or `jest src/something.test.js`.  
 If you have any ideas, please send issue or pull request.😭
-
-**But** if you want to test about **update** time, you can test at once.
 
 **Note**: You need to set a display name. If you have an anonymous component, we can not set a property to `renderTime` correctly.
 
@@ -260,7 +258,7 @@ If you have any ideas, please send issue or pull request.😭
 
 - `renderCount.current`
   - `ComponentName: string | Array`
-    - `mount: number` ... **This feature is experimental.** This property has first render time.
+    - `mount: number` ... This property has first render time.
     - `updates: Array<number>` ... This property has the second and the subsequent render time(the second render is the index of `0`)
 
 **Note**: If you have some same component, these components combine to `array`  
