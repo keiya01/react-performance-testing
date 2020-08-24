@@ -323,7 +323,7 @@ This lib is using `Proxy` API to optimize testing speed. So you should use eithe
 If you are using an anonymous component, this lib doesn't work correctly. To make this lib work correctly, you need to set the display name as bellows.
 
 ```js
-React.memo(function MemoComponent {
+React.memo(function MemoComponent() {
   return <p>test</p>;
 });
 
