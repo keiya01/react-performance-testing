@@ -3,6 +3,10 @@ import { render } from '@testing-library/react';
 import { perf, wait } from '../../../react-performance-testing/src/index';
 import '../index';
 
+beforeAll(() => {
+  jest.spyOn(console, 'warn').mockImplementation(() => {});
+});
+
 test('should throw error when component is not mounted', async () => {
   const { renderTime } = perf<{ Component: unknown }>(React);
 
@@ -20,7 +24,9 @@ test('should true when mount time is less than expected time', async () => {
 
   render(<Component />);
 
-  await wait(() => expect(renderTime.current.Component).toBeMountedWithin(16));
+  await wait(() =>
+    expect(renderTime.current.Component).toBeMountedWithin(Infinity),
+  );
 });
 
 test('should throw error when mount time is greater than expected time', async () => {
@@ -58,7 +64,7 @@ test('should throw error even if mount time is less than expected time when usin
 
   await wait(() =>
     expect(() =>
-      expect(renderTime.current.Component).not.toBeMountedWithin(16),
+      expect(renderTime.current.Component).not.toBeMountedWithin(Infinity),
     ).toThrow(/not/),
   );
 });
