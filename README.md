@@ -126,7 +126,7 @@ test('should two renders when state is updated with it have multiple same compon
 
 ### measure render time
 
-If you want to use `renderTime`, please check about detail of [renderTime](#renderTime).
+If you want to use `renderTime`, please check about [detail of renderTime](#renderTime).
 
 ```jsx
 test('should render time be less than 16ms', async () => {
@@ -250,7 +250,7 @@ wait(() => {
 });
 ```
 
-**Note**: If you want to measure render time, you need to test **one by one**. Because this feature has some process like module resolution, setup in `jest`, [inline caching](https://blog.sessionstack.com/how-javascript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e), etc... So, you can not measure pure render time. But module resolution and other setup process are **just a little difference**. But inline caching will be **large difference**. Therefore You need to execute test **one by one** like `jest --testNamePattern=...` or `jest src/something.test.js`.
+**Note**: If you want to measure render time, you need to test **one by one**. Because V8 has feature called [inline caching](https://blog.sessionstack.com/how-javascript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e). So, measuring result will be **large difference** by inline caching and you can not measure pure render time. Therefore You need to execute test **one by one** like `jest --testNamePattern=...` or `jest src/something.test.js`.
 
 **Note**: You need to set a display name. If you have an anonymous component, we can not set a property to `renderTime` correctly.
 
