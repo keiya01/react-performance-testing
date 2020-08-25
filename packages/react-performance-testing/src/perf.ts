@@ -1,6 +1,17 @@
 import { PerfTools, PerfState, DefaultPerfToolsField } from './types';
 import { getPatchedComponent } from './getPatchedComponent';
 import { shouldTrack } from './utils/shouldTrack';
+import { globalOption } from './constants/globalOption';
+
+const checkRenderTimeDeclaring = (prop: keyof PerfTools) => {
+  if (prop === 'renderTime' && globalOption.isDeclaredRenderTime) {
+    console.warn(
+      '[react-performance-testing] You need to execute test one by one when you use `renderTime`. Please check here: https://github.com/keiya01/react-performance-testing#renderTime',
+    );
+  } else {
+    globalOption.isDeclaredRenderTime = true;
+  }
+};
 
 let origCreateElement: any = null;
 let origCreateFactory: any = null;
@@ -85,6 +96,7 @@ export const perf = <T = DefaultPerfToolsField>(React: any) => {
   return Proxy
     ? new Proxy(tools, {
         get: (target, prop: keyof PerfTools) => {
+          checkRenderTimeDeclaring(prop);
           perfState[prop] = true;
           return target[prop];
         },

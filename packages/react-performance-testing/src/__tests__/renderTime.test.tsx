@@ -2,6 +2,15 @@ import React from 'react';
 import { perf, wait } from '../index';
 import { render, fireEvent, screen } from '@testing-library/react';
 
+beforeAll(() => {
+  jest.spyOn(console, 'warn').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  // @ts-ignore
+  console.warn.mockClear();
+});
+
 describe('FunctionComponent', () => {
   it('should get correct value from renderTime.current.Text when state is updated with flat structure', async () => {
     const Text = () => {

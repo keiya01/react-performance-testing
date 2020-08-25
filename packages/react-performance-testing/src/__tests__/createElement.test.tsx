@@ -2,6 +2,15 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { perf, wait } from '../index';
 
+beforeAll(() => {
+  jest.spyOn(console, 'warn').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  // @ts-ignore
+  console.warn.mockClear();
+});
+
 describe('FunctionComponent', () => {
   it('should initialize Component with flat structure', async () => {
     const Text = () => <p>test</p>;
@@ -342,7 +351,6 @@ describe('ClassComponent', () => {
  */
 test('should throw error when component is wrapping memo() in forwardRef()', async () => {
   jest.spyOn(console, 'error').mockImplementation(() => {});
-  jest.spyOn(console, 'warn').mockImplementation(() => {});
 
   const ForwardRefComponent = React.forwardRef(React.memo(() => <p>memo</p>));
 
@@ -353,13 +361,9 @@ test('should throw error when component is wrapping memo() in forwardRef()', asy
 
   // @ts-ignore
   console.error.mockRestore();
-  // @ts-ignore
-  console.warn.mockRestore();
 });
 
 test('should invoke console.warn when it has anonymous function component', async () => {
-  jest.spyOn(console, 'warn').mockImplementation(() => {});
-
   const Component = React.memo(() => <p>test</p>);
 
   const tools = perf(React);
@@ -368,15 +372,10 @@ test('should invoke console.warn when it has anonymous function component', asyn
 
   render(<Component />);
 
-  await wait(() => expect(console.warn).toBeCalledTimes(1));
-
-  // @ts-ignore
-  console.warn.mockRestore();
+  await wait(() => expect(console.warn).toBeCalledTimes(2));
 });
 
 test('should invoke console.warn when it has anonymous class component', async () => {
-  jest.spyOn(console, 'warn').mockImplementation(() => {});
-
   const Component = React.memo(
     class extends React.Component {
       render() {
@@ -391,10 +390,7 @@ test('should invoke console.warn when it has anonymous class component', async (
 
   render(<Component />);
 
-  await wait(() => expect(console.warn).toBeCalledTimes(1));
-
-  // @ts-ignore
-  console.warn.mockRestore();
+  await wait(() => expect(console.warn).toBeCalledTimes(2));
 });
 
 test('should not set value when property is not defined', async () => {

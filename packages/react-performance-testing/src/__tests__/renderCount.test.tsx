@@ -287,3 +287,15 @@ describe('ClassComponent', () => {
     );
   });
 });
+
+test('should invoke console.warn when renderTime is declared', () => {
+  jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+  const tools = perf(React);
+  tools.renderTime;
+
+  expect(console.warn).toHaveBeenCalledTimes(1);
+
+  // @ts-ignore
+  console.warn.mockRestore();
+});
