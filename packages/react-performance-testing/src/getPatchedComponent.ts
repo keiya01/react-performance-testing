@@ -103,7 +103,7 @@ const createClassComponent = (
   const displayName = getDisplayName(type);
   if (!displayName) {
     console.warn(
-      "You have anonymous component. If your component don't have display name, we can not set property to renderCount.current",
+      "[react-performance-testing] You have anonymous component. If your component don't have display name, we can not set property to renderCount.current",
     );
   }
 
@@ -178,7 +178,7 @@ const createFunctionComponent = (
   const displayName = getDisplayName(type);
   if (!displayName) {
     console.warn(
-      "You have anonymous component. If your component don't have display name, we can not set property to renderCount.current",
+      "[react-performance-testing] You have anonymous component. If your component don't have display name, we can not set property to renderCount.current",
     );
   }
 
