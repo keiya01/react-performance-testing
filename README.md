@@ -250,7 +250,7 @@ wait(() => {
 });
 ```
 
-**Note**: If you want to measure render time, you need to test **one by one**. Because V8 has feature get called [inline caching](https://blog.sessionstack.com/how-javascript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e). So, measuring result will be **large difference** by inline caching and you can not measure pure render time. Therefore You need to execute test **one by one** like `jest --testNamePattern=...` or `jest src/something.test.js`.
+**Note**: If you want to measure render time, you need to test **one by one**. V8 have the feature called [inline caching](https://blog.sessionstack.com/how-javascript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e), so measuring result will be **large difference** and you can not measure pure render time. Therefore You need to execute test **one by one** like `jest --testNamePattern=...` or `jest src/something.test.js`.
 
 **Note**: You need to set a display name. If you have an anonymous component, we can not set a property to `renderTime` correctly.
 
