@@ -32,11 +32,11 @@ You can test React(ReactNative) runtime performance by using this lib. If you wa
 
 ## The problem
 
-If you are developing high-performance features, you would like to write tests about the number of renders or render time. We have to check with devtools or Lighthouse manually, but we could not test these cases automatically. Additionally, we cannot predict re-renders without getting nervous. The `react-performance-testing` provides a solution for these cases.
+If you are developing high-performance features, you would like to write test about the number of renders or render time. However we have to check with devtools or Lighthouse manually, and we could not test these cases automatically. Additionally, we cannot predict re-renders without getting nervous. The `react-performance-testing` provides a solution for these cases.
 
 ## The solution
 
-The `react-performance-testing` provides a simple and easy way as a solution for the above problem. It provides some features by monkey patched `React`. We can count the number of renders and measure renders time as well, so we can test by using these values.
+The `react-performance-testing` provides a simple and easy way as a solution for the above problem. It provides some features by monkey patched `React`. We can count the number of renders and measure renders time as well, and we can test by using these values.
 
 ## Installation
 
