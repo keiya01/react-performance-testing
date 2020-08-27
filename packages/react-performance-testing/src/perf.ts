@@ -19,7 +19,7 @@ let origCloneElement: any = null;
 let origReact: any = null;
 
 export const perf = <T = DefaultPerfToolsField>(React: any) => {
-  const tools: PerfTools<T> = {
+  const tools: PerfTools = {
     renderCount: { current: {} },
     renderTime: { current: {} },
   };
@@ -93,7 +93,7 @@ export const perf = <T = DefaultPerfToolsField>(React: any) => {
 
   Object.assign(React.cloneElement, origCloneElement);
 
-  return Proxy
+  return (Proxy
     ? new Proxy(tools, {
         get: (target, prop: keyof PerfTools) => {
           checkRenderTimeDeclaring(prop);
@@ -101,7 +101,7 @@ export const perf = <T = DefaultPerfToolsField>(React: any) => {
           return target[prop];
         },
       })
-    : tools;
+    : tools) as PerfTools<T>;
 };
 
 export const cleanup = () => {

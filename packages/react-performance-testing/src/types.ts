@@ -10,11 +10,11 @@ export interface RenderTimeField {
 export type DefaultPerfToolsField = Record<string, any>;
 
 export type PerfToolsMutation<T, U> = {
-  [K in keyof T]?: T[K] extends unknown[]
+  [K in keyof T]: T[K] extends unknown[]
     ? U[]
     : U extends unknown
     ? U
-    : U | U[];
+    : U | U[] | undefined;
 };
 
 export interface PerfTools<T = DefaultPerfToolsField> {
