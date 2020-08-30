@@ -1,4 +1,4 @@
-import { PerfTools, PerfState, DefaultPerfToolsField } from './types';
+import { PerfTools, PerfState, DefaultPerfToolsField } from '../types';
 import { getPatchedComponent } from './getPatchedComponent';
 import { shouldTrack } from './utils/shouldTrack';
 import { globalOption } from './constants/globalOption';

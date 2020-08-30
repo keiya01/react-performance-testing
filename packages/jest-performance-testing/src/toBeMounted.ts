@@ -1,7 +1,7 @@
 import {
   RenderCountField,
   RenderTimeField,
-} from '../../react-performance-testing/src/types';
+} from '../../react-performance-testing/types';
 import { isNotMounted } from './errorMessage';
 
 export function toBeMounted(

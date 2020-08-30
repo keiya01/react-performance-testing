@@ -1,4 +1,4 @@
-import { PerfTools, PerfState } from './types';
+import { PerfTools, PerfState } from '../types';
 import { getDisplayName } from './getDisplayName';
 import { isClassComponent } from './utils/isClassComponent';
 import { isMemoComponent } from './utils/isMemoComponent';

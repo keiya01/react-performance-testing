@@ -1,5 +1,5 @@
 import { matcherHint } from 'jest-matcher-utils';
-import { RenderCountField } from '../../react-performance-testing/src/types';
+import { RenderCountField } from '../../react-performance-testing/types';
 import { isNotMounted } from './errorMessage';
 
 export function toBeRenderedTimes(

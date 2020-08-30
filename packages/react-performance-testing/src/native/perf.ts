@@ -1,5 +1,5 @@
 import { perf as origPerf } from '../perf';
-import { DefaultPerfToolsField } from '../types';
+import { DefaultPerfToolsField } from '../../types';
 import { getDisplayName } from '../getDisplayName';
 import { isForwardRefComponent } from '../utils/isForwardRefComponent';
 

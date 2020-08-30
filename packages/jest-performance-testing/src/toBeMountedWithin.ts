@@ -1,4 +1,4 @@
-import { RenderTimeField } from '../../react-performance-testing/src/types';
+import { RenderTimeField } from '../../react-performance-testing/types';
 import { matcherHint } from 'jest-matcher-utils';
 import { isNotMounted } from './errorMessage';
 

@@ -1,5 +1,5 @@
 import { matcherHint } from 'jest-matcher-utils';
-import { RenderTimeField } from '../../react-performance-testing/src/types';
+import { RenderTimeField } from '../../react-performance-testing/types';
 import { isNotMounted } from './errorMessage';
 
 export function toBeUpdatedWithin(
