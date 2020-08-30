@@ -325,7 +325,7 @@ const createPatchedComponent = (
     return createClassComponent(type, tools, perfState);
   }
 
-  // This is because this is checking type
+  // Here is only checking type
   /* istanbul ignore else */
   if (isFunctionComponent(type)) {
     return createFunctionComponent(type, tools, perfState, React);
