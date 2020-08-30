@@ -24,23 +24,24 @@ export const perf = <T = DefaultPerfToolsField>(React: any) => {
     renderTime: { current: {} },
   };
 
-  const perfState: PerfState = {
-    hasRenderCount: !Proxy,
-    hasRenderTime: !Proxy,
-  };
-
-  Object.defineProperties(perfState, {
-    renderCount: {
-      set(val: boolean) {
-        this.hasRenderCount = val;
+  const perfState: PerfState = Object.defineProperties(
+    {
+      hasRenderCount: !Proxy,
+      hasRenderTime: !Proxy,
+    },
+    {
+      renderCount: {
+        set(val: boolean) {
+          this.hasRenderCount = val;
+        },
+      },
+      renderTime: {
+        set(val: boolean) {
+          this.hasRenderTime = val;
+        },
       },
     },
-    renderTime: {
-      set(val: boolean) {
-        this.hasRenderTime = val;
-      },
-    },
-  });
+  );
 
   origReact = React;
   origCreateElement = React.createElement;
