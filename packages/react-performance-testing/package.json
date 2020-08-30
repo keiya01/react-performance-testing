@@ -4,7 +4,7 @@
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
   "react-native": "native/dist/index.cjs.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/src/index.d.ts",
   "sideEffects": false,
   "files": [
     "dist",
