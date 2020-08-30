@@ -1,5 +1,3 @@
 {
-  "extends": "../../tsconfig.json",
-  "include": ["src/**/*", "../react-performance-testing/src/types.ts"],
-  "outDir": "dist"
+  "extends": "../../tsconfig.json"
 }

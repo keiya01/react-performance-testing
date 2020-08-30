@@ -5,6 +5,7 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react",
     "declaration": true,
+    "declarationMap": true,
     "strict": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
