@@ -310,6 +310,8 @@ renderCount.current // Editor will suggest `Text[]` and `Component`
 
 You can pass `{ComponentName: unknown or unknown[]}` type for the type argument. If you passed to the type argument, then the editor will suggest the correct type dependent on the passed type.
 
+**Note**: If you are using `ts-jest`, you need to combine with `babel`. You can check the way to set up config in [here](https://github.com/keiya01/react-performance-testing/tree/master/example). This is because, `TypeScript` compiler can not compile named arrow function correctly. Please check detail here: https://github.com/microsoft/TypeScript/issues/6433.
+
 ## Tips
 
 ### Performance
