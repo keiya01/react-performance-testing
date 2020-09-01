@@ -198,8 +198,8 @@ test('should measure re-render time when state is updated with it have multiple 
 
 ## API
 
-If you use the API with a large component, the component's performance might be **worse** because we monkey patches React.
-Therefore, you should use API with **components that have one feature** like `List`, `Modal` etc.
+If you use the API with a large component, the component's performance might be **a little slower** because we monkey patches React.
+Therefore, if you want to measure accurately, you should use API with **components that have one feature** like `List`, `Modal` etc.
 
 ### perf
 
