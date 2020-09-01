@@ -5,6 +5,7 @@
   ],
   "scripts": {
     "lerna": "lerna",
+    "rm:link": "rm -rf node_modules/react-performance-testing node_modules/jest-performance-testing && lerna bootstrap",
     "test": "lerna run test --parallel -- --coverage",
     "test:react": "yarn workspace react-performance-testing test",
     "test:jest": "yarn workspace jest-performance-testing test",
@@ -17,6 +18,7 @@
     "prepublishOnly": "yarn type && yarn lint && lerna run prepublish"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^10.4.8",
     "@testing-library/react-native": "^7.0.1",
     "@types/jest": "^26.0.9",
