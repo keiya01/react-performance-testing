@@ -1,0 +1,46 @@
+{
+  "name": "performance-testing-cli",
+  "version": "0.0.1",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "perf": "bin/perf.js"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "bin"
+  ],
+  "description": "You can measure render time with react-performance-testing in unit test correctly",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keiya01/react-performance-testing"
+  },
+  "bugs": {
+    "url": "https://github.com/keiya01/react-performance-testing/issues"
+  },
+  "homepage": "https://github.com/keiya01/react-performance-testing#readme",
+  "author": "keiya01",
+  "keywords": [
+    "jest",
+    "unit",
+    "test",
+    "testing",
+    "cli"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "test": "jest --runInBand",
+    "build": "rollup -c rollup.config.js",
+    "prepublish": "yarn test && yarn build"
+  },
+  "dependencies": {
+    "micromatch": "^4.0.2",
+    "yargs": "^15.4.1"
+  },
+  "devDependencies": {
+    "@types/micromatch": "^4.0.1",
+    "@types/yargs": "^15.0.5"
+  }
+}

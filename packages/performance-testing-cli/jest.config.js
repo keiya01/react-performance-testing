@@ -4,8 +4,8 @@ const common = require('../../scripts/jest/jest.common.config');
 module.exports = {
   ...common,
   displayName: {
-    name: 'Jest',
-    color: 'green',
+    name: 'CLI',
+    color: 'yellow',
   },
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
   testMatch: ['**/*.test.ts?(x)'],
