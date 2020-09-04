@@ -1,8 +1,16 @@
+import yargs from 'yargs';
 import { exec } from './exec';
 import { getAllFilesBy } from './getAllFilesBy';
-import { argv } from './option';
+import { options } from './options';
+import { validate } from './validate';
 
 export const run = async () => {
+  const argv = yargs.wrap(yargs.terminalWidth()).options(options).argv;
+
+  if (!validate(argv)) {
+    return process.exit(1);
+  }
+
   const root = argv.root!;
 
   const matchedFiles: string[] = getAllFilesBy(root, argv.match);
