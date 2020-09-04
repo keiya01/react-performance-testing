@@ -3,21 +3,22 @@ import { logError } from './logger';
 
 export const validate = (argv: Record<string, any>) => {
   const { cmd, root } = argv;
+  let success = true;
 
   if (!cmd) {
     logError('You need to specify executing command');
-    return false;
+    success = false;
   }
 
   if (!root) {
     logError('You need to specify root file path');
-    return false;
+    success = false;
   }
 
-  if (!fs.existsSync(root)) {
+  if (root && !fs.existsSync(root)) {
     logError(`Could not find specified path: ${root}`);
-    return false;
+    success = false;
   }
 
-  return true;
+  return success;
 };
