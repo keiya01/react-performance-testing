@@ -9,10 +9,12 @@
     "test": "lerna run test --parallel -- --coverage",
     "test:react": "yarn workspace react-performance-testing test",
     "test:jest": "yarn workspace jest-performance-testing test",
+    "test:cli": "yarn workspace performance-testing-cli test",
     "test:clearCache": "lerna run test -- --clearCache",
     "build": "lerna run build --parallel",
     "build:react": "yarn workspace react-performance-testing build",
     "build:jest": "yarn workspace jest-performance-testing build",
+    "build:cli": "yarn workspace performance-testing-cli build",
     "type": "tsc --noEmit",
     "lint": "eslint '**/*.{ts,tsx}'",
     "prepublishOnly": "yarn type && yarn lint && lerna run prepublish"
