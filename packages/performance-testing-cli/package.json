@@ -36,10 +36,12 @@
     "prepublish": "yarn test && yarn build"
   },
   "dependencies": {
+    "chalk": "^4.1.0",
     "micromatch": "^4.0.2",
     "yargs": "^15.4.1"
   },
   "devDependencies": {
+    "@types/chalk": "^2.2.0",
     "@types/micromatch": "^4.0.1",
     "@types/yargs": "^15.0.5"
   }
