@@ -156,7 +156,7 @@ test('render time should be less than 16ms', async () => {
   });
 });
 
-test('should measure re-render time when state is updated with it have multiple same component', async () => {
+test('should measure re-render time when state is updated with multiple of the same component', async () => {
   const Counter = ({ testid }) => {
     const [count, setCount] = React.useState(0);
     return (
@@ -198,24 +198,24 @@ test('should measure re-render time when state is updated with it have multiple 
 
 ## API
 
-If you use the API with a large component, the component's performance might be **a little slower** because we monkey patches React.
-Therefore, if you want to measure accurately, you should use API with **components that have one feature** like `List`, `Modal` etc.
+If you use the API with a large component, the component's performance could be affected because we monkey patch React.
+Therefore, if you want to measure accurately, you should use the API with **components that have one feature** like `List`, `Modal` etc.
 
 ### perf
 
-`perf` method observes your component. So you can get `renderCount` to count the number of renders and `renderTime` to measure render time.
+`perf` method observes your component. So you can get the `renderCount` to count the number of renders and `renderTime` to measure render time.
 
 ```js
 const { renderCount, renderTime } = perf(React);
 ```
 
-Note that You need to invoke the `perf` method before the `render` method is invoked. Additionally, You need to pass `React` to the `perf` method. This is because we are monkey patching `React`.
+Note that You need to invoke the `perf` method before the `render` method is invoked. Additionally, You need to pass `React` to the `perf` method because we are monkey patching `React`.
 
-**Note**: You need to wrap returned value with [wait](#wait) method.
+**Note**: You need to wrap the returned value with [wait](#wait) method.
 
 #### renderCount
 
-`renderCount` has several re-render in some component. You can get the number of renders like bellow.
+`renderCount` will count the number of renders.
 
 ```jsx
 const Component = () => <p>test</p>;
@@ -225,7 +225,7 @@ render(<Component />);
 wait(() => console.log(renderCount.current.Component.value)); // output: 1
 ```
 
-**Note**: You need to set a display name. If you have an anonymous component, we can not set a property to `renderCount` correctly.
+**Note**: You need to set a display name. If you have an anonymous component, we can not set the `renderCount` property correctly.
 
 ##### Properties
 
@@ -233,11 +233,11 @@ wait(() => console.log(renderCount.current.Component.value)); // output: 1
   - `ComponentName: string | Array`
     - `value: number`
 
-**Note**: If you have some same component, these components combine to `array`
+**Note**: If you have the same component, these components combine into an `array`
 
 #### renderTime
 
-`renderTime` has rendering time in some component. You can get render time like bellow.
+`renderTime` will count the time elapsed between renders.
 
 ```jsx
 const Component = () => <p>test</p>;
@@ -250,7 +250,7 @@ wait(() => {
 });
 ```
 
-**Note**: If you want to measure render time, you need to test **one by one**. V8 have the feature called [inline caching](https://blog.sessionstack.com/how-javascript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e), so measuring result will be **large difference** and you can not measure pure render time. Therefore You need to execute test **one by one** like `jest --testNamePattern=...` or `jest src/something.test.js`.
+**Note**: If you want to measure render time, you need to test renders **one by one**. V8 has a feature called [inline caching](https://blog.sessionstack.com/how-javascript-works-inside-the-v8-engine-5-tips-on-how-to-write-optimized-code-ac089e62b12e), so if you measure just the result there will be a **large difference**. Therefore You need to execute tests **one by one** like `jest --testNamePattern=...` or `jest src/something.test.js`.
 
 **Note**: You need to set a display name. If you have an anonymous component, we can not set a property to `renderTime` correctly.
 
