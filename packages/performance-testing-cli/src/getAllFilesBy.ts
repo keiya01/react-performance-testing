@@ -5,14 +5,15 @@ import micromatch from 'micromatch';
 export const getAllFilesBy = (
   root: string,
   match: string,
-  matchedFiles: string[] = [],
+  _matchedFiles: readonly string[] = [],
 ) => {
+  let matchedFiles = [..._matchedFiles];
   const files = fs.readdirSync(root);
   for (let i = 0; i < files.length; i++) {
     const filepath = path.join(root, files[i]);
     const stat = fs.lstatSync(filepath);
     if (stat.isDirectory()) {
-      getAllFilesBy(filepath, match, matchedFiles);
+      matchedFiles = getAllFilesBy(filepath, match, matchedFiles);
       continue;
     }
     if (micromatch.isMatch(filepath, match)) {
