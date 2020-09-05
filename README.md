@@ -258,16 +258,15 @@ wait(() => {
 
 - `renderCount.current`
   - `ComponentName: string | Array`
-    - `mount: number` ... This property has first render time.
-    - `updates: Array<number>` ... This property has the second and the subsequent render time(the second render is the index of `0`)
+    - `mount: number` ... This property has the initial render time.
+    - `updates: Array<number>` ... This property has the second and the subsequent render time (the second render is the index of `0`)
 
-**Note**: If you have some same component, these components combine to `array`  
-**Note**: Each time are displayed with `ms`
+**Note**: If you have the duplicate components, these components combine into `array`  
+**Note**: time is measured in `ms`, milliseconds elapsed.
 
 ### wait
 
-`wait` method is feature to wait for `renderCount` or `renderTime` is assigned. You need to wrap all returned value from `perf()` because we are assigning `renderCount` and `renderTime` in asynchronous.  
-This is because, if we assign some value to `renderCount` or `renderTime` in synchronous, extra processing is included in rendering phase.
+The `wait` method is a feature that waits for `renderCount` or `renderTime` to be assigned. We need to wrap all returned values from `perf()` because we are assigning `renderCount` and `renderTime` asynchronous. If we were to assign some value to `renderCount` or `renderTime` synchronous, extra processing would be included in the rendering phase.
 
 ```js
 wait(() => console.log(renderTime.current.Component));
@@ -275,8 +274,8 @@ wait(() => console.log(renderTime.current.Component));
 
 ### cleanup
 
-`cleanup` method is executed automatically in `afterEach()` if you are using `Jest`, `Mocha`, and `Jasmine`. You need to clean up your component by using `cleanup`.  
-If your testing lib has `afterEach()`, you need to invoke `cleanup()` manually.
+The `cleanup` method is executed automatically in `afterEach()` if you are using `Jest`, `Mocha`, and `Jasmine`. You need to clean up your component by using `cleanup`.
+If your testing library has `afterEach()`, you need to invoke `cleanup()` manually.
 
 ### ReactNative
 
@@ -288,7 +287,7 @@ import { perf } from 'react-performance-testing/native';
 
 ### TypeScript
 
-If you are using Typescript, you can get benefits from type inference as bellow.
+If you are using Typescript, you can get benefits from type inference as seen below.
 
 ```tsx
 const Text = (): React.ReactElement => <p>test</p>;
@@ -308,19 +307,19 @@ const { renderCount, renderTime } = perf <{ Text: unknown[], Component: unknown 
 renderCount.current // Editor will suggest `Text[]` and `Component`
 ```
 
-You can pass `{ComponentName: unknown or unknown[]}` type for the type argument. If you passed to the type argument, then the editor will suggest the correct type dependent on the passed type.
+You can pass the `{ComponentName: unknown or unknown[]}` type for the type argument. If you passed to the type argument, then the editor will suggest the correct type dependent on the passed type.
 
-**Note**: If you are using `ts-jest`, you need to combine with `babel`. You can check the way to set up config in [here](https://github.com/keiya01/react-performance-testing/tree/master/example). This is because, `TypeScript` compiler can not compile named arrow function correctly. Please check detail here: https://github.com/microsoft/TypeScript/issues/6433.
+**Note**: If you are using `ts-jest`, you need to combine it with `babel`. You can check the way to set up config [here](https://github.com/keiya01/react-performance-testing/tree/master/example). This is because, `TypeScript` compiler can not compile named arrow functions correctly. You can read up on the issue here: https://github.com/microsoft/TypeScript/issues/6433.
 
 ## Tips
 
 ### Performance
 
-This lib is using `Proxy` API to optimize testing speed. So you should use either `renderCount` or `renderTime` in a single test case. If you use both variables or you are testing a large component, testing time will be a little slower.
+This library is using the `Proxy` API to optimize testing speed. So you should use either `renderCount` or `renderTime` in a single test case. If you use both variables or you are testing a large component, the testing time will be a little slower.
 
 ### Anonymous Component
 
-If you are using an anonymous component, this lib doesn't work correctly. To make this lib work correctly, you need to set the display name as bellows.
+If you are using an anonymous component, this library doesn't work correctly. To make this library work correctly, you need to set the display name as seen below.
 
 ```js
 React.memo(function MemoComponent() {
@@ -333,7 +332,7 @@ const MemoComponent = () => <p>test</p>;
 React.memo(MemoComponent);
 ```
 
-Setting a display name will get benefits not only this lib but also when [you debug in React](https://reactjs.org/docs/react-component.html#displayname).
+Setting a display name will get benefits not only from this library but also when [you debug in React](https://reactjs.org/docs/react-component.html#displayname).
 
 ### Hooks
 
@@ -351,7 +350,7 @@ const { result } = renderHook(() => {
 wait(() => console.log(renderCount.current.TestHook.value));
 ```
 
-This is because the `renderHook` method is wrapping callback with the `TestHook` component.
+This is because the `renderHook` method is wrapping callbacks with the `TestHook` component.
 
 ## LICENSE
 
