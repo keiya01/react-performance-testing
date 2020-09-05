@@ -6,7 +6,7 @@
 ![GitHub Workflow Status](https://github.com/keiya01/react-performance-testing/workflows/build/badge.svg)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-You can test React(ReactNative) runtime performance by using this lib. If you want to check **the number of renders**, or **render time** in a test environment, this lib makes sense.
+This library is perfect for testing React or ReactNative runtime performance. `react-performance-testing` counts **the number of renders** and the **render time** in a test environment.
 
 ## Table of Contents
 
@@ -32,11 +32,11 @@ You can test React(ReactNative) runtime performance by using this lib. If you wa
 
 ## The problem
 
-If you are developing high-performance features, you would like to write test about the number of renders or render time. However we have to check with devtools or Lighthouse manually, and we could not test these cases automatically. Additionally, we cannot predict re-renders without getting nervous. The `react-performance-testing` provides a solution for these cases.
+If you need to develop high-performance features, you need to count renders and render time. Normally you would have to go through the arduous process of manually checking dev-tools or Lighthouse. With `react-performance-testing` you can automate this process, saving you time and ensuring you always have one eye on performance.
 
 ## The solution
 
-The `react-performance-testing` provides a simple and easy way as a solution for the above problem. It provides some features by monkey patched `React`. We can count the number of renders and measure renders time as well, and we can test by using these values.
+`react-performance-testing` monkey patches `React` to provide you with an API that can count the number of renders and measure render time.
 
 ## Installation
 
@@ -52,14 +52,14 @@ yarn:
 yarn add --dev react-performance-testing
 ```
 
-You can increase testing experience by using [jest-performance-testing](https://github.com/keiya01/react-performance-testing/tree/master/packages/jest-performance-testing).
+Use [jest-performance-testing](https://github.com/keiya01/react-performance-testing/tree/master/packages/jest-performance-testing) for a great testing experience.
 
 ## Example
 
 ### count renders
 
 ```jsx
-test('should two renders when state is updated', async () => {
+test('should have two renders when state is updated', async () => {
   const Counter = () => {
     const [count, setCount] = React.useState(0);
     return (
@@ -84,7 +84,7 @@ test('should two renders when state is updated', async () => {
   await wait(() => expect(renderCount.current.Counter.value).toBe(2));
 });
 
-test('should two renders when state is updated with it have multiple same component', async () => {
+test('should have two renders when state is updated with multiple of the same component', async () => {
   const Counter = ({ testid }) => {
     const [count, setCount] = React.useState(0);
     return (
@@ -126,10 +126,10 @@ test('should two renders when state is updated with it have multiple same compon
 
 ### measure render time
 
-If you want to use `renderTime`, please check about [detail of renderTime](#renderTime).
+If you want to use `renderTime`, please check out the docs: [renderTime](#renderTime).
 
 ```jsx
-test('should render time be less than 16ms', async () => {
+test('render time should be less than 16ms', async () => {
   const Counter = () => {
     const [count, setCount] = React.useState(0);
     return (
