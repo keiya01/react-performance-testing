@@ -1,20 +1,21 @@
-import { validate } from '../validate';
 import fs from 'fs';
+import { validate } from '../validate';
+import * as logger from '../logger';
 
 jest.mock('fs');
 
 beforeEach(() => {
-  jest.spyOn(console, 'error').mockImplementation(() => {});
+  jest.spyOn(logger, 'logError').mockImplementation(() => {});
 });
 
 afterEach(() => {
   // @ts-ignore
-  console.error.mockRestore();
+  logger.logError.mockRestore();
 });
 
 test('should output error when option is undefined', () => {
   expect(validate({})).toBeFalsy();
-  expect(console.error).toBeCalledTimes(2);
+  expect(logger.logError).toBeCalledTimes(2);
 });
 
 test('should output error when root path not found', () => {
@@ -24,7 +25,7 @@ test('should output error when root path not found', () => {
   const argv = { cmd: 'test', root: 'test' };
 
   expect(validate(argv)).toBeFalsy();
-  expect(console.error).toBeCalledTimes(1);
+  expect(logger.logError).toBeCalledTimes(1);
 });
 
 test('should not output error', () => {
@@ -34,5 +35,5 @@ test('should not output error', () => {
   const argv = { cmd: 'test', root: 'path/to' };
 
   expect(validate(argv)).toBeTruthy();
-  expect(console.error).not.toBeCalled();
+  expect(logger.logError).not.toBeCalled();
 });
