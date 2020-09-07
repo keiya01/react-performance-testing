@@ -1,8 +1,10 @@
-import fs from 'fs';
+import mockFs from 'mock-fs';
 import { validate } from '../validate';
 import * as logger from '../logger';
 
-jest.mock('fs');
+mockFs({
+  'path/to': {},
+});
 
 beforeEach(() => {
   jest.spyOn(logger, 'logError').mockImplementation(() => {});
@@ -13,15 +15,14 @@ afterEach(() => {
   logger.logError.mockRestore();
 });
 
+afterAll(() => mockFs.restore());
+
 test('should output error when option is undefined', () => {
   expect(validate({})).toBeFalsy();
   expect(logger.logError).toBeCalledTimes(2);
 });
 
 test('should output error when root path not found', () => {
-  // @ts-ignore
-  fs.__setMockFiles(['path']);
-
   const argv = { cmd: 'test', root: 'test' };
 
   expect(validate(argv)).toBeFalsy();
@@ -29,9 +30,6 @@ test('should output error when root path not found', () => {
 });
 
 test('should not output error', () => {
-  // @ts-ignore
-  fs.__setMockFiles(['path/to']);
-
   const argv = { cmd: 'test', root: 'path/to' };
 
   expect(validate(argv)).toBeTruthy();

@@ -1,18 +1,22 @@
-import fs from 'fs';
+import mockFs from 'mock-fs';
 import { getAllFilesBy } from '../getAllFilesBy';
+import { matchDefault } from '../constants/matchDefault';
 
-jest.mock('fs');
+mockFs({
+  'path/to': {
+    'file1.test.js': 'test1',
+    'file2.ts': 'test2',
+  },
+  'path/to/dir': {
+    'file3.spec.ts': 'test3',
+  },
+});
+
+afterAll(() => mockFs.restore());
 
 test('should get matched all files', () => {
-  // @ts-ignore
-  fs.__setMockFiles([
-    'path/to/file1.test.ts',
-    'path/to/file2.ts',
-    'path/to/dir/file3.test.ts',
-  ]);
-
-  expect(getAllFilesBy('path/to', '**/*.test.ts')).toEqual([
-    'path/to/file1.test.ts',
-    'path/to/dir/file3.test.ts',
+  expect(getAllFilesBy('path/to', matchDefault)).toEqual([
+    'path/to/dir/file3.spec.ts',
+    'path/to/file1.test.js',
   ]);
 });
