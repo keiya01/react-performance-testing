@@ -43,6 +43,8 @@
   "devDependencies": {
     "@types/chalk": "^2.2.0",
     "@types/micromatch": "^4.0.1",
-    "@types/yargs": "^15.0.5"
+    "@types/mock-fs": "^4.10.0",
+    "@types/yargs": "^15.0.5",
+    "mock-fs": "^4.13.0"
   }
 }
