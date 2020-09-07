@@ -1,3 +1,5 @@
+import { matchDefault } from './constants/matchDefault';
+
 export const options = {
   cmd: {
     alias: 'c',
@@ -16,6 +18,6 @@ export const options = {
     describe: 'Run with matched files. You can use own glob pattern.',
     requiresArg: true,
     type: 'string',
-    default: '**/*.(test|spec).(j|t)s(x)?',
+    default: matchDefault,
   },
 } as const;

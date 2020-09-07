@@ -1,11 +1,10 @@
-import yargs from 'yargs';
 import { exec } from './exec';
 import { getAllFilesBy } from './getAllFilesBy';
-import { options } from './options';
 import { validate } from './validate';
+import { getArgv } from './getArgv';
 
-export const run = async () => {
-  const argv = yargs.wrap(yargs.terminalWidth()).options(options).argv;
+export const run = () => {
+  const argv = getArgv();
 
   if (!validate(argv)) {
     return process.exit(1);
