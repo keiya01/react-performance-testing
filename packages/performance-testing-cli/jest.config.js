@@ -11,6 +11,7 @@ module.exports = {
   testMatch: ['**/*.test.ts?(x)'],
   collectCoverageFrom: [
     '<rootDir>/src/**/*.{ts,tsx}',
+    '!<rootDir>/src/getArgv.ts',
     '!**/node_modules/**',
     '!**/dist/**',
     '!**/__tests__/**',
