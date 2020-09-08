@@ -38,7 +38,7 @@ test('should exit when argv is invalid', () => {
 });
 
 test('should not exit when argv is valid', () => {
-  argv = { cmd: 'test', root: 'path', match: matchDefault };
+  argv = { cmd: 'test', root: 'path', match: matchDefault, _: [] };
 
   run();
 
@@ -48,7 +48,7 @@ test('should not exit when argv is valid', () => {
 test('should invoke exec method', () => {
   jest.spyOn(executer, 'exec').mockImplementation(() => {});
 
-  argv = { cmd: 'test', root: 'path', match: matchDefault };
+  argv = { cmd: 'test', root: 'path', match: matchDefault, _: [] };
 
   run();
 

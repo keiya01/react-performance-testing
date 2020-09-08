@@ -10,11 +10,9 @@ export const run = () => {
     return process.exit(1);
   }
 
-  const root = argv.root!;
-
-  const matchedFiles: string[] = getAllFilesBy(root, argv.match);
+  const matchedFiles: string[] = getAllFilesBy(argv.root!, argv.match);
 
   for (let i = 0; i < matchedFiles.length; i++) {
-    exec(argv.cmd!, matchedFiles[i]);
+    exec(argv.cmd!, matchedFiles[i], argv._);
   }
 };
