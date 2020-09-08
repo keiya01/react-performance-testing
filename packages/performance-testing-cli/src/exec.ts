@@ -1,8 +1,8 @@
 import child_process from 'child_process';
 import { logError } from './logger';
 
-export const exec = (cmd: string, filepath: string) => {
-  const { error } = child_process.spawnSync(cmd, [filepath], {
+export const exec = (cmd: string, filepath: string, args: string[]) => {
+  const { error } = child_process.spawnSync(cmd, [filepath, ...args], {
     stdio: 'inherit',
     env: { ...process.env },
   });

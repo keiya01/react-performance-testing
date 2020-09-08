@@ -2,8 +2,13 @@ import child_process from 'child_process';
 import { exec } from '../exec';
 import * as logger from '../logger';
 
+let error: any = null;
+
 beforeEach(() => {
   jest.spyOn(logger, 'logError').mockImplementation(() => {});
+  jest.spyOn(child_process, 'spawnSync').mockImplementation(() => {
+    return { error } as any;
+  });
 });
 
 afterEach(() => {
@@ -12,21 +17,17 @@ afterEach(() => {
 });
 
 test('should output error', () => {
-  jest.spyOn(child_process, 'spawnSync').mockImplementation(() => {
-    return { error: new Error() } as any;
-  });
+  error = new Error();
 
-  exec('test', 'path');
+  exec('test', 'path', []);
 
   expect(logger.logError).toBeCalledTimes(1);
 });
 
 test('should not output error when error is undefined', () => {
-  jest.spyOn(child_process, 'spawnSync').mockImplementation(() => {
-    return { error: undefined } as any;
-  });
+  error = null;
 
-  exec('test', 'path');
+  exec('test', 'path', []);
 
   expect(logger.logError).not.toBeCalled();
 });
