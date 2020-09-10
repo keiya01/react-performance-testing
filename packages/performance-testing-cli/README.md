@@ -37,7 +37,7 @@ But this library resolve this problem by executing test in another process.
 You can use as below.
 
 ```sh
-perf --cmd='jest' --root='performance'
+perf --cmd='jest' --root='dir'
 ```
 
 **Note**: You need to separate directory to generally test and `renderTime` test.
