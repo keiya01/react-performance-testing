@@ -30,7 +30,7 @@ afterEach(() => {
 afterAll(() => mockFs.restore());
 
 test('should exit when argv is invalid', () => {
-  argv = {};
+  argv = { _: [] };
 
   run();
 

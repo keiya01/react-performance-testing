@@ -2,7 +2,7 @@ import fs from 'fs';
 import { logError } from './logger';
 
 export const validate = (argv: Record<string, any>) => {
-  const { cmd, root } = argv;
+  const { cmd, root, _ } = argv;
   let success = true;
 
   if (!cmd) {
@@ -10,13 +10,15 @@ export const validate = (argv: Record<string, any>) => {
     success = false;
   }
 
-  if (!root) {
-    logError('You need to specify root file path');
+  const pathname = root || _[0];
+
+  if (!pathname) {
+    logError('You need to specify file path');
     success = false;
   }
 
-  if (root && !fs.existsSync(root)) {
-    logError(`Could not find specified path: ${root}`);
+  if (pathname && !fs.existsSync(pathname)) {
+    logError(`Could not find specified path: ${pathname}`);
     success = false;
   }
 
