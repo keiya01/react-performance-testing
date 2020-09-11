@@ -37,6 +37,14 @@ test('should exit when argv is invalid', () => {
   expect(process.exit).toBeCalled();
 });
 
+test('should exit when file could not find', () => {
+  argv = { cmd: 'test', root: 'path/notFound.js', match: matchDefault, _: [] };
+
+  run();
+
+  expect(process.exit).toBeCalled();
+});
+
 test('should not exit when argv is valid', () => {
   argv = { cmd: 'test', root: 'path', match: matchDefault, _: [] };
 
@@ -53,4 +61,24 @@ test('should invoke exec method', () => {
   run();
 
   expect(executer.exec).toBeCalledTimes(3);
+  // @ts-ignore
+  executer.exec.mockRestore();
+});
+
+test('should invoke exec method when _ argument has path', () => {
+  jest.spyOn(executer, 'exec').mockImplementation(() => {});
+
+  argv = {
+    cmd: 'test',
+    root: 'path',
+    match: matchDefault,
+    _: ['path/test1.test.ts'],
+  };
+
+  run();
+
+  expect(executer.exec).toBeCalledTimes(1);
+
+  // @ts-ignore
+  executer.exec.mockRestore();
 });

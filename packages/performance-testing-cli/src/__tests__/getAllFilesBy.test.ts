@@ -20,3 +20,13 @@ test('should get matched all files', () => {
     'path/to/file1.test.js',
   ]);
 });
+
+test('should get matched file', () => {
+  expect(getAllFilesBy('path/to/file1.test.js', matchDefault)).toEqual([
+    'path/to/file1.test.js',
+  ]);
+});
+
+test('should get undefined if specified file could not find', () => {
+  expect(getAllFilesBy('path/to/notFound.js', matchDefault)).toBeUndefined();
+});

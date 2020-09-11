@@ -11,7 +11,11 @@ export const run = () => {
     return process.exit(1);
   }
 
-  const matchedFiles: string[] = getAllFilesBy(argv.root!, argv.match);
+  const root = argv._[0] || argv.root!;
+
+  // We are checking if file is exist in `validate()`
+  // Therefore, we will not receive undefined from `getAllFilesBy()`
+  const matchedFiles = getAllFilesBy(root, argv.match)!;
 
   const excludes = ['_', '$1', 'cmd', 'c', 'root', 'r', 'match', 'm'];
   const args = toArgs(argv, excludes);
