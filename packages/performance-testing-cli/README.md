@@ -50,6 +50,18 @@ You can check example [here](https://github.com/keiya01/react-performance-testin
 
 - **root** ... Specify your root directory you want to test performance.
 
+- If you specify file path as below, you can test one by one.
+
+```sh
+perf --cmd='jest' ./dir/filename.js
+```
+
+Even if you specify `root` option, `filename.js` has priority.
+
+```sh
+perf --cmd='jest' --root='rootDir' ./dir/filename.js
+```
+
 ## LICENSE
 
 [MIT](LICENSE)
