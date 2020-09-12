@@ -10,7 +10,7 @@ export const validate = (argv: Record<string, any>) => {
     success = false;
   }
 
-  const pathname = root || _[0];
+  const pathname = _[0] || root;
 
   if (!pathname) {
     logError('You need to specify file path');
