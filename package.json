@@ -5,14 +5,16 @@
   ],
   "scripts": {
     "lerna": "lerna",
-    "rm:link": "rm -rf node_modules/react-performance-testing node_modules/jest-performance-testing && lerna bootstrap",
+    "rm:link": "rm -rf node_modules/react-performance-testing node_modules/jest-performance-testing node_modules/performance-testing-cli && lerna bootstrap",
     "test": "lerna run test --parallel -- --coverage",
     "test:react": "yarn workspace react-performance-testing test",
     "test:jest": "yarn workspace jest-performance-testing test",
+    "test:cli": "yarn workspace performance-testing-cli test",
     "test:clearCache": "lerna run test -- --clearCache",
     "build": "lerna run build --parallel",
     "build:react": "yarn workspace react-performance-testing build",
     "build:jest": "yarn workspace jest-performance-testing build",
+    "build:cli": "yarn workspace performance-testing-cli build",
     "type": "tsc --noEmit",
     "lint": "eslint '**/*.{ts,tsx}'",
     "prepublishOnly": "yarn type && yarn lint && lerna run prepublish"

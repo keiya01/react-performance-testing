@@ -53,6 +53,8 @@ yarn add --dev react-performance-testing
 ```
 
 Use [jest-performance-testing](https://github.com/keiya01/react-performance-testing/tree/master/packages/jest-performance-testing) for a great testing experience.
+  
+Additionally, you can use [performance-testing-cli](https://github.com/keiya01/react-performance-testing/tree/master/packages/performance-testing-cli) if you use `renderTime`. If you use this library, you can execute test for each files. Therefore you will not need to test one by one.
 
 ## Example
 

@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:perf": "perf -c='jest' -r='src/performance'"
   },
   "devDependencies": {
     "@babel/core": "^7.11.4",
@@ -13,6 +14,7 @@
     "@babel/preset-typescript": "^7.10.4",
     "babel-jest": "^26.3.0",
     "jest-performance-testing": "^1.0.0",
+    "performance-testing-cli": "^1.0.1",
     "react-performance-testing": "^1.2.3"
   }
 }
