@@ -1,6 +1,6 @@
 import mockFs from 'mock-fs';
 import { getAllFilesBy } from '../getAllFilesBy';
-import { matchDefault } from '../constants/matchDefault';
+import { matchDefault } from '../constants/defaultOptions';
 
 mockFs({
   'path/to': {

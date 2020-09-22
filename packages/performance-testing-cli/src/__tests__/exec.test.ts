@@ -16,18 +16,18 @@ afterEach(() => {
   logger.logError.mockRestore();
 });
 
-test('should output error', () => {
+test('should output error', async () => {
   error = new Error();
 
-  exec('test', 'path', []);
+  await exec('test', 'path', []);
 
   expect(logger.logError).toBeCalledTimes(1);
 });
 
-test('should not output error when error is undefined', () => {
+test('should not output error when error is undefined', async () => {
   error = null;
 
-  exec('test', 'path', []);
+  await exec('test', 'path', []);
 
   expect(logger.logError).not.toBeCalled();
 });
