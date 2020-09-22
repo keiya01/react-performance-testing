@@ -16,7 +16,7 @@ test('should render within specified time', async () => {
   fireEvent.click(screen.getByRole('button', { name: /submit/i }));
 
   await wait(() => {
-    expect(renderTime.current.ListPage).toBeMountedWithin(17);
-    expect(renderTime.current.ListPage).toBeUpdatedWithin(17);
+    expect(renderTime.current.ListPage).toBeMountedWithin(18);
+    expect(renderTime.current.ListPage).toBeUpdatedWithin(18);
   });
 });
