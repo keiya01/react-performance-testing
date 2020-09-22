@@ -46,9 +46,11 @@ You can check example [here](https://github.com/keiya01/react-performance-testin
 
 ## Options
 
-- **cmd** ... Specify your test command like `jest`, `mocha`.
+- **cmd(required)** ... Specify your test command like `jest`, `mocha`.
 
-- **root** ... Specify your root directory you want to test performance.
+- **root(required)** ... Specify your root directory you want to test performance.
+
+- **match** ... Specify your regexp. Using [micromatch](https://github.com/micromatch/micromatch). default: `**/*.(test|spec).(j|t)s(x)?`.
 
 - If you specify file path as below, you can test one by one.
 
