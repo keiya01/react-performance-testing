@@ -4158,10 +4158,10 @@ path-parse@^1.0.6:
   resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.6.tgz#d62dbb5679405d72c4737ec58600e9ddcf06d24c"
   integrity sha512-GSmOT2EbHrINBf9SR7CDELwlJ8AENk3Qn7OikK4nFYAu3Ote2+JYNVvkpAEQm3/TLNEJFD/xZJjzyxg3KBWOzw==
 
-performance-testing-cli@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/performance-testing-cli/-/performance-testing-cli-1.1.0.tgz#c6b0852873a993825963c2e918a6d67ce9b0bf10"
-  integrity sha512-wuHnxqEx5gci+OhafVd1XZKyVh2E27D2JRcB/2ZwCRUzhM8+kkXcGG5930iYOhMCy9xceF0/C1s62Q+Pr4kWFg==
+performance-testing-cli@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/performance-testing-cli/-/performance-testing-cli-1.1.1.tgz#2e81f2507c81e6a267e308f610f1d5210cc9cbe9"
+  integrity sha512-TQ3CDVUv5hxTP5RWVzQ02z+Zl+XmQgcip4BDbeC8BghVMGyaeoXKZj4KfhTgnBOfJE0TKH4sWmtHD0wsah5aFw==
   dependencies:
     chalk "^4.1.0"
     micromatch "^4.0.2"
