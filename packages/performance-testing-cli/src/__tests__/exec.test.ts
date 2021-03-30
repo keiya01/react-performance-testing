@@ -19,7 +19,9 @@ afterEach(() => {
 test('should output error', async () => {
   error = new Error();
 
-  await exec('test', 'path', []);
+  try {
+    await exec('test', 'path', []);
+  } catch (err) {}
 
   expect(logger.logError).toBeCalledTimes(1);
 });
