@@ -375,24 +375,6 @@ test('should invoke console.warn when it has anonymous function component', asyn
   await wait(() => expect(console.warn).toBeCalledTimes(2));
 });
 
-test('should invoke console.warn when it has anonymous class component', async () => {
-  const Component = React.memo(
-    class extends React.Component {
-      render() {
-        return <p>test</p>;
-      }
-    },
-  );
-
-  const tools = perf(React);
-  tools.renderCount;
-  tools.renderTime;
-
-  render(<Component />);
-
-  await wait(() => expect(console.warn).toBeCalledTimes(1));
-});
-
 test('should not set value when property is not defined', async () => {
   jest.spyOn(window, 'Proxy').mockImplementation((target) => target);
 
