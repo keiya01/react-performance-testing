@@ -390,7 +390,7 @@ test('should invoke console.warn when it has anonymous class component', async (
 
   render(<Component />);
 
-  await wait(() => expect(console.warn).toBeCalledTimes(2));
+  await wait(() => expect(console.warn).toBeCalledTimes(1));
 });
 
 test('should not set value when property is not defined', async () => {
