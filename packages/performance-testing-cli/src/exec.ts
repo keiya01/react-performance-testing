@@ -12,6 +12,6 @@ export const exec = (cmd: string, filepath: string, args: string[]) => {
       logError(error);
       return reject(error);
     }
-    return resolve();
+    return resolve(undefined);
   });
 };
