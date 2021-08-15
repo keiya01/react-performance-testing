@@ -5,7 +5,6 @@
   ],
   "scripts": {
     "lerna": "lerna",
-    "rm:link": "rm -rf node_modules/react-performance-testing node_modules/jest-performance-testing node_modules/performance-testing-cli && lerna bootstrap",
     "test": "lerna run test --parallel -- --coverage",
     "test:react": "yarn workspace react-performance-testing test",
     "test:jest": "yarn workspace jest-performance-testing test",
@@ -17,15 +16,17 @@
     "build:cli": "yarn workspace performance-testing-cli build",
     "type": "tsc --noEmit",
     "lint": "eslint '**/*.{ts,tsx}'",
-    "prepublishOnly": "yarn type && yarn lint && lerna run prepublish"
+    "prepublishOnly": "yarn type && yarn lint && lerna run prepublish",
+    "link-all": "lerna exec --parallel yarn link",
+    "unlink-all": "lerna exec --parallel --bail=false yarn unlink"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^10.4.8",
     "@testing-library/react-native": "^7.0.1",
     "@types/jest": "^26.0.9",
-    "@types/react": "^16.9.44",
-    "@types/react-dom": "^16.9.8",
+    "@types/react": "^17.0.18",
+    "@types/react-dom": "^17.0.9",
     "@typescript-eslint/eslint-plugin": "^3.8.0",
     "@typescript-eslint/parser": "^3.8.0",
     "add": "^2.0.6",
@@ -36,14 +37,17 @@
     "jest": "^26.2.2",
     "lerna": "^3.22.1",
     "prettier": "^2.0.5",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-test-renderer": "^16.13.1",
     "rollup": "^2.23.1",
     "rollup-plugin-typescript2": "^0.27.2",
     "ts-jest": "^26.1.4",
-    "typescript": "^3.9.7",
+    "typescript": "^4.3.5",
     "yarn": "^1.22.4"
   },
-  "name": "react-performance-testing"
+  "name": "react-performance-testing",
+  "dependencies": {
+    "@babel/preset-react": "^7.14.5"
+  }
 }

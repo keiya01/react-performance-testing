@@ -387,27 +387,3 @@ test('should not set value when property is not defined', async () => {
   await wait(() => expect(renderCount.current).toEqual({}));
   await wait(() => expect(renderTime.current).toEqual({}));
 });
-
-test('should work correctly when Proxy is undefined', async () => {
-  const proxy = window.Proxy;
-
-  // @ts-ignore
-  window.Proxy = undefined;
-
-  const Component = () => <p>test</p>;
-
-  const { renderCount, renderTime } = perf(React);
-
-  render(<Component />);
-
-  await wait(() =>
-    expect(renderCount.current).toEqual({ Component: { value: 1 } }),
-  );
-  await wait(() =>
-    expect(renderTime.current).toEqual({
-      Component: { mount: expect.any(Number), updates: [] },
-    }),
-  );
-
-  window.Proxy = proxy;
-});

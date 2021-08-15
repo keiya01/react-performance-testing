@@ -19,6 +19,7 @@ module.exports = {
     '@typescript-eslint/no-empty-interface': 'warn',
     'react/display-name': 'off',
     'react/prop-types': 'off',
+    'react/react-in-jsx-scope': 'off',
     'no-console': ['warn', { allow: ['warn', 'error'] }],
   },
   parserOptions: {
