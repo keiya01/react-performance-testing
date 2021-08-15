@@ -1,55 +1,24 @@
-import { PerfTools, PerfState, DefaultPerfToolsField } from '../types';
+import { DefaultPerfToolsField } from '../types';
 import { getPatchedComponent } from './getPatchedComponent';
 import { shouldTrack } from './utils/shouldTrack';
-import { globalOption } from './constants/globalOption';
-
-const checkRenderTimeDeclaring = (prop: keyof PerfTools) => {
-  if (prop === 'renderTime' && globalOption.isDeclaredRenderTime) {
-    console.warn(
-      '[react-performance-testing] You need to execute test one by one when you use `renderTime`. Please check here: https://github.com/keiya01/react-performance-testing#renderTime',
-    );
-  } else {
-    globalOption.isDeclaredRenderTime = true;
-  }
-};
+import { store, getPerfTools, getDefaultStore } from './store';
 
 let origCreateElement: any = null;
 let origCreateFactory: any = null;
 let origCloneElement: any = null;
 let origReact: any = null;
 
-export const perf = <T = DefaultPerfToolsField>(React: any) => {
-  const tools: PerfTools = {
-    renderCount: { current: {} },
-    renderTime: { current: {} },
-  };
+export const perf = <T = DefaultPerfToolsField>(React?: any) => {
+  if (!React) {
+    return getPerfTools<T>();
+  }
 
-  const perfState: PerfState = Object.defineProperties(
-    {
-      hasRenderCount: !Proxy,
-      hasRenderTime: !Proxy,
-    },
-    {
-      renderCount: {
-        set(val: boolean) {
-          this.hasRenderCount = val;
-        },
-      },
-      renderTime: {
-        set(val: boolean) {
-          this.hasRenderTime = val;
-        },
-      },
-    },
-  );
+  const { tools, perfState, componentsMap } = store;
 
   origReact = React;
   origCreateElement = React.createElement;
   origCreateFactory = React.createFactory;
   origCloneElement = React.cloneElement;
-
-  // store memorized Component
-  const componentsMap = new WeakMap();
 
   // @ts-ignore
   React.createElement = function (type: React.ElementType, ...rest: any) {
@@ -94,18 +63,12 @@ export const perf = <T = DefaultPerfToolsField>(React: any) => {
 
   Object.assign(React.cloneElement, origCloneElement);
 
-  return (Proxy
-    ? new Proxy(tools, {
-        get: (target, prop: keyof PerfTools) => {
-          checkRenderTimeDeclaring(prop);
-          perfState[prop] = true;
-          return target[prop];
-        },
-      })
-    : tools) as PerfTools<T>;
+  return getPerfTools<T>();
 };
 
 export const cleanup = () => {
+  Object.assign(store, getDefaultStore());
+
   if (!origReact) {
     return;
   }
