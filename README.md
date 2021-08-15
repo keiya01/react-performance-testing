@@ -53,8 +53,17 @@ yarn add --dev react-performance-testing
 ```
 
 Use [jest-performance-testing](https://github.com/keiya01/react-performance-testing/tree/master/packages/jest-performance-testing) for a great testing experience.
-  
+
 Additionally, you can use [performance-testing-cli](https://github.com/keiya01/react-performance-testing/tree/master/packages/performance-testing-cli) if you use `renderTime`. If you use this library, you can execute test for each files. Therefore you will not need to test one by one.
+
+If you want to use `jsx-runtime` in React@17.x, you need to modify `tsconfig.json` like the following.
+
+```json
+"compilerOptions": {
+  "jsx": "react-jsxdev",
+  "jsxImportSource": "react-performance-testing"
+}
+```
 
 ## Example
 
@@ -212,6 +221,8 @@ const { renderCount, renderTime } = perf(React);
 ```
 
 Note that You need to invoke the `perf` method before the `render` method is invoked. Additionally, You need to pass `React` to the `perf` method because we are monkey patching `React`.
+
+**Note**: If you are using `jsx-runtime` in React@17.x, you don't need to pass `React` for monkey patching.
 
 **Note**: You need to wrap the returned value with [wait](#wait) method.
 
